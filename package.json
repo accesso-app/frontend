@@ -1,6 +1,6 @@
 {
-  "name": "razzle-examples-with-typescript",
-  "version": "3.0.0",
+  "name": "@authmenow/frontend",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "cross-fetch": "^3.0.4",
     "effector": "^20.11.5",
     "effector-inspector": "^0.2.2",
-    "effector-logger": "^0.5.0-8",
+    "effector-logger": "^0.6.0-3",
     "effector-react": "^20.6.0",
     "express": "^4.17.1",
     "react": "^16.8.6",

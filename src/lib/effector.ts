@@ -1,5 +1,5 @@
-import * as effector from 'effector';
-export * from 'effector';
+import * as effector from 'effector-logger';
+export * from 'effector-logger';
 
 export const rootDomain = effector.createDomain('rootDomain');
 
