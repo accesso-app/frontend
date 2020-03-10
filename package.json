@@ -13,10 +13,10 @@
   },
   "dependencies": {
     "cross-fetch": "^3.0.4",
-    "effector": "^20.11.5",
+    "effector": "^20.12.2",
     "effector-inspector": "^0.2.2",
-    "effector-logger": "^0.6.0-3",
-    "effector-react": "^20.6.0",
+    "effector-logger": "^0.5.0",
+    "effector-react": "^20.6.2",
     "express": "^4.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

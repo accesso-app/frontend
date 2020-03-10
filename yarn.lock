@@ -3461,10 +3461,10 @@ effector-inspector@^0.2.1, effector-inspector@^0.2.2:
   dependencies:
     effector-dom "^0.0.11"
 
-effector-logger@^0.6.0-3:
-  version "0.6.0-3"
-  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.6.0-3.tgz#2a0d4da0860792e44bccff3d1154ec4359984233"
-  integrity sha512-pdUBj1EMPHKK9HHe6sXHCWg9JwDt5lwPuZ7mNB23hj+l8sXWaU5t51zvNmJZqMo4Jh+bhkrYWnPgfYhNd1/UPA==
+effector-logger@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.5.0.tgz#18bdbfb4b5ceea480ff4ff2a7fed1283c264eda3"
+  integrity sha512-Ke8Jur6cxMb2/IpefscV2CF5cmqM+GdO3kr8I5hdcBAZpjLJXDpD+Zt7Cjw1H8jue801CjOxfauf2Ot6+LcshA==
   dependencies:
     "@types/just-debounce-it" "^1.1.0"
     just-debounce-it "^1.1.0"
@@ -3472,15 +3472,15 @@ effector-logger@^0.6.0-3:
   optionalDependencies:
     effector-inspector "^0.2.1"
 
-effector-react@^20.6.0:
-  version "20.6.0"
-  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.6.0.tgz#3b4f0829f2ed23b513715d1b3d089cb1551b29dd"
-  integrity sha512-oxotJPQMP1gor54yGhgx/VrdXWP+bRVq8rEiKgzHaZHB7l0k9kjxghFzRHf+SkTkJjtjd2pVmRv3Plz22EOUSA==
+effector-react@^20.6.2:
+  version "20.6.2"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.6.2.tgz#e0b824bbbe26198f76606de6a14f5759870b1ed0"
+  integrity sha512-tWg22y4iH3Y1kzuM6oFevxWxIIQuywCb6XBLp2qvG0WC2W6IwHU+qBN7F72Q3fy/jP8Qy9Ki0jLcqb35+757MQ==
 
-effector@^20.11.5:
-  version "20.11.5"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-20.11.5.tgz#7fe946449af77fca5ffbd1f380f55eb7fc8fa6d5"
-  integrity sha512-nD6Nq/lYgRVKTtLeULGDwZfRdVblR8Ub62Ev5OYBpONYnpyROYL5wRjmXA70AXPBjQY90ntxr1yhilC8sGPmZw==
+effector@^20.12.2:
+  version "20.12.2"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-20.12.2.tgz#17800569de72e1580ca6d79b6ece0dfeb4c85fd3"
+  integrity sha512-iUwlWKry32h1gZmmomYCzBJg4soE68Uju3LWdNw745Np64LwpnAo4L2Y3UW5HBMln0kauOL34ebF5bX2bu9sCA==
   dependencies:
     symbol-observable "^1.2.0"
 
