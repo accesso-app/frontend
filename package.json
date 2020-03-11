@@ -27,6 +27,7 @@
   "devDependencies": {
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
+    "@svgr/webpack": "^5.2.0",
     "@types/express": "^4.17.0",
     "@types/jest": "^23.3.14",
     "@types/node": "^12.6.6",

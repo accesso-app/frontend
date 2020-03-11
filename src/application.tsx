@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Scope } from 'effector/fork';
 import { Provider } from 'effector-react/ssr';
 import { createGlobalStyle } from 'styled-components';
+import Logo from './logo.svg';
 
 import { Pages } from './pages';
 
@@ -21,6 +22,7 @@ export const Application: React.FC<Props> = ({ root }) => (
   <Provider value={root}>
     <div>
       <Globals />
+      <Logo />
       <div>Heading of the app</div>
       <Pages />
     </div>

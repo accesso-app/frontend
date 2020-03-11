@@ -1,5 +1,6 @@
 declare module '*.svg' {
-  const content: any;
+  import { FC } from 'react';
+  const content: FC;
   export default content;
 }
 
