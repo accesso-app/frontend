@@ -28,7 +28,7 @@ jobs:
       - name: Trigger deploy to Dev
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TRIGGER_DEPLOY_TOKEN }}
           repository: authmenow/releases
           event-type: deploy-dev
 
