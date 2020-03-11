@@ -24,3 +24,11 @@ jobs:
           tags: latest
           tag_names: true
           tag_semver: true
+
+      - name: Trigger deploy to Dev
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: authmenow/releases
+          event-type: deploy-dev
+
