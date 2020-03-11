@@ -17,9 +17,8 @@ FROM node:12.16.1-alpine3.9
 WORKDIR /app
 
 COPY --from=base /root/build/build ./build
-COPY --from=base /root/build/package.json ./package-json
+COPY --from=base /root/build/package.json ./package.json
 COPY --from=base /root/build/node_modules ./node_modules
-COPY --from=base /root/build/public ./public
 
 EXPOSE 3000
 
