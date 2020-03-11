@@ -10700,6 +10700,13 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
+woly@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/woly/-/woly-0.1.5.tgz#ef06dad317fcfd5b1bb5319a9d77edc0bea0a5fe"
+  integrity sha512-qT9T26ebx69TgHPZSyMLMdIIYZQn7+Fajp7zVI/5gnwZi+87BGmINHSm2kXgtfm+hH2ApCoE/2f63juUDo4Jcw==
+  dependencies:
+    styled-components "^5.0.1"
+
 word-wrap@^1.0.3, word-wrap@~1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.3.tgz#610636f6b1f703891bd34771ccb17fb93b47079c"

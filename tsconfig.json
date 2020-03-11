@@ -22,7 +22,15 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016",
-    "types": ["react", "jest", "typePatches", "node", "webpack-env"]
+    "types": [
+      "./typings/globals.d.ts",
+      "./typings/styled.d.ts",
+      "./typings/svg.d.ts",
+      "jest",
+      "node",
+      "react",
+      "webpack-env"
+    ]
   },
   "exclude": [
     "build",
