@@ -14,11 +14,13 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Publish Docker
-        uses: elgohr/Publish-Docker-Github-Action@2.8
+        uses: elgohr/Publish-Docker-Github-Action@2.13
         with:
+          registry: docker.pkg.github.com
           name: authmenow/frontend/frontend
           username: sergeysova
           password: ${{ secrets.GITHUB_TOKEN }}
           snapshot: true
-          tagging: ${{contains(github.ref, 'refs/tags/v')}}
-          registry: docker.pkg.github.com
+          tags: latest
+          tag_names: true
+          tag_semver: true
