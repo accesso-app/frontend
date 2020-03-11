@@ -5,7 +5,7 @@ WORKDIR /root/build
 
 # install and cache node packages
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn build
 
@@ -16,9 +16,9 @@ FROM node:12.16.1-alpine3.9
 
 WORKDIR /app
 
+COPY --from=base /root/build/package.json /root/build/yarn.lock ./
+RUN yarn install --production
 COPY --from=base /root/build/build ./build
-COPY --from=base /root/build/package.json ./package.json
-COPY --from=base /root/build/node_modules ./node_modules
 
 EXPOSE 3000
 
