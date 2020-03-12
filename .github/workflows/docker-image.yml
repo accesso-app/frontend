@@ -6,7 +6,7 @@ on:
       - master
       - dev
     tags:
-      - 'v*'
+      - '*'
 
 jobs:
   docker:
@@ -25,7 +25,6 @@ jobs:
           snapshot: true
           tags: latest
           tag_names: true
-          tag_semver: true
 
       - name: Trigger deploy to Dev
         uses: peter-evans/repository-dispatch@v1
