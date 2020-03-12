@@ -23,7 +23,7 @@ jobs:
           username: sergeysova
           password: ${{ secrets.GITHUB_TOKEN }}
           snapshot: true
-          tags: latest
+          tags: dev
           tag_names: true
           tag_semver: true
 
