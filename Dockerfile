@@ -1,7 +1,9 @@
 #
 # ---- Build ----
-FROM node:dubnium-alpine as base
-WORKDIR /root/build
+FROM node:12.16.1-alpine3.9 as build
+
+# Workdir in build stage should be equal with release stage, razzle uses this path
+WORKDIR /app
 
 # install and cache node packages
 COPY package.json yarn.lock ./
@@ -16,10 +18,10 @@ FROM node:12.16.1-alpine3.9
 
 WORKDIR /app
 
-COPY --from=base /root/build/package.json /root/build/yarn.lock ./
+COPY --from=build /app/package.json /app/yarn.lock ./
 RUN yarn install --production
-COPY --from=base /root/build/build ./build
+COPY --from=build /app/build ./build
 
 EXPOSE 3000
 
-CMD ["node", "./build/server.js"]
+CMD ["yarn", "start:prod"]
