@@ -5,8 +5,8 @@ on:
     branches:
       - master
       - dev
-  create:
     tags:
+      - 'v*'
 
 jobs:
   docker:
@@ -33,4 +33,3 @@ jobs:
           token: ${{ secrets.TRIGGER_DEPLOY_TOKEN }}
           repository: authmenow/releases
           event-type: deploy-dev
-
