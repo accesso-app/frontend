@@ -16,15 +16,13 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Publish Docker
-        uses: sergeysova/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@2.8
         with:
           registry: docker.pkg.github.com
           name: authmenow/frontend/frontend
           username: sergeysova
           password: ${{ secrets.GITHUB_TOKEN }}
           snapshot: true
-          tags: dev
-          tag_names: true
           tag_semver: true
 
       - name: Trigger deploy to Dev
