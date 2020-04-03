@@ -22,7 +22,6 @@ jobs:
           image: authmenow/frontend/main
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          snapshot: true
           tag_semver: skip
           semver_higher: true
 
