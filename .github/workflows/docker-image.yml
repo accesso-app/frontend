@@ -13,17 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
       - name: Publish Docker
         uses: elgohr/Publish-Docker-Github-Action@2.8
         with:
           registry: docker.pkg.github.com
-          name: authmenow/frontend/frontend
-          username: sergeysova
+          image: authmenow/frontend/frontend
+          username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           snapshot: true
-          tag_semver: true
+          tag_semver: skip
+          semver_higher: true
 
       - name: Trigger deploy to Dev
         uses: peter-evans/repository-dispatch@v1
