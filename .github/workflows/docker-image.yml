@@ -19,7 +19,7 @@ jobs:
         uses: sergeysova/docker-publish-action@v1
         with:
           registry: docker.pkg.github.com
-          image: authmenow/frontend/frontend
+          image: authmenow/frontend/main
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           snapshot: true
