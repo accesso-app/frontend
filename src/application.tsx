@@ -6,7 +6,7 @@ import { Block, Button, Title, Input } from 'woly';
 import Logo from './logo.svg';
 
 import { Pages } from './pages';
-import { CenterCardTemplate } from 'ui/templates/center-card';
+import { CenterCardTemplate } from '@auth/ui';
 
 interface Props {
   root: Scope;

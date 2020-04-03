@@ -23,14 +23,17 @@
     "suppressImplicitAnyIndexErrors": true,
     "target": "es2016",
     "types": [
-      "./typings/globals.d.ts",
-      "./typings/styled.d.ts",
-      "./typings/svg.d.ts",
       "jest",
       "node",
-      "react",
-      "webpack-env"
-    ]
+      "webpack-env",
+      "./typings/globals",
+      "./typings/styled",
+      "./typings/svg"
+    ],
+    "paths": {
+      "@auth/ui": ["./ui"],
+      "@auth/ui/*": ["./ui/*"]
+    }
   },
   "exclude": [
     "build",
