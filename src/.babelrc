@@ -1,0 +1,22 @@
+{
+  "presets": ["razzle/babel"],
+  "env": {
+    "development": {
+      "plugins": [
+        ["effector/babel-plugin", { "addLoc": true }],
+        [
+          "transform-rename-import",
+          {
+            "replacements": [
+              { "original": "effector$", "replacement": "effector-logger" }
+            ]
+          }
+        ],
+        ["styled-components", { "displayName": true, "ssr": true }]
+      ]
+    },
+    "production": {
+      "plugins": [["styled-components", { "ssr": true }]]
+    }
+  }
+}
