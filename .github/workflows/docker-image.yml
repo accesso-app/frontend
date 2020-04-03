@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Publish Docker
-        uses: elgohr/Publish-Docker-Github-Action@2.8
+        uses: sergeysova/docker-publish-action@v1
         with:
           registry: docker.pkg.github.com
           image: authmenow/frontend/frontend
