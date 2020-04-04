@@ -1,3 +1,4 @@
+import { performance } from 'perf_hooks';
 import express from 'express';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
@@ -21,6 +22,7 @@ export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
+    const timeStart = performance.now();
     const pageEvents = matchRoutes(ROUTES, req.url)
       .map((match) =>
         match.route.component ? match.route.component[START] : undefined,
@@ -63,6 +65,7 @@ export const server = express()
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
       clearNode(startServer);
+      console.info('[PERF] sent page at %sms', performance.now() - timeStart);
     });
   });
 
