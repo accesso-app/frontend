@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
-import Logo from './logo.svg';
+import Logo from 'logo.svg';
 
 import { CenterCardTemplate } from '@auth/ui';
 
