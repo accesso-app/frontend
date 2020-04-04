@@ -1,30 +1,43 @@
-import { createEffect, createEvent, createStore, guard } from 'lib/effector';
+import {
+  createEffect,
+  createEvent,
+  createStore,
+  guard,
+  forward,
+} from 'lib/effector';
+import { historyReplace } from 'features/navigation';
 
 export const pageLoaded = createEvent();
-export const incrementClicked = createEvent<any>();
-export const resetClicked = createEvent<any>();
 
-const getRandomInitialFx = createEffect<void, number>();
-
-export const $counterValue = createStore<number>(0);
-export const $pagePending = getRandomInitialFx.pending;
-
-const $shouldGetNumber = $counterValue.map((value) => value === 0);
-
-guard({
-  source: pageLoaded,
-  filter: $shouldGetNumber,
-  target: getRandomInitialFx,
+forward({
+  from: pageLoaded,
+  to: historyReplace.prepend(() => '/login'),
 });
 
-$counterValue
-  .on(getRandomInitialFx.done, (_, { result }) => result)
-  .on(incrementClicked, (value) => value + 1)
-  .on(resetClicked, () => 0);
+// export const incrementClicked = createEvent<any>();
+// export const resetClicked = createEvent<any>();
 
-getRandomInitialFx.use(
-  () =>
-    new Promise((resolve) =>
-      setTimeout(resolve, 200, Math.floor(Math.random() * 300)),
-    ),
-);
+// const getRandomInitialFx = createEffect<void, number>();
+
+// export const $counterValue = createStore<number>(0);
+// export const $pagePending = getRandomInitialFx.pending;
+
+// const $shouldGetNumber = $counterValue.map((value) => value === 0);
+
+// guard({
+//   source: pageLoaded,
+//   filter: $shouldGetNumber,
+//   target: getRandomInitialFx,
+// });
+
+// $counterValue
+//   .on(getRandomInitialFx.done, (_, { result }) => result)
+//   .on(incrementClicked, (value) => value + 1)
+//   .on(resetClicked, () => 0);
+
+// getRandomInitialFx.use(
+//   () =>
+//     new Promise((resolve) =>
+//       setTimeout(resolve, 200, Math.floor(Math.random() * 300)),
+//     ),
+// );

@@ -8,6 +8,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { fork, serialize, allSettled } from 'effector/fork';
 
 import { forward, clearNode, rootDomain, START } from 'lib/effector';
+import { $lastPushed } from 'features/navigation';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -22,6 +23,7 @@ export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
+    console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
     const pageEvents = matchRoutes(ROUTES, req.url)
       .map((match) =>
@@ -54,6 +56,14 @@ export const server = express()
         <Application root={scope} />
       </StaticRouter>,
     );
+
+    // @ts-ignore
+    const redirectUrl = scope.find($lastPushed).meta.wrapped.getState();
+    if (redirectUrl) {
+      res.redirect(redirectUrl);
+      console.info('[REDIRECT] to %s', redirectUrl);
+      return;
+    }
 
     const stream = sheet.interleaveWithNodeStream(
       ReactDOMServer.renderToNodeStream(jsx),

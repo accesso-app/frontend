@@ -1,23 +1,20 @@
-import { createInspector } from 'effector-inspector';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router';
 import { fork, hydrate } from 'effector/fork';
 
 import { rootDomain } from 'lib/effector';
+import { history } from 'features/navigation';
 import { Application } from './application';
-
-// import { LOGGER_DOMAIN_NAME } from 'effector-logger/attach';
-// createInspector({ trimDomain: LOGGER_DOMAIN_NAME });
 
 hydrate(rootDomain, { values: INITIAL_STATE });
 
 const scope = fork(rootDomain);
 
 ReactDOM.hydrate(
-  <BrowserRouter>
+  <Router history={history!}>
     <Application root={scope} />
-  </BrowserRouter>,
+  </Router>,
   document.getElementById('root'),
 );
 
