@@ -1,14 +1,23 @@
 import { performance } from 'perf_hooks';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
-import { fork, serialize, allSettled } from 'effector/fork';
+import { fork, serialize, allSettled, Scope } from 'effector/fork';
 
-import { forward, clearNode, rootDomain, START } from 'lib/effector';
+import {
+  forward,
+  clearNode,
+  rootDomain,
+  START,
+  Store,
+  Event,
+} from 'lib/effector';
 import { $lastPushed } from 'features/navigation';
+import { setCookies } from 'api/request';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -22,8 +31,10 @@ syncLoadAssets();
 export const server = express()
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
+  .use(cookieParser())
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
+    console.info('[COOKIES]', req.cookies);
     const timeStart = performance.now();
     const pageEvents = matchRoutes(ROUTES, req.url)
       .map((match) =>
@@ -38,6 +49,9 @@ export const server = express()
     }
 
     const scope = fork(rootDomain);
+
+    // Write cookies to each request to backend
+    findEvent(scope, setCookies)(req.cookies);
 
     try {
       await allSettled(startServer, {
@@ -57,8 +71,7 @@ export const server = express()
       </StaticRouter>,
     );
 
-    // @ts-ignore
-    const redirectUrl = scope.find($lastPushed).meta.wrapped.getState();
+    const redirectUrl = findStore(scope, $lastPushed).getState();
     if (redirectUrl) {
       res.redirect(redirectUrl);
       console.info('[REDIRECT] to %s', redirectUrl);
@@ -105,4 +118,14 @@ function htmlEnd(storesValues: {}): string {
         </script>
     </body>
 </html>`;
+}
+
+function findStore<T>(scope: Scope, store: Store<T>): Store<T> {
+  // @ts-ignore
+  return scope.find(store).meta.wrapped;
+}
+
+function findEvent<T>(scope: Scope, event: Event<T>): Event<T> {
+  // @ts-ignore
+  return scope.find(event);
 }
