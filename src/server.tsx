@@ -16,8 +16,11 @@ import {
   Event,
   launch,
 } from 'lib/effector';
-import { $lastPushed } from 'features/navigation';
+
 import { setCookiesForRequest, $cookiesFromResponse } from 'api/request';
+import { $lastPushed } from 'features/navigation';
+import { readyToLoadSession } from 'features/session';
+
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -45,8 +48,10 @@ export const server = express()
 
     const startServer = rootDomain.createEvent();
 
+    forward({ from: startServer, to: readyToLoadSession });
+
     if (pageEvents.length > 0) {
-      forward({ from: startServer, to: pageEvents });
+      forward({ from: readyToLoadSession, to: pageEvents });
     }
 
     const scope = fork(rootDomain);

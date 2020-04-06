@@ -2,7 +2,7 @@
 import { attach, Event } from 'lib/effector';
 import { requestFx } from './request';
 
-interface SessionUser {
+export interface SessionUser {
   firstName: string;
   lastName: string;
 }
@@ -14,7 +14,7 @@ interface SessionGetSuccess {
 export const sessionGet = attach({
   effect: requestFx,
   mapParams: () => ({
-    path: 'session/get',
+    path: '/session/get',
     method: 'POST',
   }),
 });
