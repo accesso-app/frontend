@@ -7,7 +7,6 @@ import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
-
 import {
   forward,
   clearNode,
@@ -15,9 +14,10 @@ import {
   START,
   Store,
   Event,
+  launch,
 } from 'lib/effector';
 import { $lastPushed } from 'features/navigation';
-import { setCookies } from 'api/request';
+import { setCookiesForRequest, $cookiesFromResponse } from 'api/request';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
@@ -35,6 +35,7 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     console.info('[COOKIES]', req.cookies);
+    console.info('[COOKIES HEADER]', req.headers.cookie);
     const timeStart = performance.now();
     const pageEvents = matchRoutes(ROUTES, req.url)
       .map((match) =>
@@ -51,7 +52,7 @@ export const server = express()
     const scope = fork(rootDomain);
 
     // Write cookies to each request to backend
-    findEvent(scope, setCookies)(req.cookies);
+    findEvent(scope, setCookiesForRequest)(req.cookies);
 
     try {
       await allSettled(startServer, {
@@ -70,6 +71,11 @@ export const server = express()
         <Application root={scope} />
       </StaticRouter>,
     );
+
+    const setCookie = findStore(scope, $cookiesFromResponse).getState();
+    if (setCookie) {
+      res.setHeader('Set-Cookie', setCookie);
+    }
 
     const redirectUrl = findStore(scope, $lastPushed).getState();
     if (redirectUrl) {
@@ -125,7 +131,12 @@ function findStore<T>(scope: Scope, store: Store<T>): Store<T> {
   return scope.find(store).meta.wrapped;
 }
 
-function findEvent<T>(scope: Scope, event: Event<T>): Event<T> {
+function findEvent<T>(scope: Scope, event: Event<T>): (payload: T) => T {
   // @ts-ignore
-  return scope.find(event);
+  const unit = scope.find(event);
+
+  return (payload) => {
+    launch(unit, payload);
+    return payload;
+  };
 }
