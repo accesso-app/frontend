@@ -1,5 +1,6 @@
 import { performance } from 'perf_hooks';
 import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
@@ -33,12 +34,19 @@ syncLoadAssets();
 
 export const server = express()
   .disable('x-powered-by')
+  .use(
+    '/api/v0',
+    createProxyMiddleware({
+      target: process.env.BACKEND_URL ?? 'http://localhost:9005',
+      pathRewrite: {
+        '^/api/v0': '/',
+      },
+    }),
+  )
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .use(cookieParser())
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
-    console.info('[COOKIES]', req.cookies);
-    console.info('[COOKIES HEADER]', req.headers.cookie);
     const timeStart = performance.now();
     const pageEvents = matchRoutes(ROUTES, req.url)
       .map((match) =>
@@ -99,6 +107,7 @@ export const server = express()
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
       clearNode(startServer);
+      sheet.seal();
       console.info('[PERF] sent page at %sms', performance.now() - timeStart);
     });
   });

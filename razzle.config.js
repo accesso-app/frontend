@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 module.exports = {
   plugins: [
@@ -12,7 +13,7 @@ module.exports = {
       },
     },
   ],
-  modify(config) {
+  modify(config, { target, dev }, webpack, options) {
     config.resolve.modules.unshift(path.resolve(__dirname, 'src'));
 
     config.resolve.alias['@auth/ui'] = path.resolve(__dirname, 'src', 'ui');
@@ -23,6 +24,15 @@ module.exports = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
+
+    if (dev) {
+      config.devServer = {
+        ...config.devServer,
+        key: fs.readFileSync(path.resolve(__dirname, 'tls', 'authmenow.key')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'tls', 'authmenow.crt')),
+        https: true,
+      };
+    }
 
     return config;
   },

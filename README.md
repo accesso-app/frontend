@@ -6,6 +6,8 @@
 
 ### Env vars
 
-- `BACKEND_URL` (server) — full uri to backend API endpoint to send requests.
+- `BACKEND_URL` (server) — full url to backend API endpoint to send requests from nodejs.
 
 Example `BACKEND_URL=https://auth-dev.atomix.team/api/v0`, request `/session/get` will sent to `https://auth-dev.atomix.team/api/v0/session/get`. If not set uses `http://localhost:9005`
+
+- `CLIENT_BACKEND_URL` (client, build-time) — full url to backend to call from browser. By default `/api/v0`

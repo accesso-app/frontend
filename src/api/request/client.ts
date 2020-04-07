@@ -2,7 +2,7 @@ import { queryToString, Request, requestInternalFx } from './common';
 
 requestInternalFx.use(requestClient);
 
-export const API_PREFIX = `/api/v0`;
+export const API_PREFIX = process.env.CLIENT_BACKEND_URL ?? `/api/v0`;
 
 async function requestClient({ path, method, ...params }: Request) {
   const headers = new Headers(params.headers);

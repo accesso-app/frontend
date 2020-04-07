@@ -1,35 +1,75 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
-import Logo from 'logo.svg';
 
+import { useStore, useEvent } from 'effector-react/ssr';
+import { START } from 'lib/effector';
+import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
-export const LoginPage = () => (
-  <CenterCardTemplate>
-    <Container>
-      <Logotype />
+import * as model from './model';
 
-      <form>
-        <Title level={2}>Sign up</Title>
+export const LoginPage = () => {
+  const pageLoaded = useEvent(model.pageLoaded);
+  React.useEffect(() => pageLoaded(), []);
 
-        <Input placeholder="email" value="" onChange={() => {}} />
-        <Input placeholder="display name" value="" onChange={() => {}} />
-        <Input placeholder="password" value="" onChange={() => {}} />
-        <Input placeholder="repeat password" value="" onChange={() => {}} />
+  const emailChanged = useEvent(model.emailChanged);
+  const passwordChanged = useEvent(model.passwordChanged);
+  const formSubmitted = useEvent(model.formSubmitted);
+  const handleSubmit = React.useCallback(
+    (event) => {
+      event.preventDefault();
+      formSubmitted();
+    },
+    [formSubmitted],
+  );
 
-        <Group>
-          <Button text="Sign up" variant="primary" />
-          <Button text="Sign in" variant="text" />
-        </Group>
-      </form>
-      <Footer>
-        By joining nameproject you accept our Terms of Service and Privacy
-        Policy
-      </Footer>
-    </Container>
-  </CenterCardTemplate>
-);
+  const formDisabled = useStore(model.$formDisabled);
+  const email = useStore(model.$email);
+  const password = useStore(model.$password);
+
+  const failure = useStore(model.$failure);
+
+  return (
+    <CenterCardTemplate>
+      <Container>
+        <Logotype />
+
+        <form onSubmit={handleSubmit}>
+          <Title level={2}>Sign in</Title>
+
+          {failure && <div>{failure}</div>}
+
+          <Input
+            placeholder="email"
+            disabled={formDisabled}
+            value={email}
+            onChange={emailChanged}
+          />
+          <Input
+            type="password"
+            placeholder="password"
+            disabled={formDisabled}
+            value={password}
+            onChange={passwordChanged}
+          />
+
+          <Group>
+            <Button
+              type="submit"
+              disabled={formDisabled}
+              text="Sign in"
+              variant="primary"
+            />
+            <Button type="button" text="Sign up" variant="text" />
+          </Group>
+        </form>
+      </Container>
+    </CenterCardTemplate>
+  );
+};
+
+LoginPage[START] = model.pageLoaded;
 
 const Logotype = styled(Logo)`
   margin-bottom: 3rem;
