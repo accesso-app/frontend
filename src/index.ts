@@ -1,4 +1,5 @@
 import https from 'https';
+import http from 'http';
 import fs from 'fs';
 import path from 'path';
 
@@ -29,7 +30,11 @@ function createServer() {
     key: fs.readFileSync(KEY),
   };
 
-  return https.createServer(options, app);
+  // https on deve, because on prod we have nginx reverse proxy
+  if (process.env.NODE_ENV === 'development') {
+    return https.createServer(options, app);
+  }
+  return http.createServer({}, app);
 }
 
 export default createServer().listen(port, () => {
