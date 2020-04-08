@@ -3,10 +3,10 @@ export * from 'effector';
 
 export const rootDomain = effector.createDomain('rootDomain');
 
-if (process.env.NODE_ENV === 'development') {
-  const { attachLogger } = require('effector-logger/attach');
-  attachLogger(rootDomain);
-}
+// if (process.env.NODE_ENV === 'development') {
+const { attachLogger } = require('effector-logger/attach');
+attachLogger(rootDomain);
+// }
 
 export const {
   createDomain,
