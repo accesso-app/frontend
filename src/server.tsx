@@ -48,7 +48,8 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
-    const pageEvents = matchRoutes(ROUTES, req.url)
+    const routes = matchRoutes(ROUTES, req.url);
+    const pageEvents = routes
       .map((match) =>
         match.route.component ? match.route.component[START] : undefined,
       )
@@ -59,7 +60,7 @@ export const server = express()
     forward({ from: startServer, to: readyToLoadSession });
 
     if (pageEvents.length > 0) {
-      forward({ from: readyToLoadSession, to: pageEvents });
+      forward({ from: startServer, to: pageEvents });
     }
 
     const scope = fork(rootDomain);
@@ -96,7 +97,13 @@ export const server = express()
     const redirectUrl = findStore(scope, $lastPushed).getState();
     if (redirectUrl) {
       res.redirect(redirectUrl);
-      console.info('[REDIRECT] to %s', redirectUrl);
+      clearNode(startServer);
+      console.info(
+        '[REDIRECT] from %s to %s at %sms',
+        req.url,
+        redirectUrl,
+        (performance.now() - timeStart).toFixed(2),
+      );
       return;
     }
 
@@ -111,7 +118,10 @@ export const server = express()
       res.end(htmlEnd(storesValues));
       clearNode(startServer);
       sheet.seal();
-      console.info('[PERF] sent page at %sms', performance.now() - timeStart);
+      console.info(
+        '[PERF] sent page at %sms',
+        (performance.now() - timeStart).toFixed(2),
+      );
     });
   });
 
