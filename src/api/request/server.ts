@@ -18,27 +18,39 @@ async function requestServer({ path, method, ...params }: Request) {
       ? JSON.stringify(params.body)
       : undefined;
 
-  const response = await fetch(`${API_PREFIX}${path}${query}`, {
-    method,
-    headers,
-    body,
-  });
+  try {
+    const response = await fetch(`${API_PREFIX}${path}${query}`, {
+      method,
+      headers,
+      body,
+    });
 
-  const answer = contentIs(response.headers, 'application/json')
-    ? await response.json()
-    : await response.text();
+    const answer = contentIs(response.headers, 'application/json')
+      ? await response.json()
+      : await response.text();
 
-  const responder = {
-    ok: response.ok,
-    body: answer,
-    status: response.status,
-    headers: toObject(response.headers),
-  };
+    const responder = {
+      ok: response.ok,
+      body: answer,
+      status: response.status,
+      headers: toObject(response.headers),
+    };
 
-  if (response.ok) {
-    return responder;
-  } else {
-    throw responder;
+    if (response.ok) {
+      return responder;
+    } else {
+      throw responder;
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw {
+        ok: false,
+        body: error,
+        status: 900,
+        headers: {},
+      };
+    }
+    throw error;
   }
 }
 

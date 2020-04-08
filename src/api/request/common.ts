@@ -64,3 +64,5 @@ export function queryToString(
 ): string {
   return query ? `?${queryString.stringify(query)}` : '';
 }
+
+function getSetCookie(headers: Record<string, string>) {}
