@@ -64,8 +64,11 @@ export const server = express()
 
     const scope = fork(rootDomain);
 
-    // Write cookies to each request to backend
-    findEvent(scope, setCookiesForRequest)(req.cookies);
+    // Write cookies for each request to backend
+    if (req.headers.cookie) {
+      const setCookies = findEvent(scope, setCookiesForRequest);
+      setCookies(req.headers.cookie);
+    }
 
     try {
       await allSettled(startServer, {
