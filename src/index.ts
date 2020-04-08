@@ -22,16 +22,16 @@ if (module.hot) {
 const port = parseInt(process.env.PORT ?? '3000', 10);
 
 function createServer() {
-  const CRT = path.resolve(__dirname, '..', 'tls', 'authmenow.crt');
-  const KEY = path.resolve(__dirname, '..', 'tls', 'authmenow.key');
-
-  const options = {
-    cert: fs.readFileSync(CRT),
-    key: fs.readFileSync(KEY),
-  };
-
-  // https on deve, because on prod we have nginx reverse proxy
   if (process.env.NODE_ENV === 'development') {
+    const CRT = path.resolve(__dirname, '..', 'tls', 'authmenow.crt');
+    const KEY = path.resolve(__dirname, '..', 'tls', 'authmenow.key');
+
+    const options = {
+      cert: fs.readFileSync(CRT),
+      key: fs.readFileSync(KEY),
+    };
+
+    // https on deve, because on prod we have nginx reverse proxy
     return https.createServer(options, app);
   }
   return http.createServer({}, app);
