@@ -2,6 +2,12 @@
 # ---- Build ----
 FROM node:12.16.1-alpine3.9 as build
 
+LABEL img.name="frontend/main" \
+  img.description="Main frontend" \
+  img.vcs-url="https://github.com/authmenow/frontend" \
+  maintainer="Sergey Sova <s.sova@redmadrobot.com>"
+# img.version="0.1.7" \
+
 # Workdir in build stage should be equal with release stage, razzle uses this path
 WORKDIR /app
 
