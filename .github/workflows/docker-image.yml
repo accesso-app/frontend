@@ -31,3 +31,4 @@ jobs:
           token: ${{ secrets.TRIGGER_DEPLOY_TOKEN }}
           repository: authmenow/releases
           event-type: deploy-dev
+          client-payload: '{"github": ${{ toJson(github) }}}'
