@@ -97,7 +97,7 @@ export const server = express()
     const redirectUrl = findStore(scope, $lastPushed).getState();
     if (redirectUrl) {
       res.redirect(redirectUrl);
-      clearNode(startServer);
+      cleanUp();
       console.info(
         '[REDIRECT] from %s to %s at %sms',
         req.url,
@@ -116,13 +116,17 @@ export const server = express()
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
-      clearNode(startServer);
-      sheet.seal();
+      cleanUp();
       console.info(
         '[PERF] sent page at %sms',
         (performance.now() - timeStart).toFixed(2),
       );
     });
+
+    function cleanUp() {
+      clearNode(startServer);
+      sheet.seal();
+    }
   });
 
 function htmlStart(assetsCss: string, assetsJs: string) {
