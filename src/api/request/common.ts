@@ -1,11 +1,12 @@
 import {
-  createEvent,
-  createEffect,
-  restore,
   attach,
+  createEffect,
+  createEvent,
+  createStore,
   Effect,
   guard,
   merge,
+  restore,
 } from 'lib/effector';
 
 import queryString from 'query-string';
@@ -57,6 +58,24 @@ if (process.env.BUILD_TARGET === 'server') {
     filter: (setCookie) => setCookie !== '',
     target: setCookiesFromResponse,
   });
+}
+
+if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
+  requestInternalFx.watch(({ path, method }) => {
+    console.log(`[REQUESTFX] ${method} ${path}`);
+  });
+
+  requestInternalFx.done.watch(
+    ({ params: { path, method }, result: { status } }) => {
+      console.log(`[REQUESTFX-DONE] ${method} ${path} : ${status}`);
+    },
+  );
+
+  requestInternalFx.fail.watch(
+    ({ params: { path, method }, error: { status } }) => {
+      console.log(`[REQUESTFX-FAIL] ${method} ${path} : ${status}`);
+    },
+  );
 }
 
 export function queryToString(
