@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { attach, Event, Effect } from 'lib/effector';
+import { attach, Event, Effect } from 'effector-root';
 import { requestFx, Answer } from './request';
 
 export interface SessionUser {

@@ -1,4 +1,4 @@
-import { createStore, createEvent, combine, guard } from 'lib/effector';
+import { createStore, createEvent, combine, guard } from 'effector-root';
 import { sessionGet, sessionGetDone, SessionUser } from 'api/session';
 
 export const readyToLoadSession = createEvent<void>();

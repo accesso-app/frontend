@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import { createStore, createEvent, merge } from 'lib/effector';
+import { createStore, createEvent, merge } from 'effector-root';
 
 export const history =
   process.env.BUILD_TARGET === 'client' ? createBrowserHistory() : null;

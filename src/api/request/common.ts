@@ -2,12 +2,11 @@ import {
   attach,
   createEffect,
   createEvent,
-  createStore,
   Effect,
   guard,
   merge,
   restore,
-} from 'lib/effector';
+} from 'effector-root';
 
 import queryString from 'query-string';
 

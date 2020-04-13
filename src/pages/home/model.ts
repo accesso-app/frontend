@@ -1,4 +1,4 @@
-import { createEvent, forward } from 'lib/effector';
+import { createEvent, forward } from 'effector-root';
 import { historyReplace } from 'features/navigation';
 
 export const pageLoaded = createEvent();

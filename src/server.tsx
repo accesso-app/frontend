@@ -2,22 +2,24 @@ import { performance } from 'perf_hooks';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
+
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
+
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
 import {
   Event,
   forward,
   guard,
   launch,
-  rootDomain,
+  root,
   sample,
-  START,
   Store,
-} from 'lib/effector';
+} from 'effector-root';
+import { START } from 'lib/effector';
 
 import {
   setCookiesForRequest,
@@ -30,7 +32,7 @@ import { readyToLoadSession } from 'features/session';
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
 
-const serverStarted = rootDomain.createEvent<{
+const serverStarted = root.createEvent<{
   req: express.Request;
   res: express.Response;
 }>();
@@ -96,7 +98,7 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
-    const scope = fork(rootDomain);
+    const scope = fork(root);
 
     try {
       await allSettled(serverStarted, {
