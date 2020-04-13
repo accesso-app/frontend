@@ -11,7 +11,7 @@ interface SessionGetSuccess {
   user: SessionUser;
 }
 
-export const sessionGet = attach({
+export const sessionGet: Effect<void, Answer, Answer> = attach({
   effect: requestFx,
   mapParams: () => ({
     path: '/session/get',

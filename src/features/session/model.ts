@@ -1,7 +1,7 @@
 import { createStore, createEvent, combine, guard } from 'lib/effector';
 import { sessionGet, sessionGetDone, SessionUser } from 'api/session';
 
-export const readyToLoadSession = createEvent();
+export const readyToLoadSession = createEvent<void>();
 
 export const $session = createStore<SessionUser | null>(null);
 export const $isAuthenticated = $session.map((user) => user !== null);
