@@ -5,25 +5,73 @@ import cookieParser from 'cookie-parser';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { matchRoutes } from 'react-router-config';
+import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
 import {
+  Event,
   forward,
-  clearNode,
+  guard,
+  launch,
   rootDomain,
+  sample,
   START,
   Store,
-  Event,
-  launch,
 } from 'lib/effector';
 
-import { setCookiesForRequest, $cookiesFromResponse } from 'api/request';
+import {
+  setCookiesForRequest,
+  $cookiesFromResponse,
+  $cookiesForRequest,
+} from 'api/request';
 import { $lastPushed } from 'features/navigation';
 import { readyToLoadSession } from 'features/session';
 
 import { Application } from './application';
 import { ROUTES } from './pages/routes';
+
+const serverStarted = rootDomain.createEvent<{
+  req: express.Request;
+  res: express.Response;
+}>();
+
+const requestHandled = serverStarted.map(({ req }) => req);
+
+const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
+
+const routesMatched = requestHandled.map((req) =>
+  matchRoutes(ROUTES, req.url).map(lookupStartEvent).filter(Boolean),
+);
+
+for (const { component } of ROUTES) {
+  guard({
+    source: routesMatched,
+    filter: (matchedEvents) => matchedEvents.includes(component[START]),
+    target: component[START],
+  });
+}
+
+forward({
+  from: cookiesReceived,
+  to: setCookiesForRequest,
+});
+
+forward({
+  from: serverStarted,
+  to: readyToLoadSession,
+});
+
+sample({
+  source: serverStarted,
+  clock: $cookiesFromResponse,
+  fn: ({ res }, cookies) => ({ res, cookies }),
+}).watch(({ res, cookies }) => res.setHeader('Set-Cookie', cookies));
+
+sample({
+  source: serverStarted,
+  clock: $lastPushed,
+  fn: ({ res }, redirectUrl) => ({ res, redirectUrl }),
+}).watch(({ res, redirectUrl }) => res.redirect(redirectUrl));
 
 let assets: any;
 
@@ -48,33 +96,12 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
-    const routes = matchRoutes(ROUTES, req.url);
-    const pageEvents = routes
-      .map((match) =>
-        match.route.component ? match.route.component[START] : undefined,
-      )
-      .filter(Boolean);
-
-    const startServer = rootDomain.createEvent();
-
-    forward({ from: startServer, to: readyToLoadSession });
-
-    if (pageEvents.length > 0) {
-      forward({ from: startServer, to: pageEvents });
-    }
-
     const scope = fork(rootDomain);
 
-    // Write cookies for each request to backend
-    if (req.headers.cookie) {
-      const setCookies = findEvent(scope, setCookiesForRequest);
-      setCookies(req.headers.cookie);
-    }
-
     try {
-      await allSettled(startServer, {
+      await allSettled(serverStarted, {
         scope,
-        params: undefined,
+        params: { req, res },
       });
     } catch (error) {
       console.log(error);
@@ -89,19 +116,12 @@ export const server = express()
       </StaticRouter>,
     );
 
-    const setCookie = findStore(scope, $cookiesFromResponse).getState();
-    if (setCookie) {
-      res.setHeader('Set-Cookie', setCookie);
-    }
-
-    const redirectUrl = findStore(scope, $lastPushed).getState();
-    if (redirectUrl) {
-      res.redirect(redirectUrl);
+    if (isRedirected(res)) {
       cleanUp();
       console.info(
         '[REDIRECT] from %s to %s at %sms',
         req.url,
-        redirectUrl,
+        res.get('Location'),
         (performance.now() - timeStart).toFixed(2),
       );
       return;
@@ -110,7 +130,10 @@ export const server = express()
     const stream = sheet.interleaveWithNodeStream(
       ReactDOMServer.renderToNodeStream(jsx),
     );
-    const storesValues = serialize(scope);
+
+    const storesValues = customSerialize(scope, {
+      ignore: [$cookiesForRequest, $cookiesFromResponse],
+    });
 
     res.write(htmlStart(assets.client.css, assets.client.js));
     stream.pipe(res, { end: false });
@@ -124,7 +147,6 @@ export const server = express()
     });
 
     function cleanUp() {
-      clearNode(startServer);
       sheet.seal();
     }
   });
@@ -170,4 +192,28 @@ function findEvent<T>(scope: Scope, event: Event<T>): (payload: T) => T {
     launch(unit, payload);
     return payload;
   };
+}
+
+function lookupStartEvent<P, E>(match: MatchedRoute<P>): Event<E> | undefined {
+  if (match.route.component) {
+    return match.route.component[START];
+  }
+  return undefined;
+}
+
+function isRedirected(res: express.Response): boolean {
+  return res.statusCode >= 300 && res.statusCode < 400;
+}
+
+interface SerializeParams {
+  ignore?: Array<Store<any>>;
+}
+
+// TODO: replace to `serialize(scope, { ignore: [] })`
+function customSerialize(scope: Scope, { ignore = [] }: SerializeParams = {}) {
+  const result = serialize(scope);
+  for (const { sid } of ignore) {
+    if (sid) delete result[sid];
+  }
+  return result;
 }

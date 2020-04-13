@@ -1,4 +1,5 @@
 export {
+  $cookiesForRequest,
   $cookiesFromResponse,
   requestFx,
   setCookiesForRequest,
