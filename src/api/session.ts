@@ -23,14 +23,12 @@ export const sessionGet: Effect<void, Answer, Answer> = attach({
 });
 
 export const sessionGetDone: Event<SessionGetSuccess> = sessionGet.done.map(
-  ({ result }) => {
-    console.log('CONTRACT', result.body);
-    return assertContract(
+  ({ result }) =>
+    assertContract(
       TSessionGetSuccess,
       result.body,
       'sessionGetDone.result.body',
-    );
-  },
+    ),
 );
 
 type SessionCreateSucceeded = ContractType<typeof TSessionCreateSucceeded>;
