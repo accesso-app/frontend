@@ -21,7 +21,7 @@ export type Request = {
 
 export type Answer = {
   ok: boolean;
-  body: string | void | object;
+  body: void | unknown;
   status: number;
   headers: Record<string, string>;
 };

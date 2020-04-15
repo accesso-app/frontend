@@ -33,7 +33,13 @@
     "paths": {
       "@auth/ui": ["./ui"],
       "@auth/ui/*": ["./ui/*"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "tags": ["styled", "css", "createGlobalStyle"]
+      }
+    ]
   },
   "exclude": [
     "build",
