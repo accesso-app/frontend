@@ -11,7 +11,7 @@ const TSessionUser = typed.object({
 
 type SessionGetSuccess = ContractType<typeof TSessionGetSuccess>;
 const TSessionGetSuccess = typed.object({
-  user: TSessionUser('user'),
+  user: TSessionUser,
 });
 
 export const sessionGet: Effect<void, Answer, Answer> = attach({
@@ -23,7 +23,14 @@ export const sessionGet: Effect<void, Answer, Answer> = attach({
 });
 
 export const sessionGetDone: Event<SessionGetSuccess> = sessionGet.done.map(
-  ({ result }) => assertContract(TSessionGetSuccess, result.body),
+  ({ result }) => {
+    console.log('CONTRACT', result.body);
+    return assertContract(
+      TSessionGetSuccess,
+      result.body,
+      'sessionGetDone.result.body',
+    );
+  },
 );
 
 type SessionCreateSucceeded = ContractType<typeof TSessionCreateSucceeded>;
@@ -56,14 +63,23 @@ export const sessionCreate: Effect<SessionCreate, Answer, Answer> = attach({
 });
 
 export const sessionCreateDone: Event<SessionCreateSucceeded> = sessionCreate.done.map(
-  ({ result }) => assertContract(TSessionCreateSucceeded, result.body, 'body'),
+  ({ result }) =>
+    assertContract(
+      TSessionCreateSucceeded,
+      result.body,
+      'sessionCreateDone.result.body',
+    ),
 );
 
 export const sessionCreateFail: Event<
   SessionCreateFailed | Error
 > = sessionCreate.fail.map(({ error }) => {
   if (error.status === 400) {
-    return assertContract(TSessionCreateFailed, error.body, 'body');
+    return assertContract(
+      TSessionCreateFailed,
+      error.body,
+      'sessionCreateFail.error.body',
+    );
   }
   return new Error(String(error.body));
 });
