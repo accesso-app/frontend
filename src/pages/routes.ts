@@ -2,14 +2,19 @@ import { Error404Page } from './error404';
 import { HomePage } from './home';
 import { LoginPage } from './login';
 
+export const routes = {
+  home: () => '/home',
+  login: () => '/login',
+};
+
 export const ROUTES = [
   {
-    path: '/',
+    path: routes.home(),
     exact: true,
     component: HomePage,
   },
   {
-    path: '/login',
+    path: routes.login(),
     exact: true,
     component: LoginPage,
   },
