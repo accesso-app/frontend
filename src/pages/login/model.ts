@@ -6,6 +6,8 @@ import {
   sessionCreateFail,
 } from 'api/session';
 
+// import { checkAuthenticated } from 'features/session'
+
 export const pageLoaded = createEvent();
 
 export const formSubmitted = createEvent();
@@ -20,6 +22,8 @@ export const $password = createStore<string>('');
 export const $failure = createStore<string | null>(null);
 
 const $form = combine({ email: $email, password: $password });
+
+// checkAuthenticated({ on: pageLoaded })
 
 $email.on(emailChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);

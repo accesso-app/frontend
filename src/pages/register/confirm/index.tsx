@@ -4,15 +4,15 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 import { useStore, useEvent } from 'effector-react/ssr';
 
-import { path } from 'pages/paths';
 import { START } from 'lib/effector';
+import { path } from 'pages/paths';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
 import * as model from './model';
 import { Branch } from 'lib/branch';
 
-export const RegisterPage = () => {
+export const RegisterConfirmPage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
   React.useEffect(() => pageLoaded(), []);
 
@@ -22,10 +22,20 @@ export const RegisterPage = () => {
         <Logotype />
 
         <form>
-          <Title level={2}>Sign up</Title>
-          <Email />
+          <Title level={2}>Sign up confirmation</Title>
+
+          <DisplayName />
+          <br />
+          <Passwords />
+
           <Group>
-            <Button text="Continue" variant="primary" />
+            <Button text="Sign up" variant="primary" />
+            <Button
+              as={Link}
+              text="Enter code again"
+              variant="text"
+              to={path.register()}
+            />
             <Button as={Link} text="Sign in" variant="text" to={path.login()} />
           </Group>
         </form>
@@ -38,22 +48,47 @@ export const RegisterPage = () => {
   );
 };
 
-RegisterPage[START] = model.pageLoaded;
+RegisterConfirmPage[START] = model.pageLoaded;
 
-const Email: React.FC = () => {
-  const email = useStore(model.$email);
-  const onChange = useEvent(model.emailChanged);
-  const isValid = useStore(model.$isEmailValid);
+const DisplayName: React.FC = () => {
+  const name = useStore(model.$displayName);
+  const onChange = useEvent(model.displayNameChanged);
+  const isValid = useStore(model.$isDisplayNameValid);
 
   return (
     <>
-      <Input placeholder="email" value={email} onChange={onChange} />
-      <Branch if={isValid}>
-        <Subtext>
-          On the next step you should enter code from received email.
-        </Subtext>
-        <Subtext>Enter email</Subtext>
+      <Input placeholder="display name" value={name} onChange={onChange} />
+      <Branch if={name.length === 0}>
+        <Subtext>Enter your First name and Last name</Subtext>
+        <Branch if={isValid}>
+          <Subtext>&nbsp;</Subtext>
+          <Subtext>What about Last name?</Subtext>
+        </Branch>
       </Branch>
+    </>
+  );
+};
+
+const Passwords: React.FC = () => {
+  const password = useStore(model.$password);
+  const passwordChanged = useEvent(model.passwordChanged);
+  const repeat = useStore(model.$repeat);
+  const repeatChanged = useEvent(model.repeatChanged);
+
+  return (
+    <>
+      <Input
+        placeholder="enter new password"
+        type="password"
+        value={password}
+        onChange={passwordChanged}
+      />
+      <Input
+        placeholder="repeat password"
+        type="password"
+        value={repeat}
+        onChange={repeatChanged}
+      />
     </>
   );
 };
