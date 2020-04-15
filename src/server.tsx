@@ -30,7 +30,7 @@ import { $lastPushed } from 'features/navigation';
 import { readyToLoadSession } from 'features/session';
 
 import { Application } from './application';
-import { ROUTES } from './pages/routes';
+import { routes } from './pages/routes';
 
 const serverStarted = root.createEvent<{
   req: express.Request;
@@ -42,12 +42,16 @@ const requestHandled = serverStarted.map(({ req }) => req);
 const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
 const routesMatched = requestHandled.map((req) =>
-  matchRoutes(ROUTES, req.url).map(lookupStartEvent).filter(Boolean),
+  matchRoutes(routes, req.url).filter(lookupStartEvent),
 );
 
-for (const { component } of ROUTES) {
+const eventsMatched = routesMatched.map((routes) =>
+  routes.map(lookupStartEvent),
+);
+
+for (const { component } of routes) {
   guard({
-    source: routesMatched,
+    source: eventsMatched,
     filter: (matchedEvents) => matchedEvents.includes(component[START]),
     target: component[START],
   });

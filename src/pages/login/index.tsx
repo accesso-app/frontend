@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
+import { Link } from 'react-router-dom';
 
 import { useStore, useEvent } from 'effector-react/ssr';
 import { START } from 'lib/effector';
@@ -8,6 +9,7 @@ import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
 import * as model from './model';
+import { path } from 'pages/paths';
 
 export const LoginPage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
@@ -61,7 +63,12 @@ export const LoginPage = () => {
               text="Sign in"
               variant="primary"
             />
-            <Button type="button" text="Sign up" variant="text" />
+            <Button
+              as={Link}
+              to={path.register()}
+              text="Sign up"
+              variant="text"
+            />
           </Group>
         </form>
       </Container>
