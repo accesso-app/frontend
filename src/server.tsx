@@ -193,21 +193,6 @@ function htmlEnd(storesValues: {}): string {
 </html>`;
 }
 
-function findStore<T>(scope: Scope, store: Store<T>): Store<T> {
-  // @ts-ignore
-  return scope.find(store).meta.wrapped;
-}
-
-function findEvent<T>(scope: Scope, event: Event<T>): (payload: T) => T {
-  // @ts-ignore
-  const unit = scope.find(event);
-
-  return (payload) => {
-    launch(unit, payload);
-    return payload;
-  };
-}
-
 function lookupStartEvent<P>(
   match: MatchedRoute<P>,
 ): Event<Record<string, string>> | undefined {
