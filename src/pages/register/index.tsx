@@ -4,20 +4,23 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 import { useStore, useEvent } from 'effector-react/ssr';
 
-import { path } from 'pages/paths';
-import { START } from 'lib/effector';
 import Logo from 'logo.svg';
+import { path } from 'pages/paths';
+import { assignStart } from 'lib/effector';
+import { Branch } from 'lib/branch';
 import { CenterCardTemplate } from '@auth/ui';
 
 import * as model from './model';
-import { Branch } from 'lib/branch';
 
-export const RegisterPage = () => {
-  const pageLoaded = useEvent(model.pageLoaded);
-  React.useEffect(() => pageLoaded(), []);
-
+export const RegisterPage: React.FC = () => {
+  const submitEnabled = useStore(model.$submitEnabled);
+  const isEmailSubmitted = useStore(model.$emailSubmitted);
   const formSubmitted = useEvent(model.formSubmitted);
-  const isDisabled = useStore(model.$formDisabled);
+  const pageLoaded = useEvent(model.pageLoaded);
+
+  React.useEffect(() => {
+    pageLoaded({});
+  }, []);
 
   const handleSubmit = React.useCallback(
     (event) => {
@@ -34,16 +37,28 @@ export const RegisterPage = () => {
 
         <form onSubmit={handleSubmit}>
           <Title level={2}>Sign up</Title>
-          <Email />
-          <Group>
-            <Button
-              disabled={isDisabled}
-              type="submit"
-              text="Continue"
-              variant="primary"
-            />
-            <Button as={Link} text="Sign in" variant="text" to={path.login()} />
-          </Group>
+          <Branch if={isEmailSubmitted}>
+            <>
+              <Subtext>Check your mailbox.</Subtext>
+            </>
+            <>
+              <Email />
+              <Group>
+                <Button
+                  disabled={!submitEnabled}
+                  type="submit"
+                  text="Continue"
+                  variant="primary"
+                />
+                <Button
+                  as={Link}
+                  text="Sign in"
+                  variant="text"
+                  to={path.login()}
+                />
+              </Group>
+            </>
+          </Branch>
         </form>
         <Footer>
           By joining nameproject you accept our Terms of Service and Privacy
@@ -54,16 +69,22 @@ export const RegisterPage = () => {
   );
 };
 
-RegisterPage[START] = model.pageLoaded;
+assignStart(RegisterPage, model.pageLoaded);
 
 const Email: React.FC = () => {
+  const isDisabled = useStore(model.$formPending);
+  const isValid = useStore(model.$isEmailValid);
   const email = useStore(model.$email);
   const onChange = useEvent(model.emailChanged);
-  const isValid = useStore(model.$isEmailValid);
 
   return (
     <>
-      <Input placeholder="email" value={email} onChange={onChange} />
+      <Input
+        disabled={isDisabled}
+        placeholder="email"
+        value={email}
+        onChange={onChange}
+      />
       <Branch if={isValid}>
         <Subtext>
           On the next step you should enter code from received email.

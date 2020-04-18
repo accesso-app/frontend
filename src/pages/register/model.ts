@@ -10,27 +10,39 @@ import { registerRequest } from 'api/register';
 
 // import { checkAuthenticated } from 'features/session'
 
-export const pageLoaded = createEvent();
+export const pageLoaded = createEvent<Record<string, string>>();
 
 export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
-export const $formDisabled = registerRequest.pending;
+export const $emailSubmitted = createStore(false);
+
+export const $formPending = registerRequest.pending;
 
 export const $email = createStore<string>('');
-
 export const $isEmailValid = $email.map(
   (email) => email.includes('@') && email.length > 5,
+);
+
+export const $submitEnabled = combine(
+  $formPending,
+  $isEmailValid,
+  (pending, valid) => !pending && valid,
 );
 
 const $form = combine($email, (email) => ({ email }));
 
 // checkAuthenticated({ on: pageLoaded })
 
+$emailSubmitted
+  .on(pageLoaded, () => false)
+  .on(registerRequest.done, () => true)
+  .on(registerRequest.fail, () => false);
+
 $email.on(emailChanged, (_, event) => event.currentTarget.value);
 
 guard({
   source: sample($form, formSubmitted),
-  filter: $formDisabled.map((is) => !is),
+  filter: $submitEnabled,
   target: registerRequest,
 });
