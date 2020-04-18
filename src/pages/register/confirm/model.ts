@@ -1,11 +1,29 @@
 import { ChangeEvent } from 'react';
-import { createEvent, createStore, combine, restore } from 'effector-root';
+import {
+  createEvent,
+  createStore,
+  combine,
+  restore,
+  sample,
+  guard,
+  forward,
+} from 'effector-root';
 import { registerConfirmation } from 'api/register';
+import { historyPush } from 'features/navigation';
+import { path } from 'pages/paths';
 
 // import { checkAuthenticated } from 'features/session'
 
 export const pageLoaded = createEvent<Record<string, string>>();
 const codeReceived = pageLoaded.filterMap((params) => params['code']);
+
+pageLoaded.watch((params) => {
+  console.log('PAGE LOADED', params);
+});
+
+codeReceived.watch((params) => {
+  console.log('CODE RECEIVED', params);
+});
 
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -14,7 +32,11 @@ export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
 export const $isFormPending = registerConfirmation.pending;
 
-export const $code = restore(codeReceived, '');
+export const $code = createStore('');
+
+$code.watch((state) => {
+  console.log('$CODE', state);
+});
 
 export const $displayName = createStore<string>('');
 export const $password = createStore<string>('');
@@ -23,6 +45,8 @@ export const $repeat = createStore<string>('');
 const $pairs = $displayName.map((name) =>
   name.replace(/\s+/, ' ').trim().split(' '),
 );
+
+// TODO: handle error to show in page
 
 const $firstName = $pairs.map((pairs) => pairs[0].trim() ?? '');
 const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim() ?? '');
@@ -40,21 +64,37 @@ export const $isPasswordValid = combine(
 export const $isSubmitDisabled = combine(
   $isDisplayNameValid,
   $isPasswordValid,
-  (isName, isPassw) => isName && isPassw,
+  (isName, isPassw) => !isName || !isPassw,
 );
 
 const $form = combine({
+  confirmationCode: $code,
   firstName: $firstName,
   lastName: $lastName,
   password: $password,
 });
 
+$form.watch((params) => {
+  console.log('FORM', params);
+});
+
 // checkAuthenticated({ on: pageLoaded })
+
+$code.on(codeReceived, (_, code) => code);
 
 $displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);
 $repeat.on(repeatChanged, (_, event) => event.currentTarget.value);
 
-pageLoaded.watch((params) => {
-  console.info('PAGE LOADED', params);
+guard({
+  source: sample($form, formSubmitted),
+  filter: $isSubmitDisabled.map((is) => !is),
+  target: registerConfirmation,
 });
+
+forward({
+  from: registerConfirmation.done,
+  to: historyPush.prepend(path.login),
+});
+
+registerConfirmation.doneInvalid.watch(console.warn);

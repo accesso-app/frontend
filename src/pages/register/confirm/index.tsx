@@ -53,7 +53,7 @@ export const RegisterConfirmPage = () => {
             />
             <Button
               as={Link}
-              text="Enter code again"
+              text="Enter email again"
               variant="text"
               to={path.register()}
             />

@@ -35,6 +35,8 @@ interface RegisterConfirmation {
   password: string;
 }
 
+const empty = typed.literal('');
+
 const TRegisterConfirmationFailure = typed.object({
   error: typed.union(
     'code_invalid_or_expired',
@@ -46,7 +48,7 @@ const TRegisterConfirmationFailure = typed.object({
 
 export const registerConfirmation = createResource({
   name: 'registerConfirmation',
-  contractDone: typed.nul,
+  contractDone: empty,
   contractFail: TRegisterConfirmationFailure,
   mapParams: (form: RegisterConfirmation) => ({
     path: '/register/confirmation',
