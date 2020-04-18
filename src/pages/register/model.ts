@@ -24,7 +24,7 @@ export const $isEmailValid = $email.map(
   (email) => email.includes('@') && email.length > 5,
 );
 
-export const $submitEnabled = combine(
+export const $isSubmitEnabled = combine(
   $formPending,
   $isEmailValid,
   (pending, valid) => !pending && valid,
@@ -43,6 +43,6 @@ $email.on(emailChanged, (_, event) => event.currentTarget.value);
 
 guard({
   source: sample($form, formSubmitted),
-  filter: $submitEnabled,
+  filter: $isSubmitEnabled,
   target: registerRequest,
 });

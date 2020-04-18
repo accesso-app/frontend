@@ -13,7 +13,7 @@ import { CenterCardTemplate } from '@auth/ui';
 import * as model from './model';
 
 export const RegisterPage: React.FC = () => {
-  const submitEnabled = useStore(model.$submitEnabled);
+  const isSubmitEnabled = useStore(model.$isSubmitEnabled);
   const isEmailSubmitted = useStore(model.$emailSubmitted);
   const formSubmitted = useEvent(model.formSubmitted);
   const pageLoaded = useEvent(model.pageLoaded);
@@ -45,7 +45,7 @@ export const RegisterPage: React.FC = () => {
               <Email />
               <Group>
                 <Button
-                  disabled={!submitEnabled}
+                  disabled={!isSubmitEnabled}
                   type="submit"
                   text="Continue"
                   variant="primary"
