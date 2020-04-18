@@ -29,8 +29,8 @@ export function createResource<Params = void, Done = void, Fail = void>(
     mapParams: options.mapParams,
   });
 
-  const doneValidator = options.contractDone(options.name);
-  const failValidator = options.contractFail(options.name);
+  const doneValidator = options.contractDone(`${options.name}.done`);
+  const failValidator = options.contractFail(`${options.name}.fail`);
 
   const mappedDone = splitMap(original.done, {
     correct: ({ params, result }) => {

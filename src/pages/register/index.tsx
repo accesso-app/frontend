@@ -16,16 +16,32 @@ export const RegisterPage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
   React.useEffect(() => pageLoaded(), []);
 
+  const formSubmitted = useEvent(model.formSubmitted);
+  const isDisabled = useStore(model.$formDisabled);
+
+  const handleSubmit = React.useCallback(
+    (event) => {
+      event.preventDefault();
+      formSubmitted(event);
+    },
+    [formSubmitted],
+  );
+
   return (
     <CenterCardTemplate>
       <Container>
         <Logotype />
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <Title level={2}>Sign up</Title>
           <Email />
           <Group>
-            <Button text="Continue" variant="primary" />
+            <Button
+              disabled={isDisabled}
+              type="submit"
+              text="Continue"
+              variant="primary"
+            />
             <Button as={Link} text="Sign in" variant="text" to={path.login()} />
           </Group>
         </form>
