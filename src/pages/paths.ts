@@ -2,5 +2,5 @@ export const path = {
   home: () => '/',
   login: () => '/login',
   register: () => '/register',
-  registerConfirm: () => '/register/confirm',
+  registerConfirm: (code: string) => `/register/${code}`,
 };

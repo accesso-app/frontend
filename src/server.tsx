@@ -19,7 +19,7 @@ import {
   sample,
   Store,
 } from 'effector-root';
-import { START } from 'lib/effector';
+import { getStart } from 'lib/effector';
 
 import {
   setCookiesForRequest,
@@ -50,11 +50,19 @@ const eventsMatched = routesMatched.map((routes) =>
 );
 
 for (const { component } of routes) {
-  guard({
-    source: eventsMatched,
-    filter: (matchedEvents) => matchedEvents.includes(component[START]),
-    target: component[START],
-  });
+  const startPageEvent = getStart(component);
+
+  if (startPageEvent) {
+    const matchedRoute = routesMatched.filterMap(
+      (routes) =>
+        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
+    );
+
+    forward({
+      from: matchedRoute.map((route) => route.match.params),
+      to: startPageEvent,
+    });
+  }
 }
 
 forward({
@@ -200,9 +208,11 @@ function findEvent<T>(scope: Scope, event: Event<T>): (payload: T) => T {
   };
 }
 
-function lookupStartEvent<P, E>(match: MatchedRoute<P>): Event<E> | undefined {
+function lookupStartEvent<P>(
+  match: MatchedRoute<P>,
+): Event<Record<string, string>> | undefined {
   if (match.route.component) {
-    return match.route.component[START];
+    return getStart(match.route.component);
   }
   return undefined;
 }

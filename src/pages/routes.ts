@@ -23,7 +23,7 @@ export const routes = [
     component: RegisterPage,
   },
   {
-    path: path.registerConfirm(),
+    path: path.registerConfirm(':code'),
     exact: true,
     component: RegisterConfirmPage,
   },
