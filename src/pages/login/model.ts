@@ -10,7 +10,7 @@ import { sessionCreate } from 'api/session';
 
 // import { checkAuthenticated } from 'features/session'
 
-export const pageLoaded = createEvent();
+export const pageLoaded = createEvent<Record<string, string>>();
 
 export const formSubmitted = createEvent();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
