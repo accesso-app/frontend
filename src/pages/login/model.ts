@@ -1,10 +1,12 @@
 import { ChangeEvent } from 'react';
-import { createEvent, createStore, sample, combine, guard } from 'lib/effector';
 import {
-  sessionCreate,
-  sessionCreateDone,
-  sessionCreateFail,
-} from 'api/session';
+  createEvent,
+  createStore,
+  sample,
+  combine,
+  guard,
+} from 'effector-root';
+import { sessionCreate } from 'api/session';
 
 // import { checkAuthenticated } from 'features/session'
 
@@ -31,7 +33,7 @@ $password.on(passwordChanged, (_, event) => event.currentTarget.value);
 $failure
   .on(sessionCreate, () => null)
   .on(pageLoaded, () => null)
-  .on(sessionCreateFail, (_, failed) => {
+  .on(sessionCreate.failBody, (_, failed) => {
     if ('error' in failed) {
       return failed.error;
     }

@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { createEvent, createStore, sample, combine, guard } from 'lib/effector';
+import { createEvent, createStore } from 'effector-root';
 import {} from 'api/session';
 
 // import { checkAuthenticated } from 'features/session'

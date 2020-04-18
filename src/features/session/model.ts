@@ -1,5 +1,5 @@
 import { createStore, createEvent, combine, guard } from 'effector-root';
-import { sessionGet, sessionGetDone, SessionUser } from 'api/session';
+import { sessionGet, SessionUser } from 'api/session';
 
 export const readyToLoadSession = createEvent<void>();
 
@@ -13,7 +13,7 @@ export const $sessionPending = combine(
 );
 
 $session
-  .on(sessionGetDone, (_, { user }) => user)
+  .on(sessionGet.done, (_, { result }) => result.body.user)
   .on(sessionGet.failData, (session, { status }) => {
     if (status === 401) {
       return null;
