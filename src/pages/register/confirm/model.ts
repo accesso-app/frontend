@@ -1,12 +1,11 @@
 import { ChangeEvent } from 'react';
 import {
+  combine,
   createEvent,
   createStore,
-  combine,
-  restore,
-  sample,
-  guard,
   forward,
+  guard,
+  sample,
 } from 'effector-root';
 import { registerConfirmation } from 'api/register';
 import { historyPush } from 'features/navigation';
@@ -17,14 +16,6 @@ import { path } from 'pages/paths';
 export const pageLoaded = createEvent<Record<string, string>>();
 const codeReceived = pageLoaded.filterMap((params) => params['code']);
 
-pageLoaded.watch((params) => {
-  console.log('PAGE LOADED', params);
-});
-
-codeReceived.watch((params) => {
-  console.log('CODE RECEIVED', params);
-});
-
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -32,11 +23,9 @@ export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
 export const $isFormPending = registerConfirmation.pending;
 
-export const $code = createStore('');
+export const $isRegistrationFinished = createStore(false);
 
-$code.watch((state) => {
-  console.log('$CODE', state);
-});
+export const $code = createStore('');
 
 export const $displayName = createStore<string>('');
 export const $password = createStore<string>('');
@@ -74,13 +63,13 @@ const $form = combine({
   password: $password,
 });
 
-$form.watch((params) => {
-  console.log('FORM', params);
-});
-
 // checkAuthenticated({ on: pageLoaded })
 
 $code.on(codeReceived, (_, code) => code);
+
+$isRegistrationFinished
+  .on(pageLoaded, () => false)
+  .on(registerConfirmation.done, () => true);
 
 $displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);
@@ -91,10 +80,3 @@ guard({
   filter: $isSubmitDisabled.map((is) => !is),
   target: registerConfirmation,
 });
-
-forward({
-  from: registerConfirmation.done,
-  to: historyPush.prepend(path.login),
-});
-
-registerConfirmation.doneInvalid.watch(console.warn);

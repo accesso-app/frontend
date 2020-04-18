@@ -6,17 +6,18 @@ import { useParams } from 'react-router';
 import { useStore, useEvent } from 'effector-react/ssr';
 
 import { assignStart } from 'lib/effector';
+import { Branch } from 'lib/branch';
 import { path } from 'pages/paths';
-import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
+import Logo from 'logo.svg';
 
 import * as model from './model';
-import { Branch } from 'lib/branch';
 
 export const RegisterConfirmPage = () => {
   const { code } = useParams();
 
   const isSubmitDisabled = useStore(model.$isSubmitDisabled);
+  const isRegistrationFinished = useStore(model.$isRegistrationFinished);
   const pageLoaded = useEvent(model.pageLoaded);
   const formSubmitted = useEvent(model.formSubmitted);
 
@@ -37,29 +38,49 @@ export const RegisterConfirmPage = () => {
       <Container>
         <Logotype />
 
-        <form onSubmit={handleSubmit}>
-          <Title level={2}>Sign up confirmation</Title>
+        <Branch if={isRegistrationFinished}>
+          <>
+            <Welcome />
+            <Group>
+              <Button
+                as={Link}
+                text="Sign in"
+                variant="primary"
+                to={path.login()}
+              />
+            </Group>
+          </>
+          <>
+            <form onSubmit={handleSubmit}>
+              <Title level={2}>Sign up confirmation</Title>
 
-          <DisplayName />
-          <br />
-          <Passwords />
+              <DisplayName />
+              <br />
+              <Passwords />
 
-          <Group>
-            <Button
-              disabled={isSubmitDisabled}
-              type="submit"
-              text="Sign up"
-              variant="primary"
-            />
-            <Button
-              as={Link}
-              text="Enter email again"
-              variant="text"
-              to={path.register()}
-            />
-            <Button as={Link} text="Sign in" variant="text" to={path.login()} />
-          </Group>
-        </form>
+              <Group>
+                <Button
+                  disabled={isSubmitDisabled}
+                  type="submit"
+                  text="Sign up"
+                  variant="primary"
+                />
+                <Button
+                  as={Link}
+                  text="Enter email again"
+                  variant="text"
+                  to={path.register()}
+                />
+                <Button
+                  as={Link}
+                  text="Sign in"
+                  variant="text"
+                  to={path.login()}
+                />
+              </Group>
+            </form>
+          </>
+        </Branch>
         <Footer>
           By joining nameproject you accept our Terms of Service and Privacy
           Policy
@@ -70,6 +91,12 @@ export const RegisterConfirmPage = () => {
 };
 
 assignStart(RegisterConfirmPage, model.pageLoaded);
+
+const Welcome = () => {
+  const name = useStore(model.$displayName);
+
+  return <Title level={2}>You are welcome, {name}!</Title>;
+};
 
 const DisplayName: React.FC = () => {
   const name = useStore(model.$displayName);
