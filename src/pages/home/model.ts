@@ -3,4 +3,4 @@ import { checkAuthenticated } from 'features/session';
 
 export const pageLoaded = createEvent<Record<string, string>>();
 
-checkAuthenticated({ when: pageLoaded });
+const pageReady = checkAuthenticated({ when: pageLoaded });

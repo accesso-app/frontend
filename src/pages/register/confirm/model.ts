@@ -3,15 +3,12 @@ import {
   combine,
   createEvent,
   createStore,
-  forward,
   guard,
   sample,
 } from 'effector-root';
 import { registerConfirmation } from 'api/register';
-import { historyPush } from 'features/navigation';
-import { path } from 'pages/paths';
 
-// import { checkAuthenticated } from 'features/session'
+import { checkAnonymous } from 'features/session';
 
 export const pageLoaded = createEvent<Record<string, string>>();
 const codeReceived = pageLoaded.filterMap((params) => params['code']);
@@ -63,12 +60,12 @@ const $form = combine({
   password: $password,
 });
 
-// checkAuthenticated({ on: pageLoaded })
+const pageReady = checkAnonymous({ when: pageLoaded });
 
 $code.on(codeReceived, (_, code) => code);
 
 $isRegistrationFinished
-  .on(pageLoaded, () => false)
+  .on(pageReady, () => false)
   .on(registerConfirmation.done, () => true);
 
 $displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);

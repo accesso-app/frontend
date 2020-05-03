@@ -8,7 +8,7 @@ import {
 } from 'effector-root';
 import { sessionCreate } from 'api/session';
 
-// import { checkAuthenticated } from 'features/session'
+import { checkAnonymous } from 'features/session';
 
 export const pageLoaded = createEvent<Record<string, string>>();
 
@@ -25,14 +25,14 @@ export const $failure = createStore<string | null>(null);
 
 const $form = combine({ email: $email, password: $password });
 
-// checkAuthenticated({ on: pageLoaded })
+const pageReady = checkAnonymous({ when: pageLoaded });
 
 $email.on(emailChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);
 
 $failure
   .on(sessionCreate, () => null)
-  .on(pageLoaded, () => null)
+  .on(pageReady, () => null)
   .on(sessionCreate.failBody, (_, failed) => {
     if ('error' in failed) {
       return failed.error;

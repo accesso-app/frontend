@@ -23,14 +23,33 @@ export const $sessionPending = combine(
  */
 export function checkAuthenticated<T>(config: {
   when: Unit<T>;
-  target?: Unit<T>;
-}) {
+  continue?: Unit<T>;
+}): Unit<T> {
+  const continueLogic = config.continue ?? createEvent();
   condition({
     source: config.when,
     if: $isAuthenticated,
-    then: config.target,
+    then: continueLogic,
     else: historyPush.prepend(path.login),
   });
+  return continueLogic;
+}
+
+/**
+ * If user **anonymous**, continue, else redirect to home
+ */
+export function checkAnonymous<T>(config: {
+  when: Unit<T>;
+  continue?: Unit<T>;
+}): Unit<T> {
+  const continueLogic = config.continue ?? createEvent();
+  condition({
+    source: config.when,
+    if: $isAuthenticated,
+    then: historyPush.prepend(path.home),
+    else: continueLogic,
+  });
+  return continueLogic;
 }
 
 $session

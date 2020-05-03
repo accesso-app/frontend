@@ -8,7 +8,7 @@ import {
 } from 'effector-root';
 import { registerRequest } from 'api/register';
 
-// import { checkAuthenticated } from 'features/session'
+import { checkAnonymous } from 'features/session';
 
 export const pageLoaded = createEvent<Record<string, string>>();
 
@@ -16,6 +16,7 @@ export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
 export const $emailSubmitted = createStore(false);
+export const $failure = createStore(null);
 
 export const $formPending = registerRequest.pending;
 
@@ -32,10 +33,10 @@ export const $isSubmitEnabled = combine(
 
 const $form = combine($email, (email) => ({ email }));
 
-// checkAuthenticated({ on: pageLoaded })
+const pageReady = checkAnonymous({ when: pageLoaded });
 
 $emailSubmitted
-  .on(pageLoaded, () => false)
+  .on(pageReady, () => false)
   .on(registerRequest.done, () => true)
   .on(registerRequest.fail, () => false);
 
