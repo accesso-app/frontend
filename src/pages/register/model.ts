@@ -21,9 +21,8 @@ export const $failure = createStore(null);
 export const $formPending = registerRequest.pending;
 
 export const $email = createStore<string>('');
-export const $isEmailValid = $email.map(
-  (email) => email.includes('@') && email.length > 5,
-);
+const emailRegexp = /[^@]+@[^\.@]+\..+/g;
+export const $isEmailValid = $email.map((email) => emailRegexp.test(email));
 
 export const $isSubmitEnabled = combine(
   $formPending,
