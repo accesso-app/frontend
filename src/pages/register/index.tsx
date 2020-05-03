@@ -38,9 +38,7 @@ export const RegisterPage: React.FC = () => {
         <form onSubmit={handleSubmit}>
           <Title level={2}>Sign up</Title>
           <Branch if={isEmailSubmitted}>
-            <>
-              <Subtext>Check your mailbox.</Subtext>
-            </>
+            <Text>Check your mailbox.</Text>
             <>
               <Email />
               <Group>
@@ -71,10 +69,26 @@ export const RegisterPage: React.FC = () => {
 
 assignStart(RegisterPage, model.pageLoaded);
 
+const failureText = {
+  email_already_registered: () => (
+    <span>
+      Email already registered. <Link to={path.login()}>Sign in?</Link>
+    </span>
+  ),
+  invalid_form: () => (
+    <span>
+      Maybe you've entered an invalid email, enter another email and try again.
+    </span>
+  ),
+  invalid_payload: () => failureText.invalid_form(),
+  default: () => <span>Enter an email</span>,
+};
+
 const Email: React.FC = () => {
   const isDisabled = useStore(model.$formPending);
   const isValid = useStore(model.$isEmailValid);
   const email = useStore(model.$email);
+  const failure = useStore(model.$failure);
   const onChange = useEvent(model.emailChanged);
 
   return (
@@ -85,11 +99,11 @@ const Email: React.FC = () => {
         value={email}
         onChange={onChange}
       />
-      <Branch if={isValid}>
+      <Branch if={isValid && failure === null}>
         <Subtext>
           On the next step you should enter code from received email.
         </Subtext>
-        <Subtext>Enter email</Subtext>
+        <Subtext>{failureText[failure ?? 'default']()}</Subtext>
       </Branch>
     </>
   );
@@ -122,6 +136,10 @@ const Group = styled.div`
 
 const Subtext = styled.div`
   font-size: 1.2rem;
+`;
+
+const Text = styled.div`
+  font-size: 1.8rem;
 `;
 
 const Footer = styled.footer`

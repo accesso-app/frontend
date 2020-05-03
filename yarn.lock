@@ -7552,10 +7552,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-patronum@^0.11.3:
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/patronum/-/patronum-0.11.3.tgz#cebe26a0a74d54af9f53e16cfdf9226c643db9b5"
-  integrity sha512-ZdI2HIEBCRIgE8no2zuErZ2v4ebvR0ZGTTFjeppo4u7qVlPAo/3vlh5HqT2Bu+8U/4VI7DK8MI6SdUgeOG7TAQ==
+patronum@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/patronum/-/patronum-0.12.0.tgz#450622f7f01bf1a66f3de787fc99473d48209022"
+  integrity sha512-UmJdqBBSqiSGpmHMT8orDRP/j9gIQ7GJnoF9niEJb7/HG9mBADJo+AbooDvfxqUYRezg644t5h3hH4N9VBIqQA==
   dependencies:
     effector-debounce "^1.1.0"
     effector-throttle "^1.1.0"

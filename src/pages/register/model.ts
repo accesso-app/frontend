@@ -16,7 +16,9 @@ export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
 export const $emailSubmitted = createStore(false);
-export const $failure = createStore(null);
+export const $failure = createStore<
+  null | 'email_already_registered' | 'invalid_form' | 'invalid_payload'
+>(null);
 
 export const $formPending = registerRequest.pending;
 
@@ -41,6 +43,11 @@ $emailSubmitted
   .on(registerRequest.fail, () => false);
 
 $email.on(emailChanged, (_, event) => event.currentTarget.value);
+
+$failure
+  .on(pageReady, () => null)
+  .on(registerRequest.done, () => null)
+  .on(registerRequest.failBody, (_, { error }) => error);
 
 guard({
   source: sample($form, formSubmitted),

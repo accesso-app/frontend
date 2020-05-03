@@ -24,7 +24,7 @@
     "history": "^4.10.1",
     "http-proxy-middleware": "^1.0.3",
     "node-fetch": "^2.6.0",
-    "patronum": "^0.11.3",
+    "patronum": "^0.12.0",
     "query-string": "^6.11.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
