@@ -54,6 +54,8 @@ export const RegisterConfirmPage = () => {
             <form onSubmit={handleSubmit}>
               <Title level={2}>Sign up confirmation</Title>
 
+              <Failure />
+
               <DisplayName />
               <br />
               <Passwords />
@@ -129,6 +131,7 @@ const Passwords: React.FC = () => {
   const passwordChanged = useEvent(model.passwordChanged);
   const repeat = useStore(model.$repeat);
   const repeatChanged = useEvent(model.repeatChanged);
+  const isPasswordValid = useStore(model.$isPasswordValid);
 
   return (
     <>
@@ -148,8 +151,40 @@ const Passwords: React.FC = () => {
         // autoComplete="new-password"
         onChange={repeatChanged}
       />
+      <Branch if={!isPasswordValid && repeat.length > 3}>
+        <Subtext>Looks like your password is not match confirmation</Subtext>
+      </Branch>
     </>
   );
+};
+
+const failureText = {
+  code_invalid_or_expired: () => (
+    <span>
+      Code invalid or expired,{' '}
+      <Link to={path.register()}>request another one</Link>
+    </span>
+  ),
+  email_already_activated: () => (
+    <span>
+      Wow! This email is already activated. <Link to={path.login()}>Login</Link>{' '}
+      or <Link to={path.register()}>enter another one</Link>.
+    </span>
+  ),
+  invalid_form: () => (
+    <span>Please, retype your form, we found unexpected errors.</span>
+  ),
+  invalid_payload: () => failureText.invalid_form(),
+};
+
+const Failure = () => {
+  const failure = useStore(model.$failure);
+
+  if (failure === null) {
+    return null;
+  }
+
+  return <Subtext>{failureText[failure]()}</Subtext>;
 };
 
 const Logotype = styled(Logo)`

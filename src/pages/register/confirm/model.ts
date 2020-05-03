@@ -21,6 +21,13 @@ export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const $isFormPending = registerConfirmation.pending;
 
 export const $isRegistrationFinished = createStore(false);
+export const $failure = createStore<
+  | null
+  | 'code_invalid_or_expired'
+  | 'email_already_activated'
+  | 'invalid_form'
+  | 'invalid_payload'
+>(null);
 
 export const $code = createStore('');
 
@@ -71,6 +78,11 @@ $isRegistrationFinished
 $displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);
 $repeat.on(repeatChanged, (_, event) => event.currentTarget.value);
+
+$failure
+  .on(pageReady, () => null)
+  .on(registerConfirmation, () => null)
+  .on(registerConfirmation.failBody, (_, { error }) => error);
 
 guard({
   source: sample($form, formSubmitted),

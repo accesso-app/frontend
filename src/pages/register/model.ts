@@ -46,7 +46,7 @@ $email.on(emailChanged, (_, event) => event.currentTarget.value);
 
 $failure
   .on(pageReady, () => null)
-  .on(registerRequest.done, () => null)
+  .on(registerRequest, () => null)
   .on(registerRequest.failBody, (_, { error }) => error);
 
 guard({
