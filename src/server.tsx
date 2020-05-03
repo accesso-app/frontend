@@ -10,15 +10,7 @@ import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
-import {
-  Event,
-  forward,
-  guard,
-  launch,
-  root,
-  sample,
-  Store,
-} from 'effector-root';
+import { Event, forward, root, sample, Store } from 'effector-root';
 import { getStart } from 'lib/effector';
 
 import {
@@ -27,7 +19,7 @@ import {
   $cookiesForRequest,
 } from 'api/request';
 import { $lastPushed } from 'features/navigation';
-import { readyToLoadSession } from 'features/session';
+import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { Application } from './application';
 import { routes } from './pages/routes';
@@ -45,15 +37,21 @@ const routesMatched = requestHandled.map((req) =>
   matchRoutes(routes, req.url).filter(lookupStartEvent),
 );
 
-const eventsMatched = routesMatched.map((routes) =>
-  routes.map(lookupStartEvent),
-);
+forward({
+  from: cookiesReceived,
+  to: setCookiesForRequest,
+});
+
+forward({
+  from: serverStarted,
+  to: readyToLoadSession,
+});
 
 for (const { component } of routes) {
   const startPageEvent = getStart(component);
 
   if (startPageEvent) {
-    const matchedRoute = routesMatched.filterMap(
+    const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
       (routes) =>
         routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
     );
@@ -64,16 +62,6 @@ for (const { component } of routes) {
     });
   }
 }
-
-forward({
-  from: cookiesReceived,
-  to: setCookiesForRequest,
-});
-
-forward({
-  from: serverStarted,
-  to: readyToLoadSession,
-});
 
 sample({
   source: serverStarted,

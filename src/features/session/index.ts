@@ -1,1 +1,7 @@
-export { $isAuthenticated, $sessionPending, readyToLoadSession } from './model';
+export {
+  $isAuthenticated,
+  $sessionPending,
+  checkAuthenticated,
+  readyToLoadSession,
+  sessionLoaded,
+} from './model';

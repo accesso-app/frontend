@@ -1,7 +1,13 @@
-import { createStore, createEvent, combine, guard } from 'effector-root';
+import { createStore, createEvent, combine, guard, Unit } from 'effector-root';
+import { condition } from 'patronum/condition';
+
 import { sessionGet, SessionUser } from 'api/session';
+import { historyPush } from 'features/navigation';
+import { path } from 'pages/paths';
 
 export const readyToLoadSession = createEvent<void>();
+
+export const sessionLoaded = sessionGet.finally;
 
 export const $session = createStore<SessionUser | null>(null);
 export const $isAuthenticated = $session.map((user) => user !== null);
@@ -11,6 +17,21 @@ export const $sessionPending = combine(
   [$session, sessionGet.pending],
   ([session, pending]) => !session && pending,
 );
+
+/**
+ * If user not authenticated, redirect to login
+ */
+export function checkAuthenticated<T>(config: {
+  when: Unit<T>;
+  target?: Unit<T>;
+}) {
+  condition({
+    source: config.when,
+    if: $isAuthenticated,
+    then: config.target,
+    else: historyPush.prepend(path.login),
+  });
+}
 
 $session
   .on(sessionGet.done, (_, { result }) => result.body.user)
