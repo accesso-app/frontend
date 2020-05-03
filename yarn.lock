@@ -3731,10 +3731,10 @@ effector-logger@^0.5.0:
   optionalDependencies:
     effector-inspector "^0.2.1"
 
-effector-react@^20.6.3:
-  version "20.6.3"
-  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.6.3.tgz#f276a3478886b3be487cc1e1bc4ab29938b6af4e"
-  integrity sha512-3cONEJA9TXL4ofVYoNqO8kf6KxA8hKs+S46ZE1Enjzq4PB8AmDuMKlbXdwEidaj4ti4aS2TmsEhI5OTLluKB0A==
+effector-react@^20.7.1:
+  version "20.7.1"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.7.1.tgz#43576a49ee0ee028205ecf35fbac30d8a87ff2eb"
+  integrity sha512-nptGI+dsOlgFF3dy1lJi2ThInAaXgQzXvDrELeA1SVr43uM05YCKG9cWvnuLxCA+zL92WDPgs7jSVHnQw1AQSA==
 
 effector-root@^0.2.0:
   version "0.2.0"
@@ -3746,10 +3746,10 @@ effector-throttle@^1.1.0:
   resolved "https://registry.yarnpkg.com/effector-throttle/-/effector-throttle-1.1.0.tgz#8d3b4b7c24ed60be746fdfdfc2bf627f0c9f6983"
   integrity sha512-hkFwr8W6QZMnvxb8XIqwFyQQCT4kwzHV2eaoVCGfRSixwPs0GrTcZIrXTg03pTHRLXn+4x2owRD/OXoAfTQTYQ==
 
-effector@^20.13.5:
-  version "20.13.5"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-20.13.5.tgz#fa7cd6388f906860468a8fa77879460b9838773f"
-  integrity sha512-VZS0hspR8BloJyln11k8HdPzUIIxflT3jre3k5hWPRF8bDrfI9VVKg+TqgDPAIejwWV+JonaxydFiE37i0HfwQ==
+effector@^20.14.0:
+  version "20.14.0"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-20.14.0.tgz#890ca40f2a7cf9041e6f22b7baf8c4273042dbcb"
+  integrity sha512-O5mAIO3jxzy6BaL572CE0QRfLSZ1qAAE7Is7wiv2MwYOzkU51tT7npEcRdD1RGF3KLNMzYA0uIzAt822jVaqsA==
   dependencies:
     symbol-observable "^1.2.0"
 
