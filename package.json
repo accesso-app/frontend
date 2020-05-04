@@ -31,7 +31,7 @@
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.0.1",
     "styled-components": "^5.0.1",
-    "typed-contracts": "^2.2.2",
+    "typed-contracts": "^2.3.0",
     "universal-fetch": "^1.0.0",
     "woly": "^0.1.10"
   },

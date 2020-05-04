@@ -2985,7 +2985,7 @@ core-js@^2.4.0, core-js@^2.5.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.6.1:
+core-js@^3.6.5:
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
   integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
@@ -10199,12 +10199,12 @@ type-is@~1.6.17, type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typed-contracts@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/typed-contracts/-/typed-contracts-2.2.2.tgz#8046160e1b42cc0e884869af8a737d8d9379834b"
-  integrity sha512-yTL1ucSgHl9x+5xW3YSd856eU9p6FxmnsF7hSUGvvyvXEnQtvQV6YNQ2FvUkwRbUTKq5hncOLf159uNCnZY4sA==
+typed-contracts@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/typed-contracts/-/typed-contracts-2.3.0.tgz#97c9fa03c37ac0294769f5f815c7d34d3dd6a3f3"
+  integrity sha512-ySdcDiGcCzO4ymhub98B2kwu1DAQ4WvZM2SCjFVEAkZgEBked2X3mz6YRahNcgULn989/hizbuOqaNgEw6E5XQ==
   dependencies:
-    core-js "^3.6.1"
+    core-js "^3.6.5"
 
 typedarray@^0.0.6:
   version "0.0.6"
