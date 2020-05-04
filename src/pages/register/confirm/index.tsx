@@ -2,10 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router';
 import { useStore, useEvent } from 'effector-react/ssr';
 
-import { assignStart } from 'lib/page-routing';
+import { withStart, useStart } from 'lib/page-routing';
 import { Branch } from 'lib/branch';
 import { path } from 'pages/paths';
 import { CenterCardTemplate } from '@auth/ui';
@@ -13,17 +12,12 @@ import Logo from 'logo.svg';
 
 import * as model from './model';
 
-export const RegisterConfirmPage = () => {
-  const params = useParams();
+export const RegisterConfirmPage = withStart(model.pageStart, () => {
+  useStart(model.pageStart);
 
   const isSubmitDisabled = useStore(model.$isSubmitDisabled);
   const isRegistrationFinished = useStore(model.$isRegistrationFinished);
-  const pageLoaded = useEvent(model.pageLoaded);
   const formSubmitted = useEvent(model.formSubmitted);
-
-  React.useEffect(() => {
-    pageLoaded({ params, query: {} });
-  }, []);
 
   const handleSubmit = React.useCallback(
     (event) => {
@@ -90,9 +84,7 @@ export const RegisterConfirmPage = () => {
       </Container>
     </CenterCardTemplate>
   );
-};
-
-assignStart(RegisterConfirmPage, model.pageLoaded);
+});
 
 const Welcome = () => {
   const name = useStore(model.$displayName);

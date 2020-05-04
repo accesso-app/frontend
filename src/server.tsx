@@ -31,8 +31,6 @@ const serverStarted = root.createEvent<{
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
-requestHandled.watch((req) => console.log('PARAMS', req.query));
-
 const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
 const routesMatched = requestHandled.map((req) => ({

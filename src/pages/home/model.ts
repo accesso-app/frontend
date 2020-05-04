@@ -1,7 +1,7 @@
-import { createEvent, forward } from 'effector-root';
+import 'effector-root';
 import { checkAuthenticated } from 'features/session';
-import { StartParams } from 'lib/page-routing';
+import { createStart } from 'lib/page-routing';
 
-export const pageLoaded = createEvent<StartParams>();
+export const pageLoaded = createStart();
 
 const pageReady = checkAuthenticated({ when: pageLoaded });
