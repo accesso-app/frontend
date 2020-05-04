@@ -1,6 +1,6 @@
 import { attach, Effect, Event } from 'effector-root';
 import * as typed from 'typed-contracts';
-import { splitMap } from 'lib/effector';
+import { splitMap } from 'patronum/split-map';
 import { Answer, Request, requestFx } from './common';
 
 interface ResourcePart<P, Done, Fail> {
