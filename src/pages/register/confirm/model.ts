@@ -9,9 +9,10 @@ import {
 import { registerConfirmation } from 'api/register';
 
 import { checkAnonymous } from 'features/session';
+import { StartParams } from 'lib/page-routing';
 
-export const pageLoaded = createEvent<Record<string, string>>();
-const codeReceived = pageLoaded.filterMap((params) => params['code']);
+export const pageLoaded = createEvent<StartParams>();
+const codeReceived = pageLoaded.filterMap(({ params }) => params['code']);
 
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();

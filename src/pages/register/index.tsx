@@ -6,7 +6,7 @@ import { useStore, useEvent } from 'effector-react/ssr';
 
 import Logo from 'logo.svg';
 import { path } from 'pages/paths';
-import { assignStart } from 'lib/effector';
+import { assignStart } from 'lib/page-routing';
 import { Branch } from 'lib/branch';
 import { CenterCardTemplate } from '@auth/ui';
 
@@ -19,7 +19,7 @@ export const RegisterPage: React.FC = () => {
   const pageLoaded = useEvent(model.pageLoaded);
 
   React.useEffect(() => {
-    pageLoaded({});
+    pageLoaded({ params: {}, query: {} });
   }, []);
 
   const handleSubmit = React.useCallback(

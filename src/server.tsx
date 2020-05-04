@@ -11,7 +11,7 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
 import { Event, forward, root, sample, Store } from 'effector-root';
-import { getStart } from 'lib/effector';
+import { getStart, StartParams } from 'lib/page-routing';
 
 import {
   setCookiesForRequest,
@@ -31,11 +31,14 @@ const serverStarted = root.createEvent<{
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
+requestHandled.watch((req) => console.log('PARAMS', req.query));
+
 const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
-const routesMatched = requestHandled.map((req) =>
-  matchRoutes(routes, req.url).filter(lookupStartEvent),
-);
+const routesMatched = requestHandled.map((req) => ({
+  routes: matchRoutes(routes, req.url).filter(lookupStartEvent),
+  query: req.query,
+}));
 
 forward({
   from: cookiesReceived,
@@ -52,12 +55,19 @@ for (const { component } of routes) {
 
   if (startPageEvent) {
     const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
-      (routes) =>
-        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
+      ({ routes, query }) => ({
+        route: routes.filter(
+          (route) => lookupStartEvent(route) === startPageEvent,
+        )[0],
+        query,
+      }),
     );
 
     forward({
-      from: matchedRoute.map((route) => route.match.params),
+      from: matchedRoute.map(({ route, query }) => ({
+        params: route.match.params,
+        query,
+      })),
       to: startPageEvent,
     });
   }
@@ -184,7 +194,7 @@ function htmlEnd(storesValues: {}): string {
 
 function lookupStartEvent<P>(
   match: MatchedRoute<P>,
-): Event<Record<string, string>> | undefined {
+): Event<StartParams> | undefined {
   if (match.route.component) {
     return getStart(match.route.component);
   }

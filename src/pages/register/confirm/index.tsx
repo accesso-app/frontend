@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { useStore, useEvent } from 'effector-react/ssr';
 
-import { assignStart } from 'lib/effector';
+import { assignStart } from 'lib/page-routing';
 import { Branch } from 'lib/branch';
 import { path } from 'pages/paths';
 import { CenterCardTemplate } from '@auth/ui';
@@ -14,7 +14,7 @@ import Logo from 'logo.svg';
 import * as model from './model';
 
 export const RegisterConfirmPage = () => {
-  const { code } = useParams();
+  const params = useParams();
 
   const isSubmitDisabled = useStore(model.$isSubmitDisabled);
   const isRegistrationFinished = useStore(model.$isRegistrationFinished);
@@ -22,7 +22,7 @@ export const RegisterConfirmPage = () => {
   const formSubmitted = useEvent(model.formSubmitted);
 
   React.useEffect(() => {
-    pageLoaded({ code: code! });
+    pageLoaded({ params, query: {} });
   }, []);
 
   const handleSubmit = React.useCallback(

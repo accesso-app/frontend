@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useEvent, useStore } from 'effector-react/ssr';
 import styled from 'styled-components';
 
-import { assignStart } from 'lib/effector';
+import { assignStart } from 'lib/page-routing';
 import * as model from './model';
 
 export const HomePage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
   React.useEffect(() => {
-    pageLoaded({});
+    pageLoaded({ params: {}, query: {} });
   }, []);
 
   return (

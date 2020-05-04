@@ -4,7 +4,7 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 
 import { useStore, useEvent } from 'effector-react/ssr';
-import { assignStart } from 'lib/effector';
+import { assignStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
@@ -14,7 +14,7 @@ import { path } from 'pages/paths';
 export const LoginPage = () => {
   const pageLoaded = useEvent(model.pageLoaded);
   React.useEffect(() => {
-    pageLoaded({});
+    pageLoaded({ params: {}, query: {} });
   }, []);
 
   const emailChanged = useEvent(model.emailChanged);
@@ -107,11 +107,6 @@ const Group = styled.div`
       margin-top: 1rem;
     }
   }
-`;
-
-const Footer = styled.footer`
-  margin-top: 10rem;
-  font-size: 1.2rem;
 `;
 
 const Container = styled.div`

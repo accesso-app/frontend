@@ -9,8 +9,9 @@ import {
 import { registerRequest } from 'api/register';
 
 import { checkAnonymous } from 'features/session';
+import { StartParams } from 'lib/page-routing';
 
-export const pageLoaded = createEvent<Record<string, string>>();
+export const pageLoaded = createEvent<StartParams>();
 
 export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
