@@ -60,18 +60,18 @@ if (process.env.BUILD_TARGET === 'server') {
 
 if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
   requestInternalFx.watch(({ path, method }) => {
-    console.log(`[REQUESTFX] ${method} ${path}`);
+    console.log(`[requestInternal] ${method} ${path}`);
   });
 
   requestInternalFx.done.watch(
     ({ params: { path, method }, result: { status } }) => {
-      console.log(`[REQUESTFX-DONE] ${method} ${path} : ${status}`);
+      console.log(`[requestInternal.done] ${method} ${path} : ${status}`);
     },
   );
 
   requestInternalFx.fail.watch(
     ({ params: { path, method }, error: { status } }) => {
-      console.log(`[REQUESTFX-FAIL] ${method} ${path} : ${status}`);
+      console.log(`[requestInternal.fail] ${method} ${path} : ${status}`);
     },
   );
 }

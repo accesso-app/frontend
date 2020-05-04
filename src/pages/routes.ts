@@ -3,8 +3,9 @@ import { path } from './paths';
 import { Error404Page } from './error404';
 import { HomePage } from './home';
 import { LoginPage } from './login';
-import { RegisterPage } from './register';
+import { OAuthAuthorizePage } from './oauth/authorize';
 import { RegisterConfirmPage } from './register/confirm';
+import { RegisterPage } from './register';
 
 export const routes = [
   {
@@ -21,6 +22,11 @@ export const routes = [
     path: path.register(),
     exact: true,
     component: RegisterPage,
+  },
+  {
+    path: path.oauthAuthorize(),
+    exact: true,
+    component: OAuthAuthorizePage,
   },
   {
     path: path.registerConfirm(':code'),

@@ -3,4 +3,5 @@ export const path = {
   login: () => '/login',
   register: () => '/register',
   registerConfirm: (code: string) => `/register/confirm-${code}`,
+  oauthAuthorize: () => '/oauth/authorize',
 };

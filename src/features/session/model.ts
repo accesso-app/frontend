@@ -1,4 +1,12 @@
-import { createStore, createEvent, combine, guard, Unit } from 'effector-root';
+import {
+  createStore,
+  createEvent,
+  combine,
+  guard,
+  Unit,
+  Event,
+  forward,
+} from 'effector-root';
 import { condition } from 'patronum/condition';
 
 import { sessionGet, SessionUser } from 'api/session';
@@ -24,7 +32,7 @@ export const $sessionPending = combine(
 export function checkAuthenticated<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
-}): Unit<T> {
+}): Event<T> {
   const continueLogic = config.continue ?? createEvent();
   condition({
     source: config.when,
@@ -32,7 +40,13 @@ export function checkAuthenticated<T>(config: {
     then: continueLogic,
     else: historyPush.prepend(path.login),
   });
-  return continueLogic;
+
+  const result = createEvent<T>();
+  forward({
+    from: continueLogic,
+    to: result,
+  });
+  return result;
 }
 
 /**
@@ -41,7 +55,7 @@ export function checkAuthenticated<T>(config: {
 export function checkAnonymous<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
-}): Unit<T> {
+}): Event<T> {
   const continueLogic = config.continue ?? createEvent();
   condition({
     source: config.when,
@@ -49,7 +63,13 @@ export function checkAnonymous<T>(config: {
     then: historyPush.prepend(path.home),
     else: continueLogic,
   });
-  return continueLogic;
+
+  const result = createEvent<T>();
+  forward({
+    from: continueLogic,
+    to: result,
+  });
+  return result;
 }
 
 $session
