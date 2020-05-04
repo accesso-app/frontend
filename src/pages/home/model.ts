@@ -1,10 +1,6 @@
 import { createEvent, forward } from 'effector-root';
-import { historyReplace } from 'features/navigation';
-import { path } from 'pages/paths';
+import { checkAuthenticated } from 'features/session';
 
-export const pageLoaded = createEvent();
+export const pageLoaded = createEvent<Record<string, string>>();
 
-forward({
-  from: pageLoaded,
-  to: historyReplace.prepend(path.login),
-});
+const pageReady = checkAuthenticated({ when: pageLoaded });

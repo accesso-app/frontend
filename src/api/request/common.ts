@@ -7,7 +7,6 @@ import {
   merge,
   restore,
 } from 'effector-root';
-
 import queryString from 'query-string';
 
 export type Request = {
@@ -19,9 +18,9 @@ export type Request = {
   cookies?: string;
 };
 
-export type Answer = {
+export type Answer<T = unknown> = {
   ok: boolean;
-  body: void | unknown;
+  body: T;
   status: number;
   headers: Record<string, string>;
 };

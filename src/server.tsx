@@ -10,16 +10,8 @@ import { matchRoutes, MatchedRoute } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
-import {
-  Event,
-  forward,
-  guard,
-  launch,
-  root,
-  sample,
-  Store,
-} from 'effector-root';
-import { START } from 'lib/effector';
+import { Event, forward, root, sample, Store } from 'effector-root';
+import { getStart } from 'lib/effector';
 
 import {
   setCookiesForRequest,
@@ -27,7 +19,7 @@ import {
   $cookiesForRequest,
 } from 'api/request';
 import { $lastPushed } from 'features/navigation';
-import { readyToLoadSession } from 'features/session';
+import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { Application } from './application';
 import { routes } from './pages/routes';
@@ -45,18 +37,6 @@ const routesMatched = requestHandled.map((req) =>
   matchRoutes(routes, req.url).filter(lookupStartEvent),
 );
 
-const eventsMatched = routesMatched.map((routes) =>
-  routes.map(lookupStartEvent),
-);
-
-for (const { component } of routes) {
-  guard({
-    source: eventsMatched,
-    filter: (matchedEvents) => matchedEvents.includes(component[START]),
-    target: component[START],
-  });
-}
-
 forward({
   from: cookiesReceived,
   to: setCookiesForRequest,
@@ -66,6 +46,22 @@ forward({
   from: serverStarted,
   to: readyToLoadSession,
 });
+
+for (const { component } of routes) {
+  const startPageEvent = getStart(component);
+
+  if (startPageEvent) {
+    const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
+      (routes) =>
+        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
+    );
+
+    forward({
+      from: matchedRoute.map((route) => route.match.params),
+      to: startPageEvent,
+    });
+  }
+}
 
 sample({
   source: serverStarted,
@@ -185,24 +181,11 @@ function htmlEnd(storesValues: {}): string {
 </html>`;
 }
 
-function findStore<T>(scope: Scope, store: Store<T>): Store<T> {
-  // @ts-ignore
-  return scope.find(store).meta.wrapped;
-}
-
-function findEvent<T>(scope: Scope, event: Event<T>): (payload: T) => T {
-  // @ts-ignore
-  const unit = scope.find(event);
-
-  return (payload) => {
-    launch(unit, payload);
-    return payload;
-  };
-}
-
-function lookupStartEvent<P, E>(match: MatchedRoute<P>): Event<E> | undefined {
+function lookupStartEvent<P>(
+  match: MatchedRoute<P>,
+): Event<Record<string, string>> | undefined {
   if (match.route.component) {
-    return match.route.component[START];
+    return getStart(match.route.component);
   }
   return undefined;
 }

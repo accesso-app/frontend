@@ -1,85 +1,44 @@
-import { attach, Event, Effect } from 'effector-root';
 import * as typed from 'typed-contracts';
-import { assertContract, ContractType } from 'lib/typed';
-import { requestFx, Answer } from './request';
+import { createResource } from './request';
 
-export type SessionUser = ContractType<typeof TSessionUser>;
+export type SessionUser = typed.Get<typeof TSessionUser>;
 const TSessionUser = typed.object({
   firstName: typed.string,
   lastName: typed.string,
 });
 
-type SessionGetSuccess = ContractType<typeof TSessionGetSuccess>;
 const TSessionGetSuccess = typed.object({
   user: TSessionUser,
 });
 
-export const sessionGet: Effect<void, Answer, Answer> = attach({
-  effect: requestFx,
-  mapParams: () => ({
-    path: '/session/get',
-    method: 'POST',
-  }),
+export const sessionGet = createResource({
+  name: 'sessionGet',
+  contractDone: TSessionGetSuccess,
+  contractFail: typed.nul,
+  mapParams: () => ({ path: '/session/get', method: 'POST' }),
 });
 
-export const sessionGetDone: Event<SessionGetSuccess> = sessionGet.done.map(
-  ({ result }) => {
-    console.log('CONTRACT', result.body);
-    return assertContract(
-      TSessionGetSuccess,
-      result.body,
-      'sessionGetDone.result.body',
-    );
-  },
-);
-
-type SessionCreateSucceeded = ContractType<typeof TSessionCreateSucceeded>;
 const TSessionCreateSucceeded = typed.object({
   firstName: typed.string,
   lastName: typed.string,
 });
 
 const TSessionCreateFailed = typed.object({
-  // TODO: fix any as error
   error: typed.union('invalid_credentials', 'invalid_form', 'invalid_payload'),
 });
-// type SessionCreateFailed = ContractType<typeof TSessionCreateFailed>;
-type SessionCreateFailed = {
-  error: 'invalid_credentials' | 'invalid_form' | 'invalid_payload';
-};
 
 interface SessionCreate {
   email: string;
   password: string;
 }
 
-export const sessionCreate: Effect<SessionCreate, Answer, Answer> = attach({
-  effect: requestFx,
-  mapParams: ({ email, password }) => ({
+export const sessionCreate = createResource({
+  name: 'sessionCreate',
+  contractDone: TSessionCreateSucceeded,
+  contractFail: TSessionCreateFailed,
+  mapParams: (form: SessionCreate) => ({
     path: '/session/create',
     method: 'POST',
-    body: { email, password },
+    body: form,
   }),
-});
-
-export const sessionCreateDone: Event<SessionCreateSucceeded> = sessionCreate.done.map(
-  ({ result }) =>
-    assertContract(
-      TSessionCreateSucceeded,
-      result.body,
-      'sessionCreateDone.result.body',
-    ),
-);
-
-export const sessionCreateFail: Event<
-  SessionCreateFailed | Error
-> = sessionCreate.fail.map(({ error }) => {
-  if (error.status === 400) {
-    return assertContract(
-      TSessionCreateFailed,
-      error.body,
-      'sessionCreateFail.error.body',
-    );
-  }
-  return new Error(String(error.body));
 });

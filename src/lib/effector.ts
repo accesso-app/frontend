@@ -1,18 +1,16 @@
-import * as effector from 'effector';
-export * from 'effector';
+import * as React from 'react';
+import { Event } from 'effector';
 
-export const rootDomain = effector.createDomain('rootDomain');
+const START = `☄️/start-event`;
+type Params = Record<string, string>;
 
-// if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
-//   const { attachLogger } = require('effector-logger/attach');
-//   attachLogger(rootDomain);
-// }
+export function getStart<T>(component: T): undefined | Event<Params> {
+  return component[START];
+}
 
-export const {
-  createDomain,
-  createEffect,
-  createEvent,
-  createStore,
-} = rootDomain;
-
-export const START = `☄️/start-event`;
+export function assignStart(
+  component: React.Component | React.FC,
+  event: Event<Params>,
+) {
+  component[START] = event;
+}
