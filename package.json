@@ -15,7 +15,7 @@
     "cookie": "^0.4.0",
     "cookie-parser": "^1.4.5",
     "cross-fetch": "^3.0.4",
-    "effector": "^20.14.0",
+    "effector": "20.13.7",
     "effector-inspector": "^0.2.2",
     "effector-logger": "^0.5.0",
     "effector-react": "^20.7.1",

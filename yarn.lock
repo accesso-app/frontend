@@ -3746,10 +3746,10 @@ effector-throttle@^1.1.0:
   resolved "https://registry.yarnpkg.com/effector-throttle/-/effector-throttle-1.1.0.tgz#8d3b4b7c24ed60be746fdfdfc2bf627f0c9f6983"
   integrity sha512-hkFwr8W6QZMnvxb8XIqwFyQQCT4kwzHV2eaoVCGfRSixwPs0GrTcZIrXTg03pTHRLXn+4x2owRD/OXoAfTQTYQ==
 
-effector@^20.14.0:
-  version "20.14.0"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-20.14.0.tgz#890ca40f2a7cf9041e6f22b7baf8c4273042dbcb"
-  integrity sha512-O5mAIO3jxzy6BaL572CE0QRfLSZ1qAAE7Is7wiv2MwYOzkU51tT7npEcRdD1RGF3KLNMzYA0uIzAt822jVaqsA==
+effector@20.13.7:
+  version "20.13.7"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-20.13.7.tgz#086b63c6df8192524a869660ba89417cd56c66db"
+  integrity sha512-eBl/DGI7TJmpZDeZNNx3G9/y0xiKzjPHd6OjQhddwUn3UKaZH0+T5QPbHDk97KWfBHzDW+FwF7JPkJydrx/2cg==
   dependencies:
     symbol-observable "^1.2.0"
 
