@@ -89,8 +89,9 @@ export const server = express()
     createProxyMiddleware({
       target: process.env.BACKEND_URL ?? 'http://localhost:9005',
       pathRewrite: {
-        '^/api/v0': '/',
+        '^/api/v0': '',
       },
+      secure: false,
     }),
   )
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
