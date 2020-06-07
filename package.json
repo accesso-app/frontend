@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "HTTPS=true CLIENT_PUBLIC_PATH=https://localhost:3001 razzle start",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED=0 HTTPS=true CLIENT_PUBLIC_PATH=https://localhost:3001 razzle start",
     "build": "razzle build",
     "test": "razzle test --env=jsdom",
     "start:prod": "NODE_ENV=production node build/server.js",
