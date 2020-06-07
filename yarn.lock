@@ -3731,10 +3731,10 @@ effector-logger@^0.5.0:
   optionalDependencies:
     effector-inspector "^0.2.1"
 
-effector-react@^20.7.1:
-  version "20.7.1"
-  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.7.1.tgz#43576a49ee0ee028205ecf35fbac30d8a87ff2eb"
-  integrity sha512-nptGI+dsOlgFF3dy1lJi2ThInAaXgQzXvDrELeA1SVr43uM05YCKG9cWvnuLxCA+zL92WDPgs7jSVHnQw1AQSA==
+effector-react@^20.7.3:
+  version "20.7.3"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-20.7.3.tgz#461edde5bd1663026d32c6bd8834c525b33eabd7"
+  integrity sha512-bqSZDk2yw9pntaYQTMDLvke3pcuj2gi0+fKJEUZbAfV4j9E9DBMkVG+SggkPqq95R4ne4F8I8+RjNyC11K4iAQ==
 
 effector-root@^0.2.0:
   version "0.2.0"
@@ -3746,10 +3746,10 @@ effector-throttle@^1.1.0:
   resolved "https://registry.yarnpkg.com/effector-throttle/-/effector-throttle-1.1.0.tgz#8d3b4b7c24ed60be746fdfdfc2bf627f0c9f6983"
   integrity sha512-hkFwr8W6QZMnvxb8XIqwFyQQCT4kwzHV2eaoVCGfRSixwPs0GrTcZIrXTg03pTHRLXn+4x2owRD/OXoAfTQTYQ==
 
-effector@20.13.7:
-  version "20.13.7"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-20.13.7.tgz#086b63c6df8192524a869660ba89417cd56c66db"
-  integrity sha512-eBl/DGI7TJmpZDeZNNx3G9/y0xiKzjPHd6OjQhddwUn3UKaZH0+T5QPbHDk97KWfBHzDW+FwF7JPkJydrx/2cg==
+effector@^20.15.9:
+  version "20.15.9"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-20.15.9.tgz#488a738c5d02653808f160ab99a29f8ce9afb869"
+  integrity sha512-3NHrYNu+g/tGMAIShGKux+CiAtW/gAelZbYUmRXhYNRfepFddlby48laP+uNSYu/4UrKqjifKu3Xjy5WOZGBJA==
   dependencies:
     symbol-observable "^1.2.0"
 
@@ -10226,7 +10226,7 @@ typescript-template-language-service-decorator@^2.2.0:
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
   integrity sha512-xiolqt1i7e22rpqMaprPgSFVgU64u3b9n6EJlAaUYE61jumipKAdI1+O5khPlWslpTUj80YzjUKjJ2jxT0D74w==
 
-typescript@^3.8.3:
+typescript@3.8.3:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
