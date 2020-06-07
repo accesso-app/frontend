@@ -2,7 +2,7 @@
   
   ### Branch name
   
-  - [ ] Your branch should be prefixed with `feat/` or `fix/` or `chore/`
+  - [ ] Your branch should be prefixed with `feat/` or `fix/` or `chore/` or `refactor/` or `tests/`
   - [ ] Add issue number after prefix
   - [ ] Add 3-5 words of description separated with `-`
   
