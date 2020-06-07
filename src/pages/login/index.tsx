@@ -73,6 +73,10 @@ export const LoginPage = () => {
             />
           </Group>
         </form>
+        <Footer>
+          By joining nameproject you accept our Terms of Service and Privacy
+          Policy
+        </Footer>
       </Container>
     </CenterCardTemplate>
   );
