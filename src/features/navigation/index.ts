@@ -13,5 +13,6 @@ if (process.env.BUILD_TARGET === 'client') {
   historyPush.watch((url) => history!.push(url));
   historyReplace.watch((url) => history!.replace(url));
 } else {
-  $lastPushed.on(merge([historyPush, historyReplace]), (_, url) => url);
+  const events = merge([historyPush, historyReplace]);
+  $lastPushed.on(events, (_, url) => url);
 }

@@ -62,6 +62,21 @@ export function createResource<Params = void, Done = void, Fail = void>(
   const failBody = failData.map(({ body }) => body);
   const failInvalid = mappedFail.__; // eslint-disable-line no-underscore-dangle
 
+  if (process.env.NODE_ENV !== 'production') {
+    doneInvalid.watch((payload) => {
+      console.warn(
+        `[api/resource] "${options.name}.done" failed to validate`,
+        payload,
+      );
+    });
+    failInvalid.watch((payload) => {
+      console.warn(
+        `[api/resource] "${options.name}.fail" failed to validate`,
+        payload,
+      );
+    });
+  }
+
   const properties = { ...original };
   const callee = original.map((argument) => argument);
   Object.assign(callee, properties, {

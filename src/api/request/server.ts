@@ -43,6 +43,7 @@ async function requestServer({ path, method, ...params }: Request) {
     }
   } catch (error) {
     if (error instanceof Error) {
+      console.error(error);
       throw {
         ok: false,
         body: error,
