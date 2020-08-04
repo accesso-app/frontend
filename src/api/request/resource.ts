@@ -32,13 +32,16 @@ export function createResource<Params = void, Done = void, Fail = void>(
   const doneValidator = options.contractDone(`${options.name}.done`);
   const failValidator = options.contractFail(`${options.name}.fail`);
 
-  const mappedDone = splitMap(original.done, {
-    correct: ({ params, result }) => {
-      const validated = doneValidator(result.body);
-      if (validated instanceof typed.ValidationError) {
-        return undefined;
-      }
-      return { params, result: { ...result, body: validated } };
+  const mappedDone = splitMap({
+    source: original.done,
+    cases: {
+      correct: ({ params, result }) => {
+        const validated = doneValidator(result.body);
+        if (validated instanceof typed.ValidationError) {
+          return undefined;
+        }
+        return { params, result: { ...result, body: validated } };
+      },
     },
   });
 
@@ -47,13 +50,16 @@ export function createResource<Params = void, Done = void, Fail = void>(
   const doneBody = doneData.map(({ body }) => body);
   const doneInvalid = mappedDone.__; // eslint-disable-line no-underscore-dangle
 
-  const mappedFail = splitMap(original.fail, {
-    correct: ({ params, error }) => {
-      const validated = failValidator(error.body);
-      if (validated instanceof typed.ValidationError) {
-        return undefined;
-      }
-      return { params, error: { ...error, body: validated } };
+  const mappedFail = splitMap({
+    source: original.fail,
+    cases: {
+      correct: ({ params, error }) => {
+        const validated = failValidator(error.body);
+        if (validated instanceof typed.ValidationError) {
+          return undefined;
+        }
+        return { params, error: { ...error, body: validated } };
+      },
     },
   });
 
