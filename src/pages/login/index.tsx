@@ -4,18 +4,15 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 
 import { useStore, useEvent } from 'effector-react/ssr';
-import { assignStart } from 'lib/effector';
+import { withStart, useStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
 import * as model from './model';
 import { path } from 'pages/paths';
 
-export const LoginPage = () => {
-  const pageLoaded = useEvent(model.pageLoaded);
-  React.useEffect(() => {
-    pageLoaded({});
-  }, []);
+export const LoginPage = withStart(model.pageLoaded, () => {
+  useStart(model.pageLoaded);
 
   const emailChanged = useEvent(model.emailChanged);
   const passwordChanged = useEvent(model.passwordChanged);
@@ -80,9 +77,7 @@ export const LoginPage = () => {
       </Container>
     </CenterCardTemplate>
   );
-};
-
-assignStart(LoginPage, model.pageLoaded);
+});
 
 const Logotype = styled(Logo)`
   margin-bottom: 3rem;
@@ -109,15 +104,15 @@ const Group = styled.div`
   }
 `;
 
-const Footer = styled.footer`
-  margin-top: 10rem;
-  font-size: 1.2rem;
-`;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-sizing: content-box;
   height: 100%;
+`;
+
+const Footer = styled.footer`
+  margin-top: 6rem;
+  font-size: 1.2rem;
 `;

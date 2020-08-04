@@ -2,6 +2,23 @@
   "env": {},
   "plugins": [
     ["styled-components", { "displayName": true, "ssr": true }],
-    ["effector/babel-plugin", { "addLoc": true }]
+    ["effector/babel-plugin", { "addLoc": true }],
+    [
+      "effector/babel-plugin",
+      {
+        "importName": "lib/page-routing",
+        "eventCreators": ["createStart"],
+        "noDefaults": true
+      },
+      "page-routing"
+    ],
+    [
+      "effector/babel-plugin",
+      {
+        "importName": "effector-root",
+        "noDefaults": true
+      },
+      "effector-root"
+    ]
   ]
 }

@@ -3703,11 +3703,6 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-effector-debounce@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/effector-debounce/-/effector-debounce-1.1.0.tgz#e6aa74efd302d480f57b2e945e71ab34772ba360"
-  integrity sha512-UfJLUQx2fIjNIGx9kmPvmCjClInXvJP+jmREpVMamLQkEoMw3PqdnzoLUqFPJQI/tXGD9LQ1OYrL9eANVpIAtg==
-
 effector-dom@^0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/effector-dom/-/effector-dom-0.0.11.tgz#32af0d685925b032990fca1594708193f3b62ca0"
@@ -3740,11 +3735,6 @@ effector-root@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/effector-root/-/effector-root-0.2.0.tgz#2080efa854087cf734cdb295683808579f32976c"
   integrity sha512-lPt4MP0MzOkaDGuwkVjg6bknYpboFOQYGdBfL4D9E2OmJhKS2MK9RdnN7NSBSXHKXFJ4oBAnYR3LSEu8XXj3rw==
-
-effector-throttle@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/effector-throttle/-/effector-throttle-1.1.0.tgz#8d3b4b7c24ed60be746fdfdfc2bf627f0c9f6983"
-  integrity sha512-hkFwr8W6QZMnvxb8XIqwFyQQCT4kwzHV2eaoVCGfRSixwPs0GrTcZIrXTg03pTHRLXn+4x2owRD/OXoAfTQTYQ==
 
 effector@^20.15.9:
   version "20.15.9"
@@ -7552,13 +7542,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-patronum@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/patronum/-/patronum-0.12.0.tgz#450622f7f01bf1a66f3de787fc99473d48209022"
-  integrity sha512-UmJdqBBSqiSGpmHMT8orDRP/j9gIQ7GJnoF9niEJb7/HG9mBADJo+AbooDvfxqUYRezg644t5h3hH4N9VBIqQA==
-  dependencies:
-    effector-debounce "^1.1.0"
-    effector-throttle "^1.1.0"
+patronum@^0.103.1:
+  version "0.103.1"
+  resolved "https://registry.yarnpkg.com/patronum/-/patronum-0.103.1.tgz#e07930eef2cb4e0a2b4692da26326372469c3002"
+  integrity sha512-myjaZn/6b2e8P8cJmqTj5USSa16tG9oCVuJ++KjGoJdz4koTyVohZ/lxTENS2D5LLlgwkMJaU06cNl9QSeUBcQ==
 
 pbkdf2@^3.0.3:
   version "3.0.17"

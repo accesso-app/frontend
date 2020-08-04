@@ -9,9 +9,10 @@ import {
 import { registerConfirmation } from 'api/register';
 
 import { checkAnonymous } from 'features/session';
+import { createStart } from 'lib/page-routing';
 
-export const pageLoaded = createEvent<Record<string, string>>();
-const codeReceived = pageLoaded.filterMap((params) => params['code']);
+export const pageStart = createStart();
+const codeReceived = pageStart.filterMap(({ params }) => params['code']);
 
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -67,7 +68,7 @@ const $form = combine({
   password: $password,
 });
 
-const pageReady = checkAnonymous({ when: pageLoaded });
+const pageReady = checkAnonymous({ when: pageStart });
 
 $code.on(codeReceived, (_, code) => code);
 

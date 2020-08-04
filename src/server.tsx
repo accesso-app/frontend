@@ -11,7 +11,8 @@ import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
 import { Event, forward, root, sample, Store } from 'effector-root';
-import { getStart } from 'lib/effector';
+import { getStart, StartParams } from 'lib/page-routing';
+import { debug } from 'patronum/debug';
 
 import {
   setCookiesForRequest,
@@ -33,9 +34,10 @@ const requestHandled = serverStarted.map(({ req }) => req);
 
 const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
-const routesMatched = requestHandled.map((req) =>
-  matchRoutes(routes, req.url).filter(lookupStartEvent),
-);
+const routesMatched = requestHandled.map((req) => ({
+  routes: matchRoutes(routes, req.path).filter(lookupStartEvent),
+  query: req.query,
+}));
 
 forward({
   from: cookiesReceived,
@@ -52,12 +54,18 @@ for (const { component } of routes) {
 
   if (startPageEvent) {
     const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
-      (routes) =>
-        routes.filter((route) => lookupStartEvent(route) === startPageEvent)[0],
+      ({ routes, query }) => {
+        const route = routes.find(routeWithEvent(startPageEvent));
+        if (route) return { route, query };
+        return undefined;
+      },
     );
 
     forward({
-      from: matchedRoute.map((route) => route.match.params),
+      from: matchedRoute.map(({ route, query }) => ({
+        params: route.match.params,
+        query,
+      })),
       to: startPageEvent,
     });
   }
@@ -184,11 +192,17 @@ function htmlEnd(storesValues: {}): string {
 
 function lookupStartEvent<P>(
   match: MatchedRoute<P>,
-): Event<Record<string, string>> | undefined {
+): Event<StartParams> | undefined {
   if (match.route.component) {
     return getStart(match.route.component);
   }
   return undefined;
+}
+
+function routeWithEvent(event: Event<StartParams>) {
+  return function <P>(route: MatchedRoute<P>) {
+    return lookupStartEvent(route) === event;
+  };
 }
 
 function isRedirected(res: express.Response): boolean {
