@@ -111,3 +111,8 @@ const Container = styled.div`
   box-sizing: content-box;
   height: 100%;
 `;
+
+const Footer = styled.footer`
+  margin-top: 6rem;
+  font-size: 1.2rem;
+`;
