@@ -62,11 +62,11 @@ for (const { component } of routes) {
   );
 
   forward({
-    from: matchedRoute.map(({ route, query }) => ({
+    from: matchedRoute,
+    to: startPageEvent.prepend(({ route, query }) => ({
       params: route.match.params,
       query,
     })),
-    to: startPageEvent,
   });
 }
 
