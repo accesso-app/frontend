@@ -49,9 +49,9 @@ forward({
   to: readyToLoadSession,
 });
 
-routes.forEach(({ component }) => {
+for (const { component } of routes) {
   const startPageEvent = getStart(component);
-  if (!startPageEvent) return;
+  if (!startPageEvent) continue;
 
   const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
     ({ routes, query }) => {
@@ -68,7 +68,7 @@ routes.forEach(({ component }) => {
     })),
     to: startPageEvent,
   });
-});
+}
 
 sample({
   source: serverStarted,
