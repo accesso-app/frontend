@@ -56,8 +56,7 @@ for (const { component } of routes) {
     const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
       ({ routes, query }) => {
         const route = routes.find(routeWithEvent(startPageEvent));
-        if (route) return { route, query };
-        return undefined;
+        return route ? { route, query } : undefined;
       },
     );
 
