@@ -6,8 +6,9 @@ import {
   guard,
   sample,
 } from 'effector-root';
+import { validateEmail } from 'lib/validateEmail';
 
-const request = createEffect();
+const request = createEffect<string, string>();
 
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const formSubmitted = createEvent();
@@ -16,9 +17,15 @@ export const $email = createStore<string>('');
 export const $failure = createStore<boolean>(false);
 
 request.use((email) => {
-  if (email !== 'valid@email.com') {
-    throw Error('123');
+  const isEmailValid = validateEmail(email);
+
+  if (!isEmailValid) {
+    throw Error('email is not vlaid');
   }
+
+  console.log({
+    recoveryUrl: `/access-recovery/confirm-code`,
+  });
 
   return 'success';
 });
