@@ -7,7 +7,9 @@ import {
   restore,
 } from 'effector-root';
 
-export const sendEmailFx = createEffect();
+import { validateEmail } from 'lib/email';
+
+export const sendEmailFx = createEffect<string, string>();
 
 export const emailChanged = createEvent<string>();
 export const formSubmitted = createEvent();
@@ -16,9 +18,15 @@ export const $email = restore<string>(emailChanged, '');
 export const $failure = createStore<boolean>(false);
 
 sendEmailFx.use((email) => {
-  if (email !== 'valid@email.com') {
-    throw Error('123');
+  const isEmailValid = validateEmail(email);
+
+  if (!isEmailValid) {
+    throw Error('email is not vlaid');
   }
+
+  console.log({
+    recoveryUrl: `/access-recovery/confirm-code`,
+  });
 
   return 'success';
 });

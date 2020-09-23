@@ -4,8 +4,8 @@ import { Button, Title, Input } from 'woly';
 import { useStore, useEvent } from 'effector-react';
 
 import Logo from 'logo.svg';
-import { CenterCardTemplate } from '@auth/ui';
 import { getValue } from 'lib/input';
+import { CenterCardTemplate } from '@auth/ui';
 
 import * as model from './model';
 
