@@ -56,7 +56,7 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
             value={rePassord}
             onChange={handleRePasswordChanged}
           />
-          {failure && <div>Something went wrong</div>}
+          {failure && <div>{failure}</div>}
 
           <Group>
             <Button type="submit" text="Save password" variant="primary" />
