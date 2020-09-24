@@ -1,9 +1,9 @@
+import { debug } from 'patronum';
 import {
   createStore,
   createEvent,
   guard,
   sample,
-  combine,
   createEffect,
 } from 'effector-root';
 
@@ -22,7 +22,6 @@ export const changePassword = createEffect<ChangePasswordParams, void>();
 
 export const passwordChanged = createEvent<string>();
 export const rePasswordChanged = createEvent<string>();
-export const passwordConfirmed = createEvent<boolean>();
 export const formSubmitted = createEvent();
 
 const codeReceived = pageStart.filterMap(({ params }) => params['code']);
@@ -37,23 +36,27 @@ const $isPasswordValid = $password.map((pass) => validatePassword(pass));
 $password.on(passwordChanged, (_, password) => password);
 $rePassword.on(rePasswordChanged, (_, password) => password);
 $code.on(codeReceived, (_, code) => code);
-$failure.on(passwordConfirmed, (_, isConfirmed) => {
-  if (isConfirmed) return null;
-
-  const errorMessage = getErorr(1000);
-
-  return errorMessage;
-});
 
 sample({
-  source: combine([$password, $rePassword]),
+  source: [$password, $rePassword],
   clock: formSubmitted,
   fn: ([password, rePassword]) => {
     const isEqual = password === rePassword;
+    const hasEightLetters = password.length >= 8;
 
-    return isEqual;
+    if (!hasEightLetters) {
+      return 'Password should be at least 8 letters long';
+    }
+
+    if (!isEqual) {
+      const errorMessage = getErorr(1000);
+
+      return errorMessage;
+    }
+
+    return null;
   },
-  target: passwordConfirmed,
+  target: $failure,
 });
 
 sample({
@@ -64,3 +67,5 @@ sample({
   fn: ([password, , code]) => ({ password, code: code! }),
   target: changePassword,
 });
+
+debug(formSubmitted, $failure);

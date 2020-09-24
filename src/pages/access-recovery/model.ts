@@ -7,6 +7,7 @@ import {
   sample,
 } from 'effector-root';
 import { validateEmail } from 'lib/validateEmail';
+import { getErorr } from 'lib/get-error';
 
 const request = createEffect<string, string>();
 
@@ -14,13 +15,13 @@ export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const formSubmitted = createEvent();
 
 export const $email = createStore<string>('');
-export const $failure = createStore<boolean>(false);
+export const $failure = createStore<string | null>(null);
 
 request.use((email) => {
   const isEmailValid = validateEmail(email);
 
   if (!isEmailValid) {
-    throw Error('email is not vlaid');
+    throw new Error('Email is not valid');
   }
 
   console.log({
@@ -32,7 +33,12 @@ request.use((email) => {
 
 $email.on(emailChanged, (_, email) => email.currentTarget.value);
 
-$failure.on(request.fail, () => true);
+$failure.on(request.failData, () => {
+  const errorMessage = getErorr(1000);
+
+  return errorMessage;
+});
+
 $failure.reset(formSubmitted);
 
 sample({

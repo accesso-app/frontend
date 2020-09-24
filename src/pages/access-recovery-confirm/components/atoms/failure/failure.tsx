@@ -9,7 +9,7 @@ export function Failure() {
 
   if (!failure) return null;
 
-  return <Text>Email is not valid</Text>;
+  return <Text>{failure}</Text>;
 }
 
 const Text = styled.div`

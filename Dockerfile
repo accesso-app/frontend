@@ -28,6 +28,6 @@ COPY --from=build /app/package.json /app/yarn.lock ./
 RUN yarn install --production
 COPY --from=build /app/build ./build
 
-EXPOSE 3000
+EXPOSE 9000
 
 CMD ["yarn", "start:prod"]
