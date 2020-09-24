@@ -6,6 +6,7 @@ import { useStore, useEvent } from 'effector-react';
 import Logo from 'logo.svg';
 import { getValue } from 'lib/input';
 import { CenterCardTemplate } from '@auth/ui';
+import { sendRecoveryEmail } from 'api/access-recovery';
 
 import * as model from './model';
 
@@ -16,7 +17,7 @@ export const AccessRecoveryPage = () => {
 
   const email = useStore(model.$email);
   const failure = useStore(model.$failure);
-  const isLoading = useStore(model.sendEmailFx.pending);
+  const isPending = useStore(sendRecoveryEmail.pending);
 
   const handleSubmit = React.useCallback(
     (event) => {
@@ -41,7 +42,7 @@ export const AccessRecoveryPage = () => {
               type="submit"
               text="Send email"
               variant="primary"
-              disabled={isLoading}
+              disabled={isPending}
             />
           </Group>
         </form>

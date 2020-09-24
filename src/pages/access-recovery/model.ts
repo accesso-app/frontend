@@ -7,35 +7,38 @@ import {
   restore,
 } from 'effector-root';
 
+import { sendRecoveryEmail } from 'api/access-recovery';
 import { validateEmail } from 'lib/email';
 
-export const sendEmailFx = createEffect<string, string>();
+type AccessRecoveryError = 'invalid_email';
+
+function mapErrors(error: AccessRecoveryError) {
+  switch (error) {
+    case 'invalid_email':
+      return 'Email is invalid';
+    default:
+      return 'Oops, something went wrong';
+  }
+}
 
 export const emailChanged = createEvent<string>();
 export const formSubmitted = createEvent();
 
 export const $email = restore<string>(emailChanged, '');
-export const $failure = createStore<boolean>(false);
+export const $failure = createStore<string | null>(null);
 
-sendEmailFx.use((email) => {
-  const isEmailValid = validateEmail(email);
+$email.on(emailChanged, (_, email) => email);
 
-  if (!isEmailValid) {
-    throw Error('email is not vlaid');
-  }
+$failure.on(sendRecoveryEmail.failData, (_, data) => {
+  const { error } = data.body;
 
-  console.log({
-    recoveryUrl: `/access-recovery/confirm-code`,
-  });
-
-  return 'success';
+  return mapErrors(error);
 });
 
-$failure.on(sendEmailFx.fail, () => true);
 $failure.reset(formSubmitted);
 
 sample({
-  source: $email,
+  source: { email: $email },
   clock: guard(formSubmitted, { filter: $email.map((is) => !!is) }),
-  target: sendEmailFx,
+  target: sendRecoveryEmail,
 });

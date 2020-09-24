@@ -6,6 +6,7 @@ import { useEvent, useStore } from 'effector-react';
 import Logo from 'logo.svg';
 import { getValue } from 'lib/input';
 import { CenterCardTemplate } from '@auth/ui';
+import { changePassword } from 'api/access-recovery';
 import { withStart, useStart } from 'lib/page-routing';
 
 import * as model from './model';
@@ -18,6 +19,7 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
 
   const formSubmitted = useEvent(model.formSubmitted);
 
+  const isPending = useStore(changePassword.pending);
   const password = useStore(model.$password);
   const rePassord = useStore(model.$rePassword);
   const failure = useStore(model.$failure);
@@ -47,10 +49,15 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
             onChange={handleRePasswordChanged}
           />
 
-          {failure && <div>{failure}</div>}
+          {failure && <Text>{failure}</Text>}
 
           <Group>
-            <Button type="submit" text="Save password" variant="primary" />
+            <Button
+              type="submit"
+              text="Save password"
+              variant="primary"
+              disabled={isPending}
+            />
           </Group>
         </form>
       </Container>
@@ -80,4 +87,8 @@ const Group = styled.div`
   & *:not(:first-child) {
     margin-left: 2rem;
   }
+`;
+
+const Text = styled.div`
+  font-size: 1.8rem;
 `;
