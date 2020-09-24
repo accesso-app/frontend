@@ -6,11 +6,10 @@ import {
   combine,
   createEffect,
 } from 'effector-root';
-import { debug } from 'patronum/debug';
 
 import { createStart } from 'lib/page-routing';
 
-import { validatePassword } from './lib';
+import { getErorr, validatePassword } from './lib';
 
 export interface ChangePasswordParams {
   password: string;
@@ -26,26 +25,24 @@ export const rePasswordChanged = createEvent<string>();
 export const passwordConfirmed = createEvent<boolean>();
 export const formSubmitted = createEvent();
 
-const codeReceived = pageStart.filterMap(({ params }) => {
-  console.log(params['code']); // выводит
-
-  return params['code'];
-});
+const codeReceived = pageStart.filterMap(({ params }) => params['code']);
 
 export const $password = createStore<string>('');
 export const $rePassword = createStore<string>('');
-export const $failure = createStore<boolean>(false);
+export const $failure = createStore<string | null>(null);
 export const $code = createStore<string | null>(null);
 
 const $isPasswordValid = $password.map((pass) => validatePassword(pass));
 
 $password.on(passwordChanged, (_, password) => password);
 $rePassword.on(rePasswordChanged, (_, password) => password);
-$failure.on(passwordConfirmed, (_, isConfirmed) => !isConfirmed);
-$code.on(codeReceived, (_, code) => {
-  console.log(code); // выводит
+$code.on(codeReceived, (_, code) => code);
+$failure.on(passwordConfirmed, (_, isConfirmed) => {
+  if (isConfirmed) return null;
 
-  return code;
+  const errorMessage = getErorr(1000);
+
+  return errorMessage;
 });
 
 sample({
@@ -67,5 +64,3 @@ sample({
   fn: ([password, , code]) => ({ password, code: code! }),
   target: changePassword,
 });
-
-debug($code, formSubmitted, codeReceived, pageStart);
