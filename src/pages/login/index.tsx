@@ -68,6 +68,12 @@ export const LoginPage = withStart(model.pageLoaded, () => {
               text="Sign up"
               variant="text"
             />
+            <Button
+              as={Link}
+              to={path.accessRecovery()}
+              text="Reset password"
+              variant="text"
+            />
           </Group>
         </form>
         <Footer>
@@ -101,6 +107,10 @@ const Group = styled.div`
       margin-left: initial;
       margin-top: 1rem;
     }
+  }
+
+  &[data-justify-content='center'] {
+    justify-content: center;
   }
 `;
 
