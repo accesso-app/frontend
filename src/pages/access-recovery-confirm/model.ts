@@ -10,7 +10,7 @@ import {
 
 import { createStart } from 'lib/page-routing';
 
-import { validatePassword } from './lib';
+import { mapErrors, validatePassword } from './lib';
 
 export interface ChangePasswordParams {
   password: string;
@@ -34,10 +34,18 @@ const codeReceived = pageStart.filterMap(({ params }) => {
 
 export const $password = restore<string>(passwordChanged, '');
 export const $rePassword = restore<string>(rePasswordChanged, '');
-export const $failure = restore<boolean>(passwordConfirmed, false);
 export const $code = restore<string>(codeReceived, null);
+export const $failure = createStore<string | null>('');
 
 const $isPasswordValid = $password.map((pass) => validatePassword(pass));
+
+$failure.on(passwordConfirmed, (_, isConfirmed) => {
+  if (isConfirmed) return null;
+
+  const errorMessage = mapErrors('invalid_password');
+
+  return errorMessage;
+});
 
 sample({
   source: combine([$password, $rePassword]),
