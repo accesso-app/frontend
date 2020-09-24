@@ -5,9 +5,10 @@ import { useEvent, useStore } from 'effector-react';
 
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
+import { withStart, useStart } from 'lib/page-routing';
 
 import * as model from './model';
-import { withStart, useStart } from 'lib/page-routing';
+import { Failure } from './components';
 
 export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
   useStart(model.pageStart);
@@ -18,7 +19,6 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
 
   const password = useStore(model.$password);
   const rePassord = useStore(model.$rePassword);
-  const failure = useStore(model.$failure);
 
   const handlePasswordChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.currentTarget.value;
@@ -56,7 +56,7 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
             value={rePassord}
             onChange={handleRePasswordChanged}
           />
-          {failure && <div>{failure}</div>}
+          <Failure />
 
           <Group>
             <Button type="submit" text="Save password" variant="primary" />
