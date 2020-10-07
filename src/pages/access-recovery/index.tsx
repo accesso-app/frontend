@@ -12,6 +12,17 @@ import * as model from './model';
 
 const changeEmail = model.emailChanged.prepend(getValue);
 
+const mapErrors = (error: model.AccessRecoveryError) => {
+  switch (true) {
+    case error === 'invalid_email':
+      return 'Email is invalid';
+    case error === null:
+      return;
+    default:
+      return 'Oops, something went wrong';
+  }
+};
+
 export const AccessRecoveryPage = () => {
   const formSubmitted = useEvent(model.formSubmitted);
 
@@ -35,7 +46,7 @@ export const AccessRecoveryPage = () => {
           <Title level={2}>Access Recovery</Title>
           <Input placeholder="email" value={email} onChange={changeEmail} />
 
-          {failure && <Text>{failure}</Text>}
+          {failure && <Text>{mapErrors(failure)}</Text>}
 
           <Group>
             <Button

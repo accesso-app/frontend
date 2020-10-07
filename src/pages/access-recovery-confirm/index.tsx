@@ -11,6 +11,23 @@ import { withStart, useStart } from 'lib/page-routing';
 
 import * as model from './model';
 
+const mapErrors = (error: model.AccessRecoveryConfirmError) => {
+  switch (true) {
+    case error === 'password_too_short':
+      return 'Password should be at least 8 letters long';
+    case error === 'repeat_password_wrong':
+      return 'Confirm password does not match';
+    case error === 'invalid_email':
+      return 'Email is not valid';
+    case error === 'invalid_password':
+      return 'Password is not valid';
+    case error === null:
+      return null;
+    default:
+      return 'Oops, something went wrong';
+  }
+};
+
 const handlePasswordChanged = model.passwordChanged.prepend(getValue);
 const handleRePasswordChanged = model.rePasswordChanged.prepend(getValue);
 
@@ -49,7 +66,7 @@ export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
             onChange={handleRePasswordChanged}
           />
 
-          {failure && <Text>{failure}</Text>}
+          {failure && <Text>{mapErrors(failure)}</Text>}
 
           <Group>
             <Button

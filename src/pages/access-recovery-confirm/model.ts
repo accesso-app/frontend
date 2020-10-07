@@ -18,18 +18,13 @@ export interface ChangePasswordParams {
   code: string;
 }
 
-type AccessRecoveryConfirmError = 'invalid_email' | 'invalid_password';
-
-function mapErrors(error: AccessRecoveryConfirmError) {
-  switch (error) {
-    case 'invalid_email':
-      return 'Email is invalid';
-    case 'invalid_password':
-      return 'Password is invalid';
-    default:
-      return 'Oops, something went wrong';
-  }
-}
+export type AccessRecoveryConfirmError =
+  | 'password_too_short'
+  | 'repeat_password_wrong'
+  | 'invalid_email'
+  | 'invalid_password'
+  | 'fail_to_parse'
+  | null;
 
 export const pageStart = createStart();
 
@@ -46,9 +41,10 @@ const codeReceived = pageStart.filterMap(({ params }) => {
 export const $password = restore<string>(passwordChanged, '');
 export const $rePassword = restore<string>(rePasswordChanged, '');
 export const $code = restore<string>(codeReceived, null);
-export const $failure = createStore<string | null>('');
+export const $failure = createStore<AccessRecoveryConfirmError>(null);
 
 const $isPasswordValid = $password.map((pass) => validatePassword(pass));
+$failure.on(changePassword.failInvalid, () => 'fail_to_parse');
 
 sample({
   source: [$password, $rePassword],
@@ -59,9 +55,9 @@ sample({
 
     switch (true) {
       case !hasEightLetters:
-        return 'Password should be at least 8 letters long';
+        return 'password_too_short';
       case !isEqual:
-        return 'Passwords do not match';
+        return 'repeat_password_wrong';
       default:
         return null;
     }
@@ -78,10 +74,10 @@ sample({
 });
 
 forward({
-  from: changePassword.failData.map(({ body }) => {
-    const error = body.error;
+  from: changePassword.fail.map(({ error }) => {
+    const errorCode = error.body.error;
 
-    return mapErrors(error);
+    return errorCode;
   }),
   to: $failure,
 });
