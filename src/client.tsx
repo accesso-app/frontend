@@ -15,7 +15,7 @@ ReactDOM.hydrate(
   <Router history={history!}>
     <Application root={scope} />
   </Router>,
-  document.getElementById('root'),
+  document.querySelector('#root'),
 );
 
 if (module.hot) {
