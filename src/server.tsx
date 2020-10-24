@@ -36,7 +36,7 @@ const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
 const routesMatched = requestHandled.map((req) => ({
   routes: matchRoutes(routes, req.path).filter(lookupStartEvent),
-  query: req.query,
+  query: Object.fromEntries(new URL(req.originalUrl).searchParams),
 }));
 
 forward({
