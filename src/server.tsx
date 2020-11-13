@@ -92,11 +92,11 @@ syncLoadAssets();
 export const server = express()
   .disable('x-powered-by')
   .use(
-    '/api/v0',
+    '/api/internal',
     createProxyMiddleware({
       target: process.env.BACKEND_URL ?? 'http://localhost:9005',
       pathRewrite: {
-        '^/api/v0': '',
+        '^/api/internal': '',
       },
       secure: false,
     }),
