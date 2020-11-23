@@ -18,8 +18,8 @@ jobs:
       - name: Publish Docker
         uses: sergeysova/docker-publish-action@v1
         with:
-          registry: docker.pkg.github.com
-          image: accesso-app/frontend/main
+          registry: ghcr.io
+          image: accesso-app/frontend
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           tag_semver: skip
