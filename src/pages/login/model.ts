@@ -1,39 +1,54 @@
-import { ChangeEvent } from 'react';
 import {
   createEvent,
-  createStore,
+  createDomain,
   sample,
   combine,
   guard,
+  forward,
+  attach,
 } from 'effector-root';
-import { sessionCreate } from 'api/session';
+import { pending } from 'patronum/pending';
+import { sessionCreate, sessionGet } from 'api/session';
 
 import { checkAnonymous } from 'features/session';
-import { createStart } from 'lib/page-routing';
+import { historyPush } from 'features/navigation';
+import { path } from 'pages/paths';
 
-export const pageLoaded = createStart();
+export const start = createEvent();
+export const formSubmit = createEvent();
+export const emailChange = createEvent<string>();
+export const passwordChange = createEvent<string>();
 
-export const formSubmitted = createEvent();
-export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
-export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
+const pageReady = checkAnonymous({ when: start });
 
-export const $formDisabled = sessionCreate.pending;
+// TODO: migrate from `createResource` to `effector-openapi-preset`
+const sessionCreateLocal = attach({ effect: sessionCreate });
+const sessionGetLocal = attach({ effect: sessionGet });
 
-export const $email = createStore<string>('');
-export const $password = createStore<string>('');
+export const $formPending = pending({
+  effects: [sessionCreateLocal, sessionGetLocal],
+});
+export const $formDisabled = $formPending;
+const form = createDomain();
 
-export const $failure = createStore<string | null>(null);
+export const $email = form.createStore<string>('');
+export const $password = form.createStore<string>('');
+export type Failure =
+  | 'invalid_credentials'
+  | 'invalid_form'
+  | 'invalid_payload'
+  | 'unexpected';
+export const $failure = form.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
 
-const pageReady = checkAnonymous({ when: pageLoaded });
+form.onCreateStore(($store) => $store.reset(start));
 
-$email.on(emailChanged, (_, event) => event.currentTarget.value);
-$password.on(passwordChanged, (_, event) => event.currentTarget.value);
+$email.on(emailChange, (_, email) => email);
+$password.on(passwordChange, (_, password) => password);
 
 $failure
-  .on(sessionCreate, () => null)
-  .on(pageReady, () => null)
+  .reset(pageReady, sessionCreate)
   .on(sessionCreate.failBody, (_, failed) => {
     if ('error' in failed) {
       return failed.error;
@@ -43,6 +58,16 @@ $failure
 
 sample({
   source: $form,
-  clock: guard(formSubmitted, { filter: $formDisabled.map((is) => !is) }),
-  target: sessionCreate,
+  clock: guard(formSubmit, { filter: $formDisabled.map((is) => !is) }),
+  target: sessionCreateLocal,
+});
+
+forward({
+  from: sessionCreateLocal.done,
+  to: sessionGetLocal,
+});
+
+forward({
+  from: sessionGetLocal.done,
+  to: historyPush.prepend(path.home),
 });
