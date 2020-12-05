@@ -11,6 +11,10 @@ async function requestServer({ path, method, ...params }: Request) {
     cookie: combineCookies(params.headers?.cookie, params.cookies),
   });
   contentDefault(headers, 'application/json; charset=utf-8');
+  headers.set(
+    'user-agent',
+    `accesso-frontend/unknown node/${process.version}-${process.platform}`,
+  );
 
   const query = queryToString(params.query);
   const body =
