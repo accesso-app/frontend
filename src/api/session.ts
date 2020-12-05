@@ -14,7 +14,7 @@ const TSessionGetSuccess = typed.object({
 export const sessionGet = createResource({
   name: 'sessionGet',
   contractDone: TSessionGetSuccess,
-  contractFail: typed.nul,
+  contractFail: typed.literal(''),
   mapParams: () => ({ path: '/session/get', method: 'POST' }),
 });
 

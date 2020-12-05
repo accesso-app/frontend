@@ -26,6 +26,21 @@ export const $sessionPending = combine(
   ([session, pending]) => !session && pending,
 );
 
+$session
+  .on(sessionGet.doneData, (_, { body }) => body.user)
+  .on(sessionGet.failData, (session, { status }) => {
+    if (status === 401) {
+      return null;
+    }
+    return session;
+  });
+
+guard({
+  source: readyToLoadSession,
+  filter: $sessionPending.map((is) => !is),
+  target: sessionGet,
+});
+
 /**
  * If user not authenticated, redirect to login
  */
@@ -56,7 +71,7 @@ export function checkAnonymous<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
 }): Event<T> {
-  const continueLogic = config.continue ?? createEvent();
+  const continueLogic = config.continue ?? createEvent<T>();
   condition({
     source: config.when,
     if: $isAuthenticated,
@@ -71,18 +86,3 @@ export function checkAnonymous<T>(config: {
   });
   return result;
 }
-
-$session
-  .on(sessionGet.done, (_, { result }) => result.body.user)
-  .on(sessionGet.failData, (session, { status }) => {
-    if (status === 401) {
-      return null;
-    }
-    return session;
-  });
-
-guard({
-  source: readyToLoadSession,
-  filter: $sessionPending.map((is) => !is),
-  target: sessionGet,
-});

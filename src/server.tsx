@@ -34,10 +34,13 @@ const requestHandled = serverStarted.map(({ req }) => req);
 
 const cookiesReceived = requestHandled.filterMap((req) => req.headers.cookie);
 
-const routesMatched = requestHandled.map((req) => ({
-  routes: matchRoutes(routes, req.path).filter(lookupStartEvent),
-  query: Object.fromEntries(new URL(req.originalUrl).searchParams),
-}));
+const routesMatched = requestHandled.map((req) => {
+  const url = `${req.protocol}://${req.hostname}${req.originalUrl}`;
+  return {
+    routes: matchRoutes(routes, req.path).filter(lookupStartEvent),
+    query: Object.fromEntries(new URL(url).searchParams),
+  };
+});
 
 forward({
   from: cookiesReceived,
@@ -141,8 +144,9 @@ export const server = express()
       ReactDOMServer.renderToNodeStream(jsx),
     );
 
-    const storesValues = customSerialize(scope, {
+    const storesValues = serialize(scope, {
       ignore: [$cookiesForRequest, $cookiesFromResponse],
+      onlyChanges: true,
     });
 
     res.write(htmlStart(assets.client.css, assets.client.js));
