@@ -7,7 +7,6 @@ import {
   Event,
   forward,
 } from 'effector-root';
-import { condition } from 'patronum/condition';
 
 import { sessionGet, SessionUser } from 'api/session';
 import { historyPush } from 'features/navigation';
@@ -49,11 +48,15 @@ export function checkAuthenticated<T>(config: {
   continue?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent();
-  condition({
+  guard({
     source: config.when,
-    if: $isAuthenticated,
-    then: continueLogic,
-    else: historyPush.prepend(path.login),
+    filter: $isAuthenticated,
+    target: continueLogic,
+  });
+  guard({
+    source: config.when,
+    filter: $isAuthenticated.map((is) => !is),
+    target: historyPush.prepend(path.login),
   });
 
   const result = createEvent<T>();
@@ -72,11 +75,15 @@ export function checkAnonymous<T>(config: {
   continue?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent<T>();
-  condition({
+  guard({
     source: config.when,
-    if: $isAuthenticated,
-    then: historyPush.prepend(path.home),
-    else: continueLogic,
+    filter: $isAuthenticated,
+    target: historyPush.prepend(path.home),
+  });
+  guard({
+    source: config.when,
+    filter: $isAuthenticated.map((is) => !is),
+    target: continueLogic,
   });
 
   const result = createEvent<T>();

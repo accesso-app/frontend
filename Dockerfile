@@ -27,6 +27,7 @@ WORKDIR /app
 COPY --from=build /app/package.json /app/yarn.lock ./
 RUN yarn install --production
 COPY --from=build /app/build ./build
+RUN touch .env
 
 EXPOSE 3000
 

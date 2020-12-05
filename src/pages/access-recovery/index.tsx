@@ -7,6 +7,7 @@ import Logo from 'logo.svg';
 import { getValue } from 'lib/input';
 import { CenterCardTemplate } from '@auth/ui';
 import { sendRecoveryEmail } from 'api/access-recovery';
+import { useStart, withStart } from 'lib/page-routing';
 
 import * as model from './model';
 
@@ -23,7 +24,8 @@ const mapErrors = (error: model.AccessRecoveryError) => {
   }
 };
 
-export const AccessRecoveryPage = () => {
+export const AccessRecoveryPage = withStart(model.start, () => {
+  useStart(model.start);
   const formSubmitted = useEvent(model.formSubmitted);
 
   const email = useStore(model.$email);
@@ -60,7 +62,7 @@ export const AccessRecoveryPage = () => {
       </Container>
     </CenterCardTemplate>
   );
-};
+});
 
 const Logotype = styled(Logo)`
   margin-bottom: 3rem;

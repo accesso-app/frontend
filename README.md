@@ -4,6 +4,9 @@
 
 ## Setup
 
+- Create `.env` file from `.env.sample`, and select backend instance (open file in editor and remove one `BACKEND_URL` definition)
+- Accesso supports `.env.local` file to load
+
 ### Env vars
 
 - `BACKEND_URL` (server) — full url to backend API endpoint to send requests from nodejs.

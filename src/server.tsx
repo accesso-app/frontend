@@ -2,6 +2,7 @@ import { performance } from 'perf_hooks';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
@@ -24,6 +25,11 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { Application } from './application';
 import { routes } from './pages/routes';
+
+const dotenvLoaded = dotenv.config();
+if (dotenvLoaded.error) {
+  throw dotenvLoaded.error;
+}
 
 const serverStarted = root.createEvent<{
   req: express.Request;
