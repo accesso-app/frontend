@@ -67,11 +67,11 @@
     "husky": "^3.1.0",
     "jest": "^26.6.1",
     "lint-staged": "^9.5.0",
-    "prettier": "^2.0.4",
+    "prettier": "^2.2.1",
     "razzle": "^3.0.0",
     "razzle-plugin-typescript": "^3.0.0",
     "ts-jest": "^26.4.2",
-    "typescript": "^4.0.3",
+    "typescript": "^4.1.2",
     "typescript-styled-plugin": "^0.15.0"
   },
   "jest": {
