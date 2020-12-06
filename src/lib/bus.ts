@@ -27,12 +27,23 @@ export function bus<E, S>(config: {
       : never
   >;
 }) {
-  for (const [from, to, map] of config.events) {
-    if (map) forward({ from: from.map(map), to });
-    else forward({ from, to });
+  for (const [fromEvent, toEvent, mapFn] of config.events) {
+    if (mapFn) forward({ from: fromEvent.map(mapFn), to: toEvent });
+    else forward({ from: fromEvent, to: toEvent });
   }
-  for (const [from, to] of config.stores) {
-    forward({ from, to });
-    to.defaultState = from.defaultState;
+
+  for (const [fromStore, toStore] of config.stores) {
+    forward({ from: fromStore, to: toStore });
+
+    toStore.defaultState = fromStore.defaultState;
+
+    // It's overrides initial value on toStore
+    (toStore as any).stateRef.before = [
+      {
+        type: 'map',
+        fn: (state: unknown) => state,
+        from: (fromStore as any).stateRef,
+      },
+    ];
   }
 }
