@@ -29,6 +29,7 @@
     "noUnusedLocals": false,
     "pretty": true,
     "sourceMap": true,
+    "skipLibCheck": true,
     "strict": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
@@ -50,7 +51,9 @@
         "name": "typescript-styled-plugin",
         "tags": ["styled", "css", "createGlobalStyle"]
       }
-    ]
+    ],
+    "declaration": true,
+    "emitDeclarationOnly": true
   },
   "exclude": [
     "build",

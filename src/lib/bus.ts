@@ -38,6 +38,7 @@ export function bus<E, S>(config: {
     toStore.defaultState = fromStore.defaultState;
 
     // It's overrides initial value on toStore
+    // https://t.me/c/1489066599/4652
     (toStore as any).stateRef.before = [
       {
         type: 'map',

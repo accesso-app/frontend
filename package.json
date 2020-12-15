@@ -36,16 +36,20 @@
     "react-is": "^16.13.1",
     "react-router": "^5.2.0",
     "react-router-config": "^5.1.1",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.2.0",
     "styled-components": "^5.0.1",
     "typed-contracts": "^2.3.0",
     "universal-fetch": "^1.0.0",
     "woly": "0.1.10"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-typescript": "^7.12.7",
     "@commitlint/cli": "8.2.0",
     "@commitlint/config-conventional": "8.2.0",
     "@svgr/webpack": "^5.2.0",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
     "@types/cookie": "^0.3.3",
     "@types/cookie-parser": "^1.4.2",
     "@types/express": "^4.17.0",
@@ -57,28 +61,31 @@
     "@types/query-string": "^6.3.0",
     "@types/react": "^16.9.32",
     "@types/react-dom": "^16.9.6",
+    "@types/react-router": "^5.1.8",
     "@types/react-router-config": "^5.0.1",
-    "@types/react-router-dom": "^4.3.4",
+    "@types/react-router-dom": "^5.1.6",
     "@types/styled-components": "^5.0.1",
     "@types/webpack-env": "^1.15.3",
+    "babel-jest": "^26.6.3",
     "babel-plugin-styled-components": "^1.10.7",
     "babel-plugin-transform-rename-import": "^2.3.0",
     "commitizen": "4.0.3",
     "cz-conventional-changelog": "3.0.2",
     "husky": "^3.1.0",
     "jest": "^26.6.1",
+    "jest-config": "^26.6.3",
     "lint-staged": "^9.5.0",
     "prettier": "^2.2.1",
     "razzle": "^3.0.0",
     "razzle-plugin-typescript": "^3.0.0",
-    "ts-jest": "^26.4.2",
     "typescript": "^4.1.2",
     "typescript-styled-plugin": "^0.15.0"
   },
   "jest": {
     "transform": {
-      "\\.(ts|tsx)$": "ts-jest",
+      "\\.(ts|tsx)$": "babel-jest",
       "\\.css$": "<rootDir>/node_modules/razzle/config/jest/cssTransform.js",
+      "\\.svg$": "<rootDir>/svgTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
     },
     "testMatch": [
@@ -86,7 +93,11 @@
       "<rootDir>/src/**/?(*.)(spec|test).(ts|js)?(x)"
     ],
     "moduleFileExtensions": ["ts", "tsx", "js", "json"],
-    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"]
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "moduleNameMapper": {
+      "^@auth/ui$": "<rootDir>/src/ui/index.ts"
+    },
+    "moduleDirectories": ["node_modules", "src"]
   },
   "config": {
     "commitizen": {
