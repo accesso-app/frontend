@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { bus } from 'lib/bus';
 import { StartParams } from 'lib/page-routing';
 
@@ -10,7 +10,7 @@ export { LoginPage } from './page';
 bus({
   events: [
     [page.pageLoaded, model.start, noop],
-    [page.formSubmitted, model.formSubmit],
+    [page.formSubmitted, model.formSubmit, noopSubmit],
     [page.emailChanged, model.emailChange, getValue],
     [page.passwordChanged, model.passwordChange, getValue],
   ],
@@ -28,3 +28,4 @@ function getValue(event: ChangeEvent<HTMLInputElement>): string {
 }
 
 function noop(_value: StartParams): void {}
+function noopSubmit(_value: FormEvent<HTMLFormElement>): void {}

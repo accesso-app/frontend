@@ -4,17 +4,17 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 
 import { createEvent, createStore } from 'effector-root';
-import { useStore, useEvent } from 'effector-react/ssr';
+import { reflect } from 'effector-reflect/ssr';
 import { withStart, useStart, createStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
 import { path } from 'pages/paths';
-import { Failure } from './model';
+import { Failure } from './types';
 
 // Model
 export const pageLoaded = createStart();
-export const formSubmitted = createEvent();
+export const formSubmitted = createEvent<React.FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const $email = createStore('');
@@ -23,61 +23,37 @@ export const $formDisabled = createStore(false);
 export const $formPending = createStore(false);
 export const $failure = createStore<Failure | null>(null);
 
-const $failureText = $failure.map(failureReadable);
+const $failureText = $failure.map((failure) => {
+  switch (failure) {
+    case 'invalid_credentials':
+      return 'Invalid email or password.';
+    case 'invalid_form':
+      return 'Form filled incorrect. Try to enter a valid email and password again.';
+    case 'invalid_payload':
+    case 'unexpected':
+      return 'Something wrong happened. Reload page and try again. If nothing changed, please try again later.';
+    case null:
+      return null;
+  }
+});
 
 export const LoginPage = withStart(pageLoaded, () => {
   useStart(pageLoaded);
-
-  const handleEmail = useEvent(emailChanged);
-  const handlePassword = useEvent(passwordChanged);
-  const handleSubmit = useEvent(formSubmitted);
-
-  const onSubmit = React.useCallback(
-    (event) => {
-      event.preventDefault();
-      handleSubmit();
-    },
-    [handleSubmit],
-  );
-
-  const formDisabled = useStore($formDisabled);
-  const formPending = useStore($formPending);
-  const email = useStore($email);
-  const password = useStore($password);
-
-  const failure = useStore($failureText);
 
   return (
     <CenterCardTemplate>
       <Container>
         <Logotype />
 
-        <form onSubmit={onSubmit}>
+        <Form>
           <Title level={2}>Sign in</Title>
+          <Failure />
 
-          {failure && <Fail>{failure}</Fail>}
-
-          <Input
-            placeholder="email"
-            disabled={formDisabled}
-            value={email}
-            onChange={handleEmail}
-          />
-          <Input
-            type="password"
-            placeholder="password"
-            disabled={formDisabled}
-            value={password}
-            onChange={handlePassword}
-          />
+          <Email placeholder="email" />
+          <Password type="password" placeholder="password" />
 
           <Group>
-            <Button
-              type="submit"
-              disabled={formDisabled}
-              text={formPending ? 'Sending…' : 'Sign in'}
-              variant="primary"
-            />
+            <Submit variant="primary" />
             <Button
               as={Link}
               to={path.register()}
@@ -91,7 +67,7 @@ export const LoginPage = withStart(pageLoaded, () => {
               variant="text"
             />
           </Group>
-        </form>
+        </Form>
         <Footer>
           By joining nameproject you accept our Terms of Service and Privacy
           Policy
@@ -101,19 +77,52 @@ export const LoginPage = withStart(pageLoaded, () => {
   );
 });
 
-function failureReadable(failure: Failure | null) {
-  switch (failure) {
-    case 'invalid_credentials':
-      return 'Invalid email or password.';
-    case 'invalid_form':
-      return 'Form filled incorrect. Try to enter a valid email and password again.';
-    case 'invalid_payload':
-    case 'unexpected':
-      return 'Something wrong happened. Reload page and try again. If nothing changed, please try again later.';
-    case null:
-      return null;
-  }
-}
+const Form = reflect({
+  view: styled.form``,
+  bind: {
+    onSubmit: formSubmitted,
+  },
+});
+formSubmitted.watch((event) => event.preventDefault());
+
+const Email = reflect({
+  view: Input,
+  bind: {
+    disabled: $formDisabled,
+    value: $email,
+    onChange: emailChanged,
+  },
+});
+
+const Password = reflect({
+  view: Input,
+  bind: {
+    disabled: $formDisabled,
+    value: $password,
+    onChange: passwordChanged,
+  },
+});
+
+const Submit = reflect({
+  view: Button,
+  bind: {
+    type: 'submit',
+    disabled: $formDisabled,
+    text: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
+  },
+});
+
+const Failure = reflect({
+  bind: {
+    failure: $failureText,
+  },
+  view: ({ failure }: { failure: string | null }) => {
+    if (failure) {
+      return <Fail>{failure}</Fail>;
+    }
+    return null;
+  },
+});
 
 const Logotype = styled(Logo)`
   margin-bottom: 3rem;

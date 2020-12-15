@@ -13,6 +13,7 @@ import { sessionCreate, sessionGet } from 'api/session';
 import { checkAnonymous } from 'features/session';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
+import { Failure } from './types';
 
 export const start = createEvent();
 export const formSubmit = createEvent();
@@ -33,11 +34,6 @@ const form = createDomain();
 
 export const $email = form.createStore<string>('');
 export const $password = form.createStore<string>('');
-export type Failure =
-  | 'invalid_credentials'
-  | 'invalid_form'
-  | 'invalid_payload'
-  | 'unexpected';
 export const $failure = form.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
