@@ -47,7 +47,7 @@ export const LoginPage = withStart(pageLoaded, () => {
 
         <Form>
           <Title level={2}>Sign in</Title>
-          <Failure />
+          <ErrorBlock />
 
           <Email placeholder="email" />
           <Password type="password" placeholder="password" />
@@ -81,6 +81,9 @@ const Form = reflect({
   view: styled.form``,
   bind: {
     onSubmit: formSubmitted,
+    // TODO remove after merge https://github.com/EvgenyiFedotov/effector-reflect/pull/4
+    'data-demo': $email,
+    placeholder: 'asdasd',
   },
 });
 formSubmitted.watch((event) => event.preventDefault());
@@ -112,7 +115,7 @@ const Submit = reflect({
   },
 });
 
-const Failure = reflect({
+const ErrorBlock = reflect({
   bind: {
     failure: $failureText,
   },
