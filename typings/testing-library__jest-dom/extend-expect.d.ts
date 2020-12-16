@@ -9,7 +9,7 @@
 /// <reference types="jest" />
 
 declare namespace jest {
-  interface Matchers<R, T> {
+  interface Matchers<R> {
     /**
      * @deprecated
      * since v1.9.0
