@@ -3,7 +3,7 @@ import * as typed from 'typed-contracts';
 import { splitMap } from 'patronum/split-map';
 import { Answer, Request, requestFx } from './common';
 
-interface ResourcePart<P, Done, Fail> {
+export interface ResourcePart<P, Done, Fail> {
   doneBody: Event<Done>;
   doneInvalid: Event<Answer<unknown>>;
 
