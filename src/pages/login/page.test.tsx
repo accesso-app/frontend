@@ -12,7 +12,11 @@ import {
   $formDisabled,
   $formPending,
   $password,
+  emailChanged,
+  formSubmitted,
   LoginPage,
+  pageLoaded,
+  passwordChanged,
 } from './page';
 import { path } from 'pages/paths';
 
@@ -37,6 +41,7 @@ const Wrapper: React.FC = ({ children }) => (
 
 test('render on default states', async () => {
   render(<LoginPage />, { wrapper: Wrapper });
+
   const email = await selectors.email();
   const password = await selectors.password();
   const submit = await selectors.submit();
@@ -47,6 +52,7 @@ test('render on default states', async () => {
 
   expect(email).toHaveValue('');
   expect(password).toHaveValue('');
+  expect(submit).toHaveTextContent(/sign in/i);
 });
 
 test('render on filled states', async () => {
@@ -121,5 +127,72 @@ describe('failure set text in failure block', () => {
     hydrate(scope, { values: new Map().set($failure, 'unexpected') });
     render(<LoginPage />, { wrapper: Wrapper });
     await waitFor(() => screen.getByText(/something wrong/i));
+  });
+});
+
+describe('events', () => {
+  const pageLoadedFn = jest.fn();
+  pageLoaded.watch(pageLoadedFn);
+
+  const submitFn = jest.fn();
+  formSubmitted.watch(submitFn);
+
+  const emailChangeFn = jest.fn();
+  emailChanged.watch(emailChangeFn);
+
+  const passwordChangeFn = jest.fn();
+  passwordChanged.watch(passwordChangeFn);
+
+  beforeEach(() => {
+    pageLoadedFn.mockReset();
+    submitFn.mockReset();
+    emailChangeFn.mockReset();
+    passwordChangeFn.mockReset();
+  });
+
+  test('pageLoaded', async () => {
+    render(<LoginPage />, { wrapper: Wrapper });
+
+    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
+    expect(submitFn).toHaveBeenCalledTimes(0);
+    expect(emailChangeFn).toHaveBeenCalledTimes(0);
+    expect(passwordChangeFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('formSubmitted', async () => {
+    render(<LoginPage />, { wrapper: Wrapper });
+    const submit = await selectors.submit();
+
+    // TODO: test form submit on Enter in input
+    fireEvent.click(submit);
+
+    expect(submitFn).toHaveBeenCalledTimes(1);
+    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
+    expect(emailChangeFn).toHaveBeenCalledTimes(0);
+    expect(passwordChangeFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('emailChanged', async () => {
+    render(<LoginPage />, { wrapper: Wrapper });
+    const email = await selectors.email();
+
+    fireEvent.change(email, { target: { value: 'demo' } });
+
+    expect(emailChangeFn).toHaveBeenCalledTimes(1);
+    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
+    expect(submitFn).toHaveBeenCalledTimes(0);
+    expect(passwordChangeFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('passwordChanged', async () => {
+    render(<LoginPage />, { wrapper: Wrapper });
+    const password = await selectors.password();
+
+    fireEvent.change(password, { target: { value: 'qweasd' } });
+
+    expect(passwordChangeFn).toHaveBeenCalledTimes(1);
+    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
+    expect(submitFn).toHaveBeenCalledTimes(0);
+    expect(emailChangeFn).toHaveBeenCalledTimes(0);
   });
 });

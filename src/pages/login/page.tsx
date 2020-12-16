@@ -53,7 +53,7 @@ export const LoginPage = withStart(pageLoaded, () => {
           <Password type="password" placeholder="password" />
 
           <Group>
-            <Submit variant="primary" />
+            <Submit />
             <Button
               as={Link}
               to={path.register()}
@@ -89,7 +89,7 @@ const Form = reflect({
 formSubmitted.watch((event) => event.preventDefault());
 
 const Email = reflect({
-  view: Input,
+  view: styled.input``,
   bind: {
     disabled: $formDisabled,
     value: $email,
@@ -107,11 +107,12 @@ const Password = reflect({
 });
 
 const Submit = reflect({
-  view: Button,
+  // TODO: update to a new version of Woly
+  view: styled.button``,
   bind: {
     type: 'submit',
     disabled: $formDisabled,
-    text: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
+    children: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
   },
 });
 
