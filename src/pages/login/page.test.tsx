@@ -131,9 +131,6 @@ describe('failure set text in failure block', () => {
 });
 
 describe('events', () => {
-  const pageLoadedFn = jest.fn();
-  pageLoaded.watch(pageLoadedFn);
-
   const submitFn = jest.fn();
   formSubmitted.watch(submitFn);
 
@@ -144,7 +141,6 @@ describe('events', () => {
   passwordChanged.watch(passwordChangeFn);
 
   beforeEach(() => {
-    pageLoadedFn.mockReset();
     submitFn.mockReset();
     emailChangeFn.mockReset();
     passwordChangeFn.mockReset();
@@ -153,7 +149,6 @@ describe('events', () => {
   test('pageLoaded', async () => {
     render(<LoginPage />, { wrapper: Wrapper });
 
-    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
     expect(submitFn).toHaveBeenCalledTimes(0);
     expect(emailChangeFn).toHaveBeenCalledTimes(0);
     expect(passwordChangeFn).toHaveBeenCalledTimes(0);
@@ -167,7 +162,6 @@ describe('events', () => {
     fireEvent.click(submit);
 
     expect(submitFn).toHaveBeenCalledTimes(1);
-    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
     expect(emailChangeFn).toHaveBeenCalledTimes(0);
     expect(passwordChangeFn).toHaveBeenCalledTimes(0);
   });
@@ -179,7 +173,6 @@ describe('events', () => {
     fireEvent.change(email, { target: { value: 'demo' } });
 
     expect(emailChangeFn).toHaveBeenCalledTimes(1);
-    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
     expect(submitFn).toHaveBeenCalledTimes(0);
     expect(passwordChangeFn).toHaveBeenCalledTimes(0);
   });
@@ -191,7 +184,6 @@ describe('events', () => {
     fireEvent.change(password, { target: { value: 'qweasd' } });
 
     expect(passwordChangeFn).toHaveBeenCalledTimes(1);
-    expect(pageLoadedFn).toHaveBeenCalledTimes(1);
     expect(submitFn).toHaveBeenCalledTimes(0);
     expect(emailChangeFn).toHaveBeenCalledTimes(0);
   });
