@@ -22,19 +22,20 @@ const { sentFailed, __: unexpectedFailure } = splitMap({
   },
 });
 
-export const pageLoaded = createStart();
+export const pageStarted = createStart();
 export const emailChanged = createEvent<string>();
 export const formSubmitted = createEvent();
 
 export const $email = restore<string>(emailChanged, '');
 export const $failure = createStore<AccessRecoveryError>(null);
+export const $isPending = sendRecoveryEmailFx.pending;
 
 $email.on(emailChanged, (_, email) => email);
 
 $failure
-  .reset(formSubmitted, pageLoaded)
+  .reset(formSubmitted, pageStarted)
   .on(sentFailed, (_, { error }) => error)
-  .on(unexpectedFailure, () => 'unexpected_failure')
+  .on(unexpectedFailure, () => 'unexpected')
   .on(emailChanged, (_, email) => {
     const isValid = validateEmail(email);
     if (isValid) return;

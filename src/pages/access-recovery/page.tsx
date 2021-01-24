@@ -9,6 +9,7 @@ import { CenterCardTemplate } from '@auth/ui';
 import { createStart, withStart } from 'lib/page-routing';
 
 import { AccessRecoveryError } from './types';
+import { ofErrors } from 'lib/errors';
 
 export const pageStarted = createStart();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -18,16 +19,13 @@ export const $isPending = createStore(false);
 export const $email = createStore('');
 export const $error = createStore<AccessRecoveryError>(null);
 
-const $errorText = $error.map((error) => {
-  switch (true) {
-    case error === 'invalid_email':
-      return 'Email is invalid';
-    case error === null:
-      return null;
-    default:
-      return 'Oops, something went wrong';
-  }
-});
+const $errorText = $error.map(
+  ofErrors<AccessRecoveryError>({
+    invalid_email: 'Please enter a valid email address',
+    invalid_password: 'Please enter a valid credentials',
+    unexpected: 'Something went wrong! Please, try again later',
+  }),
+);
 
 export const AccessRecoveryPage = withStart(pageStarted, () => (
   <CenterCardTemplate>

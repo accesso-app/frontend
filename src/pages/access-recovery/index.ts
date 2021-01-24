@@ -11,5 +11,6 @@ contract({
     ...model,
     emailChanged: model.emailChanged.prepend(getValue),
     formSubmitted: model.formSubmitted.prepend((_: any) => {}),
+    $error: model.$failure,
   },
 });
