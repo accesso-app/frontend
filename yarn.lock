@@ -4856,10 +4856,10 @@ effector-logger@^0.9.0:
     just-debounce-it "^1.1.0"
     set-value "3.0.1"
 
-effector-react@^21.2.0:
-  version "21.2.0"
-  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-21.2.0.tgz#c15e2ef59e27b7772704168a59acee0808f3ab41"
-  integrity sha512-lAz8b2F5YgfJKQIegbBT2w8Jqvcs+62QnnYJe4+PqI2s7X3oJvuQ2Zm1obrrsWpoMOqDUdEpaP0KDMq8YRg5ng==
+effector-react@^21.2.1:
+  version "21.2.1"
+  resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-21.2.1.tgz#b6d1c8a5c61ffee841b41f4b697ec069094798c8"
+  integrity sha512-NvQBKnA6VQ14aZcHjag5muqvqnfr4H8g3Ry8/nuiEWqR/c9LkKK9mUoU1lyQU7m/eKlvuXSqeDQ1I4iBsobMqA==
 
 effector-reflect@^0.2.1:
   version "0.2.1"

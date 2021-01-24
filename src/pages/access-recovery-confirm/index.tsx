@@ -7,7 +7,7 @@ import Logo from 'logo.svg';
 import { getValue } from 'lib/input';
 import { CenterCardTemplate } from '@auth/ui';
 import { changePassword } from 'api/access-recovery';
-import { withStart, useStart } from 'lib/page-routing';
+import { withStart } from 'lib/page-routing';
 
 import * as model from './model';
 
@@ -32,8 +32,6 @@ const handlePasswordChanged = model.passwordChanged.prepend(getValue);
 const handleRePasswordChanged = model.rePasswordChanged.prepend(getValue);
 
 export const AccessRecoveryConfirmPage = withStart(model.pageStart, () => {
-  useStart(model.pageStart);
-
   const formSubmitted = useEvent(model.formSubmitted);
 
   const isPending = useStore(changePassword.pending);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
 import { useStore, useEvent } from 'effector-react';
@@ -7,7 +7,7 @@ import Logo from 'logo.svg';
 import { getValue } from 'lib/input';
 import { CenterCardTemplate } from '@auth/ui';
 import { sendRecoveryEmail } from 'api/access-recovery';
-import { useStart, withStart } from 'lib/page-routing';
+import { withStart } from 'lib/page-routing';
 
 import * as model from './model';
 
@@ -24,8 +24,7 @@ const mapErrors = (error: model.AccessRecoveryError) => {
   }
 };
 
-export const AccessRecoveryPage = withStart(model.start, () => {
-  useStart(model.start);
+export const AccessRecoveryPage = withStart(model.pageLoaded, () => {
   const formSubmitted = useEvent(model.formSubmitted);
 
   const email = useStore(model.$email);

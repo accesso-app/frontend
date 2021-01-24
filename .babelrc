@@ -8,7 +8,8 @@
       {
         "importName": "lib/page-routing",
         "eventCreators": ["createStart"],
-        "noDefaults": true
+        "noDefaults": true,
+        "addLoc": true
       },
       "page-routing"
     ],
@@ -16,7 +17,8 @@
       "effector/babel-plugin",
       {
         "importName": "effector-root",
-        "noDefaults": true
+        "noDefaults": true,
+        "addLoc": true
       },
       "effector-root"
     ]

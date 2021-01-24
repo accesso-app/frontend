@@ -13,8 +13,6 @@ import Logo from 'logo.svg';
 import * as model from './model';
 
 export const RegisterConfirmPage = withStart(model.pageStart, () => {
-  useStart(model.pageStart);
-
   const isSubmitDisabled = useStore(model.$isSubmitDisabled);
   const isRegistrationFinished = useStore(model.$isRegistrationFinished);
   const formSubmitted = useEvent(model.formSubmitted);

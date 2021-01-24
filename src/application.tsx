@@ -7,23 +7,14 @@ import { Pages } from './pages';
 import { Globals } from './globals';
 
 interface Props {
-  root: Scope;
+  scope: Scope;
 }
 
-export const Application: React.FC<Props> = ({ root }) => (
-  <Provider value={root}>
-    <Internal />
-  </Provider>
-);
-
-const Internal: React.FC = () => {
-  const readyToLoad = useEvent(readyToLoadSession);
-  React.useEffect(() => readyToLoad(), [readyToLoad]);
-
-  return (
+export const Application: React.FC<Props> = ({ scope }) => (
+  <Provider value={scope}>
     <>
       <Globals />
       <Pages />
     </>
-  );
-};
+  </Provider>
+);

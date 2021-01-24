@@ -4,7 +4,7 @@ import { checkAuthenticated } from 'features/session';
 import { oauthAuthorize } from 'api/oauth';
 import { historyPush } from 'features/navigation';
 import { debug } from 'patronum/debug';
-console.log('EXAMPLE');
+
 export const pageLoaded = createStart();
 
 const pageReady = checkAuthenticated({ when: pageLoaded });

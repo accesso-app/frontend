@@ -1,11 +1,8 @@
-import * as React from 'react';
-import { withStart, useStart } from 'lib/page-routing';
+import React from 'react';
+import { withStart } from 'lib/page-routing';
 
 import * as model from './model';
 
-export const OAuthAuthorizePage = () => {
-  // useStart(model.pageLoaded);
-
+export const OAuthAuthorizePage = withStart(model.pageLoaded, () => {
   return null;
-};
-withStart(model.pageLoaded, OAuthAuthorizePage);
+});

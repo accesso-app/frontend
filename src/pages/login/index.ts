@@ -11,7 +11,7 @@ contract({
     pageLoaded: model.start.prepend(noop),
     formSubmitted: model.formSubmit.prepend(noop),
     emailChanged: model.emailChange.prepend(getValue),
-    passwordChanged: model.emailChange.prepend(getValue),
+    passwordChanged: model.passwordChange.prepend(getValue),
   },
 });
 

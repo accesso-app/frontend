@@ -7,13 +7,12 @@ import dotenv from 'dotenv';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { matchRoutes, MatchedRoute } from 'react-router-config';
+import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled, Scope } from 'effector/fork';
-import { Event, forward, root, sample, Store } from 'effector-root';
-import { getStart, StartParams } from 'lib/page-routing';
-import { debug } from 'patronum/debug';
+import { forward, root, sample, Store } from 'effector-root';
+import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 
 import {
   setCookiesForRequest,
@@ -25,6 +24,30 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { Application } from './application';
 import { routes } from './pages/routes';
+
+function keyFromParams(params: unknown): string {
+  let hash;
+  try {
+    hash = JSON.stringify(params);
+  } catch (_) {
+    hash = Object.prototype.toString.call(params);
+  }
+  return hash;
+}
+
+// root.onCreateEffect((effect) => {
+//   const name =
+//     effect.compositeName.fullName + ':' + effect.compositeName.path.join('/');
+//   console.log(effect.compositeName);
+//   effect.watch((params) => {
+//     const key = name + keyFromParams(params);
+//     console.time(key);
+//   });
+//   effect.finally.watch(({ params }) => {
+//     const key = name + keyFromParams(params);
+//     console.timeEnd(key);
+//   });
+// });
 
 const dotenvLoaded = dotenv.config();
 if (dotenvLoaded.error) {
@@ -131,7 +154,7 @@ export const server = express()
 
     const jsx = sheet.collectStyles(
       <StaticRouter context={context} location={req.url}>
-        <Application root={scope} />
+        <Application scope={scope} />
       </StaticRouter>,
     );
 
@@ -199,34 +222,6 @@ function htmlEnd(storesValues: {}): string {
 </html>`;
 }
 
-function lookupStartEvent<P>(
-  match: MatchedRoute<P>,
-): Event<StartParams> | undefined {
-  if (match.route.component) {
-    return getStart(match.route.component);
-  }
-  return undefined;
-}
-
-function routeWithEvent(event: Event<StartParams>) {
-  return function <P>(route: MatchedRoute<P>) {
-    return lookupStartEvent(route) === event;
-  };
-}
-
 function isRedirected(res: express.Response): boolean {
   return res.statusCode >= 300 && res.statusCode < 400;
-}
-
-interface SerializeParams {
-  ignore?: Array<Store<any>>;
-}
-
-// TODO: replace to `serialize(scope, { ignore: [] })`
-function customSerialize(scope: Scope, { ignore = [] }: SerializeParams = {}) {
-  const result = serialize(scope);
-  for (const { sid } of ignore) {
-    if (sid) delete result[sid];
-  }
-  return result;
 }

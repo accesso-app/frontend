@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Event, createEvent } from 'effector-root';
 import { useEvent } from 'effector-react/ssr';
 import { useParams, useLocation } from 'react-router';
+import { MatchedRoute } from 'react-router-config';
 
 const START = `☄️/start-event`;
 
@@ -21,17 +22,20 @@ export function createStart(...params: string[]): Event<StartParams> {
  * Loads start event on browser side and pass params and query
  */
 export function useStart(startEvent: Event<StartParams>) {
-  const params = useParams();
-  const location = useLocation();
-  const query = React.useMemo(
-    () => Object.fromEntries(new URLSearchParams(location.search)),
-    [],
+  console.warn(
+    '[deprecated] `useStart` is deprecated. Please, use `withStart` as HOC instead',
   );
-  const start = useEvent(startEvent);
+  // const params = useParams();
+  // const location = useLocation();
+  // const query = React.useMemo(
+  //   () => Object.fromEntries(new URLSearchParams(location.search)),
+  //   [],
+  // );
+  // const start = useEvent(startEvent);
 
-  React.useEffect(() => {
-    start({ params, query });
-  }, []);
+  // React.useEffect(() => {
+  //   start({ params, query });
+  // }, []);
 }
 
 /**
@@ -50,4 +54,19 @@ export function withStart<P extends Record<string, unknown>>(
 ): React.FC<P> {
   component[START] = event;
   return component;
+}
+
+export function lookupStartEvent<P>(
+  match: MatchedRoute<P>,
+): Event<StartParams> | undefined {
+  if (match.route.component) {
+    return getStart(match.route.component);
+  }
+  return undefined;
+}
+
+export function routeWithEvent(event: Event<StartParams>) {
+  return function <P>(route: MatchedRoute<P>) {
+    return lookupStartEvent(route) === event;
+  };
 }

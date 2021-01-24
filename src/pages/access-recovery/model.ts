@@ -13,7 +13,7 @@ import { createStart } from 'lib/page-routing';
 
 export type AccessRecoveryError = 'invalid_email' | 'fail_to_parse' | null;
 
-export const start = createStart();
+export const pageLoaded = createStart();
 export const emailChanged = createEvent<string>();
 export const formSubmitted = createEvent();
 
@@ -23,7 +23,7 @@ export const $failure = createStore<AccessRecoveryError>(null);
 $email.on(emailChanged, (_, email) => email);
 
 $failure
-  .reset(formSubmitted, start)
+  .reset(formSubmitted, pageLoaded)
   .on(sendRecoveryEmail.failData, (_, { body }) => body.error)
   .on(sendRecoveryEmail.failInvalid, () => 'fail_to_parse')
   .on(emailChanged, (_, email) => {

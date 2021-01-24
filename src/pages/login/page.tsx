@@ -37,45 +37,41 @@ const $failureText = $failure.map((failure) => {
   }
 });
 
-export const LoginPage = withStart(pageLoaded, () => {
-  useStart(pageLoaded);
+export const LoginPage = withStart(pageLoaded, () => (
+  <CenterCardTemplate>
+    <Container>
+      <Logotype />
 
-  return (
-    <CenterCardTemplate>
-      <Container>
-        <Logotype />
+      <Form>
+        <Title level={2}>Sign in</Title>
+        <ErrorBlock />
 
-        <Form>
-          <Title level={2}>Sign in</Title>
-          <ErrorBlock />
+        <Email placeholder="email" />
+        <Password type="password" placeholder="password" />
 
-          <Email placeholder="email" />
-          <Password type="password" placeholder="password" />
-
-          <Group>
-            <Submit variant="primary" />
-            <Button
-              as={Link}
-              to={path.register()}
-              text="Sign up"
-              variant="text"
-            />
-            <Button
-              as={Link}
-              to={path.accessRecovery()}
-              text="Reset password"
-              variant="text"
-            />
-          </Group>
-        </Form>
-        <Footer>
-          By joining nameproject you accept our Terms of Service and Privacy
-          Policy
-        </Footer>
-      </Container>
-    </CenterCardTemplate>
-  );
-});
+        <Group>
+          <Submit variant="primary" />
+          <Button
+            as={Link}
+            to={path.register()}
+            text="Sign up"
+            variant="text"
+          />
+          <Button
+            as={Link}
+            to={path.accessRecovery()}
+            text="Reset password"
+            variant="text"
+          />
+        </Group>
+      </Form>
+      <Footer>
+        By joining nameproject you accept our Terms of Service and Privacy
+        Policy
+      </Footer>
+    </Container>
+  </CenterCardTemplate>
+));
 
 const Form = reflect({
   view: styled.form``,
