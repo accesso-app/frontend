@@ -106,7 +106,11 @@ export const server = express()
       pathRewrite: {
         '^/api/internal': '',
       },
+      logLevel: 'debug',
       secure: false,
+      onError(error, req, res) {
+        console.error('[proxy error]', error);
+      },
     }),
   )
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
