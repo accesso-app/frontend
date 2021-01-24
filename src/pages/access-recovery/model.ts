@@ -1,17 +1,26 @@
 import {
   createEvent,
   createStore,
-  createEffect,
   guard,
   sample,
   restore,
+  attach,
 } from 'effector-root';
 
-import { sendRecoveryEmail } from 'api/access-recovery';
+import * as api from 'api';
 import { validateEmail } from 'lib/email';
 import { createStart } from 'lib/page-routing';
+import { splitMap } from 'patronum/split-map';
+import { AccessRecoveryError } from './types';
 
-export type AccessRecoveryError = 'invalid_email' | 'fail_to_parse' | null;
+const sendRecoveryEmailFx = attach({ effect: api.accessRecoverySendEmail });
+const { sentFailed, __: unexpectedFailure } = splitMap({
+  source: sendRecoveryEmailFx.failData,
+  cases: {
+    sentFailed: (answer) =>
+      answer.status === 'bad_request' ? answer.error : undefined,
+  },
+});
 
 export const pageLoaded = createStart();
 export const emailChanged = createEvent<string>();
@@ -24,8 +33,8 @@ $email.on(emailChanged, (_, email) => email);
 
 $failure
   .reset(formSubmitted, pageLoaded)
-  .on(sendRecoveryEmail.failData, (_, { body }) => body.error)
-  .on(sendRecoveryEmail.failInvalid, () => 'fail_to_parse')
+  .on(sentFailed, (_, { error }) => error)
+  .on(unexpectedFailure, () => 'unexpected_failure')
   .on(emailChanged, (_, email) => {
     const isValid = validateEmail(email);
     if (isValid) return;
@@ -35,5 +44,5 @@ $failure
 sample({
   source: { email: $email },
   clock: guard(formSubmitted, { filter: $email.map((is) => !!is) }),
-  target: sendRecoveryEmail,
+  target: sendRecoveryEmailFx.prepend((body) => ({ body })),
 });
