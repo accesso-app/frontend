@@ -1,12 +1,21 @@
 import { Unit, is, forward } from 'effector';
 
-export function contract<T extends Record<string, unknown>>(config: {
-  page: T;
-  model: Extract<T, Unit<any>> | Partial<Exclude<T, Unit<any>>>;
-}) {
+type KeysOfEffectorApi<API> = {
+  [KEY in keyof API]: API[KEY] extends Unit<any> ? KEY : never;
+}[keyof API];
+
+export function contract<
+  Properties extends string,
+  Page extends Record<Properties, unknown>
+>(config: { page: Page; model: Pick<Page, KeysOfEffectorApi<Page>> }) {
   for (const name in config.page) {
     const pageUnit = config.page[name];
-    const modelUnit = config.model[name];
+
+    // Workaround for typescript
+    // We're already proofed by type system that user should pass
+    // each property to model object for page API.
+    // Each property that don't implements Effector API must be excluded
+    const modelUnit = (config.model as Page)[name];
 
     // Typically we can import page like this:
     // import * as page from './page'
