@@ -25,30 +25,6 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 import { Application } from './application';
 import { routes } from './pages/routes';
 
-function keyFromParams(params: unknown): string {
-  let hash;
-  try {
-    hash = JSON.stringify(params);
-  } catch (_) {
-    hash = Object.prototype.toString.call(params);
-  }
-  return hash;
-}
-
-// root.onCreateEffect((effect) => {
-//   const name =
-//     effect.compositeName.fullName + ':' + effect.compositeName.path.join('/');
-//   console.log(effect.compositeName);
-//   effect.watch((params) => {
-//     const key = name + keyFromParams(params);
-//     console.time(key);
-//   });
-//   effect.finally.watch(({ params }) => {
-//     const key = name + keyFromParams(params);
-//     console.timeEnd(key);
-//   });
-// });
-
 const dotenvLoaded = dotenv.config();
 if (dotenvLoaded.error) {
   throw dotenvLoaded.error;

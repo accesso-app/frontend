@@ -38,8 +38,6 @@ for (const { component } of routes) {
   });
 }
 
-// historyChanged({ action: 'REPLACE', ...history!.location });
-
 ReactDOM.hydrate(
   <Router history={history!}>
     <Application scope={scope} />

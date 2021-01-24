@@ -21,21 +21,10 @@ export function createStart(...params: string[]): Event<StartParams> {
 /**
  * Loads start event on browser side and pass params and query
  */
-export function useStart(startEvent: Event<StartParams>) {
+export function useStart(_startEvent: Event<StartParams>) {
   console.warn(
     '[deprecated] `useStart` is deprecated. Please, use `withStart` as HOC instead',
   );
-  // const params = useParams();
-  // const location = useLocation();
-  // const query = React.useMemo(
-  //   () => Object.fromEntries(new URLSearchParams(location.search)),
-  //   [],
-  // );
-  // const start = useEvent(startEvent);
-
-  // React.useEffect(() => {
-  //   start({ params, query });
-  // }, []);
 }
 
 /**
