@@ -9,7 +9,7 @@ export { LoginPage } from './page';
 
 bus({
   events: [
-    [page.pageLoaded, model.start, noop],
+    [page.pageStarted, model.pageStarted],
     [page.formSubmitted, model.formSubmit, noopSubmit],
     [page.emailChanged, model.emailChange, getValue],
     [page.passwordChanged, model.passwordChange, getValue],
@@ -17,7 +17,7 @@ bus({
   stores: [
     [model.$email, page.$email],
     [model.$password, page.$password],
-    [model.$failure, page.$failure],
+    [model.$error, page.$error],
     [model.$formDisabled, page.$formDisabled],
     [model.$formPending, page.$formPending],
   ],

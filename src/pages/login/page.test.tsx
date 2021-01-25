@@ -8,14 +8,13 @@ import '@testing-library/jest-dom/extend-expect';
 
 import {
   $email,
-  $failure,
+  $error,
   $formDisabled,
   $formPending,
   $password,
   emailChanged,
   formSubmitted,
   LoginPage,
-  pageLoaded,
   passwordChanged,
 } from './page';
 import { path } from 'pages/paths';
@@ -106,25 +105,25 @@ test('disabled form disable all fields and submit', async () => {
 
 describe('failure set text in failure block', () => {
   test('invalid_credentials', async () => {
-    hydrate(scope, { values: new Map().set($failure, 'invalid_credentials') });
+    hydrate(scope, { values: new Map().set($error, 'invalid_credentials') });
     render(<LoginPage />, { wrapper: Wrapper });
     await waitFor(() => screen.getByText(/invalid email or password/i));
   });
 
   test('invalid_form', async () => {
-    hydrate(scope, { values: new Map().set($failure, 'invalid_form') });
+    hydrate(scope, { values: new Map().set($error, 'invalid_form') });
     render(<LoginPage />, { wrapper: Wrapper });
     await waitFor(() => screen.getByText(/try to enter a valid email/i));
   });
 
   test('invalid_payload', async () => {
-    hydrate(scope, { values: new Map().set($failure, 'invalid_payload') });
+    hydrate(scope, { values: new Map().set($error, 'invalid_payload') });
     render(<LoginPage />, { wrapper: Wrapper });
     await waitFor(() => screen.getByText(/something wrong/i));
   });
 
   test('unexpected', async () => {
-    hydrate(scope, { values: new Map().set($failure, 'unexpected') });
+    hydrate(scope, { values: new Map().set($error, 'unexpected') });
     render(<LoginPage />, { wrapper: Wrapper });
     await waitFor(() => screen.getByText(/something wrong/i));
   });

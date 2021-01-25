@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { createEvent, createStore } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
-import { withStart, useStart, createStart } from 'lib/page-routing';
+import { withStart, createStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
@@ -13,7 +13,7 @@ import { path } from 'pages/paths';
 import { Failure } from './types';
 
 // Model
-export const pageLoaded = createStart();
+export const pageStarted = createStart();
 export const formSubmitted = createEvent<React.FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -21,9 +21,9 @@ export const $email = createStore('');
 export const $password = createStore('');
 export const $formDisabled = createStore(false);
 export const $formPending = createStore(false);
-export const $failure = createStore<Failure | null>(null);
+export const $error = createStore<Failure | null>(null);
 
-const $failureText = $failure.map((failure) => {
+const $errorText = $error.map((failure) => {
   switch (failure) {
     case 'invalid_credentials':
       return 'Invalid email or password.';
@@ -37,7 +37,7 @@ const $failureText = $failure.map((failure) => {
   }
 });
 
-export const LoginPage = withStart(pageLoaded, () => (
+export const LoginPage = withStart(pageStarted, () => (
   <CenterCardTemplate>
     <Container>
       <Logotype />
@@ -113,7 +113,7 @@ const Submit = reflect({
 
 const ErrorBlock = reflect({
   bind: {
-    failure: $failureText,
+    failure: $errorText,
   },
   view: ({ failure }: { failure: string | null }) => {
     if (failure) {

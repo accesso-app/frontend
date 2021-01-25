@@ -1,69 +1,64 @@
 import {
-  createEvent,
-  createDomain,
-  sample,
-  combine,
-  guard,
-  forward,
   attach,
+  combine,
+  createDomain,
+  createEvent,
+  forward,
+  guard,
+  sample,
 } from 'effector-root';
 import { pending } from 'patronum/pending';
-import { sessionCreate, sessionGet } from 'api/session';
 
+import * as api from 'api';
+import { createStart } from 'lib/page-routing';
+import { path } from 'pages/paths';
 import { checkAnonymous } from 'features/session';
 import { historyPush } from 'features/navigation';
-import { path } from 'pages/paths';
+
 import { Failure } from './types';
 
-export const start = createEvent();
+const sessionCreateFx = attach({ effect: api.sessionCreate });
+const sessionGetFx = attach({ effect: api.sessionGet });
+
+export const pageStarted = createStart();
 export const formSubmit = createEvent();
 export const emailChange = createEvent<string>();
 export const passwordChange = createEvent<string>();
 
-const pageReady = checkAnonymous({ when: start });
-
-// TODO: migrate from `createResource` to `effector-openapi-preset`
-const sessionCreateLocal = attach({ effect: sessionCreate });
-const sessionGetLocal = attach({ effect: sessionGet });
+const pageReady = checkAnonymous({ when: pageStarted });
 
 export const $formPending = pending({
-  effects: [sessionCreateLocal, sessionGetLocal],
+  effects: [sessionCreateFx, sessionGetFx],
 });
 export const $formDisabled = $formPending;
-const form = createDomain();
+const formDomain = createDomain();
 
-export const $email = form.createStore<string>('');
-export const $password = form.createStore<string>('');
-export const $failure = form.createStore<Failure | null>(null);
+export const $email = formDomain.createStore<string>('');
+export const $password = formDomain.createStore<string>('');
+export const $error = formDomain.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
 
-form.onCreateStore(($store) => $store.reset(start));
+formDomain.onCreateStore(($store) => $store.reset(pageReady));
 
 $email.on(emailChange, (_, email) => email);
 $password.on(passwordChange, (_, password) => password);
 
-$failure
-  .reset(pageReady, sessionCreate)
-  .on(sessionCreate.failBody, (_, failed) => {
-    if ('error' in failed) {
-      return failed.error;
+$error
+  .reset(pageReady, sessionCreateFx)
+  .on(sessionCreateFx.failData, (_, failed) => {
+    if (failed.status === 'bad_request') {
+      return failed.error.error;
     }
     return 'unexpected';
   });
 
 sample({
-  source: $form,
+  source: $form.map((body) => ({ body })),
   clock: guard(formSubmit, { filter: $formDisabled.map((is) => !is) }),
-  target: sessionCreateLocal,
+  target: sessionCreateFx,
 });
 
-forward({
-  from: sessionCreateLocal.done,
-  to: sessionGetLocal,
-});
+forward({ from: sessionCreateFx.done, to: sessionGetFx });
 
-forward({
-  from: sessionGetLocal.done,
-  to: historyPush.prepend(path.home),
-});
+forward({ from: sessionGetFx.done, to: historyPush.prepend(path.home) });
