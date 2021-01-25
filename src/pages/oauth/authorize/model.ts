@@ -1,15 +1,13 @@
-import { guard, forward } from 'effector-root';
+import { forward } from 'effector-root';
 import { createStart } from 'lib/page-routing';
 import { checkAuthenticated } from 'features/session';
 import { oauthAuthorize } from 'api/oauth';
 import { historyPush } from 'features/navigation';
-import { debug } from 'patronum/debug';
 
-export const pageLoaded = createStart();
+export const pageStarted = createStart();
 
-const pageReady = checkAuthenticated({ when: pageLoaded });
+const pageReady = checkAuthenticated({ when: pageStarted });
 
-// TODO: rewrite to typed-contracts
 const authorizeReceived = pageReady.map(({ query }) => ({
   responseType: query['response_type'],
   clientId: query['client_id'],
@@ -41,5 +39,3 @@ forward({
   from: redirect,
   to: historyPush,
 });
-
-debug(oauthAuthorize.failBody);

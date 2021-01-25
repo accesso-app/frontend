@@ -1,8 +1,7 @@
-import React from 'react';
-import { withStart } from 'lib/page-routing';
-
+import { contract } from 'lib/contract';
+import * as page from './page';
 import * as model from './model';
 
-export const OAuthAuthorizePage = withStart(model.pageLoaded, () => {
-  return null;
-});
+export { OAuthAuthorizePage } from './page';
+
+contract({ page, model });
