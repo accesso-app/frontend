@@ -2,6 +2,6 @@ import 'effector-root';
 import { checkAuthenticated } from 'features/session';
 import { createStart } from 'lib/page-routing';
 
-export const pageLoaded = createStart();
+export const pageStarted = createStart();
 
-const pageReady = checkAuthenticated({ when: pageLoaded });
+const pageReady = checkAuthenticated({ when: pageStarted });
