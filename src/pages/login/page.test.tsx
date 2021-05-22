@@ -6,6 +6,7 @@ import { Provider } from 'effector-react/ssr';
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
+import { path } from 'pages/paths';
 import {
   $email,
   $error,
@@ -17,7 +18,6 @@ import {
   LoginPage,
   passwordChanged,
 } from './page';
-import { path } from 'pages/paths';
 
 let scope: Scope;
 

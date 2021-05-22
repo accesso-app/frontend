@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import { contract } from 'lib/contract';
 import * as model from './model';
 import * as page from './page';
+
 export { LoginPage } from './page';
 
 contract({

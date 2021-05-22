@@ -19,7 +19,7 @@ if (module.hot) {
   console.info('✅  Server-side HMR Enabled!');
 }
 
-const port = parseInt(process.env.PORT ?? '3005', 10);
+const port = Number.parseInt(process.env.PORT ?? '3005', 10);
 
 function createServer() {
   if (process.env.NODE_ENV === 'development') {

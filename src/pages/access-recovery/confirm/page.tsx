@@ -8,8 +8,8 @@ import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 import { createStart, withStart } from 'lib/page-routing';
 
-import { ConfirmationError } from './types';
 import { ofErrors } from 'lib/errors';
+import { ConfirmationError } from './types';
 
 export const pageStart = createStart();
 export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();

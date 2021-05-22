@@ -34,7 +34,7 @@ export const $error = createStore<ConfirmationError>(null);
 export const $isPending = changePasswordFx.pending;
 
 const pageReady = checkAnonymous({ when: pageStart });
-const codeReceived = pageReady.filterMap(({ params }) => params['code']);
+const codeReceived = pageReady.filterMap(({ params }) => params.code);
 const $code = restore<string>(codeReceived, '');
 const $isPasswordValid = $password.map(validatePassword);
 

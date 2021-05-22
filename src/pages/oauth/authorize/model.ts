@@ -9,11 +9,11 @@ export const pageStarted = createStart();
 const pageReady = checkAuthenticated({ when: pageStarted });
 
 const authorizeReceived = pageReady.map(({ query }) => ({
-  responseType: query['response_type'],
-  clientId: query['client_id'],
-  redirectUri: query['redirect_uri'],
-  ...(query['scope'] && { scope: query['scope'] }),
-  ...(query['state'] && { state: query['state'] }),
+  responseType: query.response_type,
+  clientId: query.client_id,
+  redirectUri: query.redirect_uri,
+  ...(query.scope && { scope: query.scope }),
+  ...(query.state && { state: query.state }),
 }));
 
 forward({

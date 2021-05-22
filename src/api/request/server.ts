@@ -42,9 +42,8 @@ async function requestServer({ path, method, ...params }: Request) {
 
     if (response.ok) {
       return responder;
-    } else {
-      throw responder;
     }
+    throw responder;
   } catch (error) {
     if (error instanceof Error) {
       console.error(error);
@@ -78,9 +77,9 @@ function contentDefault(headers: Headers, type: string): Headers {
 }
 
 function toObject(headers: Headers): Record<string, string> {
-  const obj = {};
+  const object = {};
   headers.forEach((value, key) => {
-    obj[key] = value;
+    object[key] = value;
   });
-  return obj;
+  return object;
 }

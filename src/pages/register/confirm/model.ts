@@ -12,7 +12,7 @@ import { checkAnonymous } from 'features/session';
 import { createStart } from 'lib/page-routing';
 
 export const pageStart = createStart();
-const codeReceived = pageStart.filterMap(({ params }) => params['code']);
+const codeReceived = pageStart.filterMap(({ params }) => params.code);
 
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
