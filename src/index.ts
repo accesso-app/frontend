@@ -23,8 +23,8 @@ const port = parseInt(process.env.PORT ?? '3005', 10);
 
 function createServer() {
   if (process.env.NODE_ENV === 'development') {
-    const CRT = path.resolve(__dirname, '..', 'tls', 'authmenow.crt');
-    const KEY = path.resolve(__dirname, '..', 'tls', 'authmenow.key');
+    const CRT = path.resolve(__dirname, '..', 'tls', 'accesso.crt');
+    const KEY = path.resolve(__dirname, '..', 'tls', 'accesso.key');
 
     const options = {
       cert: fs.readFileSync(CRT),
