@@ -13,5 +13,9 @@ module.exports = {
     'import/no-unresolved': 'off',
     'sonarjs/no-duplicate-string': 'off',
     'no-console': 'off',
+
+    // TODO: maybe try another way?
+    // now used for client/ssr variables
+    '@typescript-eslint/no-non-null-assertion': 'off',
   },
 };
