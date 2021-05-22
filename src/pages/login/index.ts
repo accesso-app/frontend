@@ -19,4 +19,4 @@ function getValue(event: ChangeEvent<HTMLInputElement>): string {
   return event.currentTarget.value;
 }
 
-function noop(_: any): void {}
+function noop(): void {}

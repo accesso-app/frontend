@@ -4,7 +4,7 @@ import { Button, Title, Input } from 'woly';
 import { Link } from 'react-router-dom';
 import { useStore, useEvent } from 'effector-react/ssr';
 
-import { withStart, useStart } from 'lib/page-routing';
+import { withStart } from 'lib/page-routing';
 import { Branch } from 'lib/branch';
 import { path } from 'pages/paths';
 import { CenterCardTemplate } from '@auth/ui';

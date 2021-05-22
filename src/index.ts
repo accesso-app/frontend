@@ -37,6 +37,8 @@ function createServer() {
   return http.createServer({}, app);
 }
 
-export default createServer().listen(port, () => {
+const server = createServer().listen(port, () => {
   console.log(`> Started on port ${port}`);
 });
+
+export default server;

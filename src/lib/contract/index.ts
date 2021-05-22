@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Unit, is, forward } from 'effector';
 
 type KeysOfEffectorApi<API> = {

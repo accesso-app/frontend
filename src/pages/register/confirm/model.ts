@@ -42,8 +42,8 @@ const $pairs = $displayName.map((name) =>
 
 // TODO: handle error to show in page
 
-const $firstName = $pairs.map((pairs) => pairs[0].trim() ?? '');
-const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim() ?? '');
+const $firstName = $pairs.map((pairs) => pairs[0].trim());
+const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim());
 
 export const $isDisplayNameValid = combine(
   [$firstName, $lastName],

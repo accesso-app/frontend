@@ -12,6 +12,7 @@ import queryString from 'query-string';
 export interface Request {
   path: string;
   method: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   body?: object | null | void;
   query?: Record<string, string>;
   headers?: Record<string, string>;
@@ -49,7 +50,10 @@ if (process.env.BUILD_TARGET === 'server') {
   const setCookieHeader = merge([
     requestInternalFx.doneData,
     requestInternalFx.failData,
-  ]).map(({ headers }) => headers['set-cookie'] ?? '');
+  ]).map(({ headers }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return headers['set-cookie'] ?? '';
+  });
 
   guard({
     source: setCookieHeader,

@@ -3,7 +3,7 @@ import * as typed from 'typed-contracts';
 import { splitMap } from 'patronum/split-map';
 import { Answer, Request, requestFx } from './common';
 
-export interface ResourcePart<P, Done, Fail> {
+export interface ResourcePart<Done, Fail> {
   doneBody: Event<Done>;
   doneInvalid: Event<Answer<unknown>>;
 
@@ -12,7 +12,7 @@ export interface ResourcePart<P, Done, Fail> {
 }
 
 type Resource<Params, Done, Fail> = Effect<Params, Answer<Done>, Answer<Fail>> &
-  ResourcePart<Params, Done, Fail>;
+  ResourcePart<Done, Fail>;
 
 interface Options<Params, Done, Fail> {
   name: string;
@@ -97,5 +97,6 @@ export function createResource<Params = void, Done = void, Fail = void>(
     // TODO: rewrite to handle validated type in .finally
   });
 
-  return callee as any;
+  // TODO: maybe try another way?
+  return (callee as unknown) as Resource<Params, Done, Fail>;
 }

@@ -1,4 +1,5 @@
-import { forward, is, Event, Store } from 'effector-root';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { forward, Event, Store } from 'effector-root';
 
 // https://t.me/ts_ru/123234
 type Equal<A, B> = (<X>() => X extends A ? 1 : 2) extends <X>() => X extends B
@@ -37,8 +38,10 @@ export function bus<E, S>(config: {
 
     toStore.defaultState = fromStore.defaultState;
 
-    // It's overrides initial value on toStore
-    // https://t.me/c/1489066599/4652
+    /*
+     * It's overrides initial value on toStore
+     * https://t.me/c/1489066599/4652
+     */
     (toStore as any).stateRef.before = [
       {
         type: 'map',
