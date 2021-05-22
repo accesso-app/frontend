@@ -30,10 +30,11 @@ if (dotenvLoaded.error) {
   throw dotenvLoaded.error;
 }
 
-const serverStarted = root.createEvent<{
-  req: express.Request;
-  res: express.Response;
-}>();
+const serverStarted =
+  root.createEvent<{
+    req: express.Request;
+    res: express.Response;
+  }>();
 
 const requestHandled = serverStarted.map(({ req }) => req);
 

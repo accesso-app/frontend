@@ -98,5 +98,5 @@ export function createResource<Params = void, Done = void, Fail = void>(
   });
 
   // TODO: maybe try another way?
-  return (callee as unknown) as Resource<Params, Done, Fail>;
+  return callee as unknown as Resource<Params, Done, Fail>;
 }

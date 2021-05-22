@@ -22,13 +22,14 @@ export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const $isFormPending = registerConfirmation.pending;
 
 export const $isRegistrationFinished = createStore(false);
-export const $failure = createStore<
-  | null
-  | 'code_invalid_or_expired'
-  | 'email_already_activated'
-  | 'invalid_form'
-  | 'invalid_payload'
->(null);
+export const $failure =
+  createStore<
+    | null
+    | 'code_invalid_or_expired'
+    | 'email_already_activated'
+    | 'invalid_form'
+    | 'invalid_payload'
+  >(null);
 
 export const $code = createStore('');
 
