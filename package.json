@@ -87,7 +87,6 @@
     "jest": "^26.6.1",
     "jest-config": "^26.6.3",
     "lint-staged": "^11.0.0",
-    "npm-run-all": "^4.1.5",
     "openapi": "^1.0.0",
     "prettier": "2.2.1",
     "razzle": "^3.0.0",
