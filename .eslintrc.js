@@ -12,5 +12,6 @@ module.exports = {
   rules: {
     'import/no-unresolved': 'off',
     'sonarjs/no-duplicate-string': 'off',
+    'no-console': 'off',
   },
 };
