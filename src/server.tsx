@@ -180,7 +180,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Authmenow</title>
+        <title>Accesso</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ''}
           ${
