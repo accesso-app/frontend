@@ -11,5 +11,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   rules: {
     'import/no-unresolved': 'off',
+    'sonarjs/no-duplicate-string': 'off',
   },
 };
