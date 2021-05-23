@@ -10,8 +10,8 @@ import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
-import { fork, serialize, allSettled, Scope } from 'effector/fork';
-import { forward, root, sample, Store } from 'effector-root';
+import { fork, serialize, allSettled } from 'effector/fork';
+import { forward, root, sample } from 'effector-root';
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 
 import {
@@ -30,10 +30,11 @@ if (dotenvLoaded.error) {
   throw dotenvLoaded.error;
 }
 
-const serverStarted = root.createEvent<{
-  req: express.Request;
-  res: express.Response;
-}>();
+const serverStarted =
+  root.createEvent<{
+    req: express.Request;
+    res: express.Response;
+  }>();
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
@@ -90,6 +91,7 @@ sample({
   fn: ({ res }, redirectUrl) => ({ res, redirectUrl }),
 }).watch(({ res, redirectUrl }) => res.redirect(redirectUrl));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let assets: any;
 
 const syncLoadAssets = () => {
@@ -108,7 +110,7 @@ export const server = express()
       },
       logLevel: 'debug',
       secure: false,
-      onError(error, req, res) {
+      onError(error) {
         console.error('[proxy error]', error);
       },
     }),
@@ -180,7 +182,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Authmenow</title>
+        <title>Accesso</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ''}
           ${
@@ -193,7 +195,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <div id="root">`;
 }
 
-function htmlEnd(storesValues: {}): string {
+function htmlEnd(storesValues: Record<string, unknown>): string {
   return `</div>
         <script>
           window.INITIAL_STATE = ${JSON.stringify(storesValues)}

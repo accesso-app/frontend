@@ -34,6 +34,8 @@ const $errorText = $error.map((failure) => {
       return 'Something wrong happened. Reload page and try again. If nothing changed, please try again later.';
     case null:
       return null;
+    default:
+      return null;
   }
 });
 

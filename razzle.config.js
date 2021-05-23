@@ -28,8 +28,8 @@ module.exports = {
     if (dev) {
       config.devServer = {
         ...config.devServer,
-        key: fs.readFileSync(path.resolve(__dirname, 'tls', 'authmenow.key')),
-        cert: fs.readFileSync(path.resolve(__dirname, 'tls', 'authmenow.crt')),
+        key: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.key')),
+        cert: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.crt')),
         https: true,
       };
     }

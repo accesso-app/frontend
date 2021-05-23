@@ -17,9 +17,10 @@ export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 
 export const $emailSubmitted = createStore(false);
-export const $failure = createStore<
-  null | 'email_already_registered' | 'invalid_form' | 'invalid_payload'
->(null);
+export const $failure =
+  createStore<
+    null | 'email_already_registered' | 'invalid_form' | 'invalid_payload'
+  >(null);
 
 export const $formPending = registerRequest.pending;
 

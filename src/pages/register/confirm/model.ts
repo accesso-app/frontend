@@ -12,7 +12,7 @@ import { checkAnonymous } from 'features/session';
 import { createStart } from 'lib/page-routing';
 
 export const pageStart = createStart();
-const codeReceived = pageStart.filterMap(({ params }) => params['code']);
+const codeReceived = pageStart.filterMap(({ params }) => params.code);
 
 export const formSubmitted = createEvent();
 export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -22,13 +22,14 @@ export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const $isFormPending = registerConfirmation.pending;
 
 export const $isRegistrationFinished = createStore(false);
-export const $failure = createStore<
-  | null
-  | 'code_invalid_or_expired'
-  | 'email_already_activated'
-  | 'invalid_form'
-  | 'invalid_payload'
->(null);
+export const $failure =
+  createStore<
+    | null
+    | 'code_invalid_or_expired'
+    | 'email_already_activated'
+    | 'invalid_form'
+    | 'invalid_payload'
+  >(null);
 
 export const $code = createStore('');
 
@@ -42,8 +43,8 @@ const $pairs = $displayName.map((name) =>
 
 // TODO: handle error to show in page
 
-const $firstName = $pairs.map((pairs) => pairs[0].trim() ?? '');
-const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim() ?? '');
+const $firstName = $pairs.map((pairs) => pairs[0].trim());
+const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim());
 
 export const $isDisplayNameValid = combine(
   [$firstName, $lastName],

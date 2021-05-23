@@ -12,6 +12,5 @@ export function assertContract<T>(
   return validated;
 }
 
-export type ContractType<
-  C extends typed.Contract<unknown>
-> = C extends typed.Contract<infer T> ? T : never;
+export type ContractType<C extends typed.Contract<unknown>> =
+  C extends typed.Contract<infer T> ? T : never;

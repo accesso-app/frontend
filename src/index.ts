@@ -19,12 +19,12 @@ if (module.hot) {
   console.info('✅  Server-side HMR Enabled!');
 }
 
-const port = parseInt(process.env.PORT ?? '3005', 10);
+const port = Number.parseInt(process.env.PORT ?? '3005', 10);
 
 function createServer() {
   if (process.env.NODE_ENV === 'development') {
-    const CRT = path.resolve(__dirname, '..', 'tls', 'authmenow.crt');
-    const KEY = path.resolve(__dirname, '..', 'tls', 'authmenow.key');
+    const CRT = path.resolve(__dirname, '..', 'tls', 'accesso.crt');
+    const KEY = path.resolve(__dirname, '..', 'tls', 'accesso.key');
 
     const options = {
       cert: fs.readFileSync(CRT),
@@ -37,6 +37,8 @@ function createServer() {
   return http.createServer({}, app);
 }
 
-export default createServer().listen(port, () => {
+const server = createServer().listen(port, () => {
   console.log(`> Started on port ${port}`);
 });
+
+export default server;

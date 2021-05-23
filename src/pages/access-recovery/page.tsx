@@ -8,8 +8,8 @@ import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 import { createStart, withStart } from 'lib/page-routing';
 
-import { AccessRecoveryError } from './types';
 import { ofErrors } from 'lib/errors';
+import { AccessRecoveryError } from './types';
 
 export const pageStarted = createStart();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();

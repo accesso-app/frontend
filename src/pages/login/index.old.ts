@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 import { bus } from 'lib/bus';
-import { StartParams } from 'lib/page-routing';
+// import { StartParams } from 'lib/page-routing';
 
 import * as model from './model';
 import * as page from './page';
@@ -39,5 +39,5 @@ function getValue(event: ChangeEvent<HTMLInputElement>): string {
   return event.currentTarget.value;
 }
 
-function noop(_value: StartParams): void {}
+// function noop(_value: StartParams): void {}
 function noopSubmit(_value: FormEvent<HTMLFormElement>): void {}

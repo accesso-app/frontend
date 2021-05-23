@@ -2,7 +2,7 @@ export type ValidErrors<T> = Exclude<T, undefined | null>;
 
 export function selectError<
   Names extends string,
-  Errors extends Record<Names, string> & { unexpected: string }
+  Errors extends Record<Names, string> & { unexpected: string },
 >(errors: Errors): (error: Names | null) => string | null {
   return (error) => {
     if (error && errors[error]) {

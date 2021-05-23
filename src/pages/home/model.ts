@@ -4,4 +4,4 @@ import { createStart } from 'lib/page-routing';
 
 export const pageStarted = createStart();
 
-const pageReady = checkAuthenticated({ when: pageStarted });
+checkAuthenticated({ when: pageStarted });

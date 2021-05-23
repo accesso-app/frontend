@@ -44,6 +44,6 @@ $failure
 
 sample({
   source: { email: $email },
-  clock: guard(formSubmitted, { filter: $email.map((is) => !!is) }),
+  clock: guard(formSubmitted, { filter: $email.map((is) => Boolean(is)) }),
   target: sendRecoveryEmailFx.prepend((body) => ({ body })),
 });

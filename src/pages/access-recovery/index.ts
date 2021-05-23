@@ -10,7 +10,7 @@ contract({
   model: {
     ...model,
     emailChanged: model.emailChanged.prepend(getValue),
-    formSubmitted: model.formSubmitted.prepend((_: any) => {}),
+    formSubmitted: model.formSubmitted.prepend(() => {}),
     $error: model.$failure,
   },
 });

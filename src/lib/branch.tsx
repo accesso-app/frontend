@@ -13,5 +13,6 @@ export const Branch: React.FC<BranchProps> = ({ if: value, children }) => {
       'You passed more than two children to Branch. Maybe you forgot to wrap multiple children to <React.Fragment /> ?',
     );
   }
-  return <>{result}</> || null;
+
+  return <>{result}</>;
 };

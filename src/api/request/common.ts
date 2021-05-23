@@ -9,21 +9,22 @@ import {
 } from 'effector-root';
 import queryString from 'query-string';
 
-export type Request = {
+export interface Request {
   path: string;
   method: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   body?: object | null | void;
   query?: Record<string, string>;
   headers?: Record<string, string>;
   cookies?: string;
-};
+}
 
-export type Answer<T = unknown> = {
+export interface Answer<T = unknown> {
   ok: boolean;
   body: T;
   status: number;
   headers: Record<string, string>;
-};
+}
 
 export const setCookiesForRequest = createEvent<string>();
 // WARNING: cookies should be sent only to an OUR backend
@@ -49,7 +50,10 @@ if (process.env.BUILD_TARGET === 'server') {
   const setCookieHeader = merge([
     requestInternalFx.doneData,
     requestInternalFx.failData,
-  ]).map(({ headers }) => headers['set-cookie'] ?? '');
+  ]).map(({ headers }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return headers['set-cookie'] ?? '';
+  });
 
   guard({
     source: setCookieHeader,
