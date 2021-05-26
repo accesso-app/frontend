@@ -6,7 +6,7 @@ import {
   guard,
   sample,
 } from 'effector-root';
-import { registerRequest } from 'api/register';
+import { registerRequest } from 'api';
 
 import { checkAnonymous } from 'features/session';
 import { createStart } from 'lib/page-routing';
@@ -49,10 +49,20 @@ $email.on(emailChanged, (_, event) => event.currentTarget.value);
 $failure
   .on(pageReady, () => null)
   .on(registerRequest, () => null)
-  .on(registerRequest.failBody, (_, { error }) => error);
+  .on(registerRequest.failData, (_, failure) => {
+    if (failure.status !== 'bad_request') {
+      return null;
+    }
+
+    return failure.error.error;
+  });
 
 guard({
-  source: sample($form, formSubmitted),
+  source: sample({
+    source: $form,
+    clock: formSubmitted,
+    fn: (body) => ({ body }),
+  }),
   filter: $isSubmitEnabled,
   target: registerRequest,
 });

@@ -7,10 +7,11 @@ import {
   Event,
   forward,
 } from 'effector-root';
-
-import { sessionGet, SessionUser } from 'api/session';
+import { SessionCreateDone, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
+
+type SessionUser = SessionCreateDone['answer'];
 
 export const readyToLoadSession = createEvent<void>();
 
@@ -26,9 +27,9 @@ export const $sessionPending = combine(
 );
 
 $session
-  .on(sessionGet.doneData, (_, { body }) => body.user)
+  .on(sessionGet.doneData, (_, { answer }) => answer.user)
   .on(sessionGet.failData, (session, { status }) => {
-    if (status === 401) {
+    if (status === 'unauthorized') {
       return null;
     }
     return session;
@@ -37,7 +38,7 @@ $session
 guard({
   source: readyToLoadSession,
   filter: $sessionPending.map((is) => !is),
-  target: sessionGet,
+  target: sessionGet.prepend(() => ({})),
 });
 
 /**
