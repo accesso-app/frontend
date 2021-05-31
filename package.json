@@ -15,7 +15,7 @@
     "prepare": "husky install"
   },
   "engines": {
-    "node": "^v14.14.0"
+    "-node": "^v14.14.0"
   },
   "dependencies": {
     "cookie": "^0.4.0",
