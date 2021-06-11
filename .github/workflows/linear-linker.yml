@@ -5,7 +5,7 @@ on:
     types: [opened, closed, reopened, synchronize, ready_for_review]
 
 jobs:
-  update_release_draft:
+  linear_linker:
     runs-on: ubuntu-latest
     steps:
       - uses: sergeysova/linear-action@0.0.0
