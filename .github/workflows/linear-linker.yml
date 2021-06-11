@@ -1,0 +1,17 @@
+name: Linear.app Linker
+
+on:
+  pull_request:
+    types: [opened, closed, reopened, synchronize, ready_for_review]
+
+jobs:
+  update_release_draft:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sergeysova/linear-action@0.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          linear-token: ${{ secrets.LINEAR_TOKEN }}
+          issue-prefixes: ACC BOX EDI META CAP
+          state-map: ready = In Review; review_requested = In Review; merged = Done; closed = Cancelled
