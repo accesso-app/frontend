@@ -1,6 +1,7 @@
 export {
   $isAuthenticated,
   $sessionPending,
+  $session,
   checkAuthenticated,
   checkAnonymous,
   readyToLoadSession,
