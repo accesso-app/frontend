@@ -7,7 +7,7 @@ import {
   Event,
   forward,
 } from 'effector-root';
-import { SessionCreateDone, sessionGet } from 'api';
+import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
 
@@ -32,6 +32,11 @@ $session
     if (status === 'unauthorized') {
       return null;
     }
+    return session;
+  })
+  .on(sessionDelete.done, () => null)
+  .on(sessionDelete.fail, (session, error) => {
+    console.error(error);
     return session;
   });
 

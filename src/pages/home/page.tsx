@@ -3,9 +3,12 @@ import styled from 'styled-components';
 import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
 import { useStore } from 'effector-react/ssr';
+import { createEvent } from 'effector-root';
 import { $fullName } from './model';
 
 export const pageStarted = createStart();
+
+export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 
 export const HomePage = withStart(pageStarted, () => {
   const fullName = useStore($fullName);
@@ -29,6 +32,13 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
             <UserFullName>{fullName}</UserFullName>
             <UserEmail> somename@example.com </UserEmail>
           </UserFullNameGroup>
+          <Button
+            type="button"
+            text="Logout"
+            size="small"
+            variant="primary"
+            onClick={logoutClicked}
+          />
         </UserInfoGroup>
       </CardRow>
       <CardRow>
