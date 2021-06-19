@@ -2,6 +2,8 @@ import { queryToString, Request, requestInternalFx } from './common';
 
 requestInternalFx.use(requestClient);
 
+export type ResponseResult<Data> = string | Record<string, Data> | null;
+
 export const API_PREFIX = process.env.CLIENT_BACKEND_URL ?? `/api/internal`;
 
 async function requestClient({ path, method, ...params }: Request) {
@@ -23,9 +25,7 @@ async function requestClient({ path, method, ...params }: Request) {
 
   // TODO: rewrite error system
 
-  const answer = contentIs(response.headers, 'application/json')
-    ? await response.json()
-    : await response.text();
+  const answer = await getResponseAnswer(response);
 
   const responder = {
     ok: response.ok,
@@ -52,6 +52,19 @@ function contentDefault(headers: Headers, type: string): Headers {
     headers.set('content-type', type);
   }
   return headers;
+}
+
+async function getResponseAnswer<Data>(
+  response: Response,
+): Promise<ResponseResult<Data>> {
+  if (contentIs(response.headers, 'application/json')) {
+    return response.json();
+  }
+  const hasEmptyResponse = !response.headers.get('content-type');
+  if (hasEmptyResponse) {
+    return null;
+  }
+  return response.text();
 }
 
 function toObject(headers: Headers): Record<string, string> {
