@@ -4,7 +4,8 @@ import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
 import { useStore } from 'effector-react/ssr';
 import { createEvent } from 'effector-root';
-import { $fullName } from './model';
+import { reflect } from 'effector-reflect/ssr';
+import { $fullName, $showError } from './model';
 
 export const pageStarted = createStart();
 
@@ -15,6 +16,7 @@ export const HomePage = withStart(pageStarted, () => {
   return (
     <PageContainer>
       <ProfileGroup>
+        <Failure />
         <ProfileTitle>Profile</ProfileTitle>
         <ProfileCard fullName={fullName} />
       </ProfileGroup>
@@ -62,6 +64,16 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
   );
 };
 
+const Failure = reflect({
+  view: ({ showError }: { showError: boolean }) =>
+    showError ? (
+      <ErrorText>Something went wrong! Please, try again later</ErrorText>
+    ) : null,
+  bind: {
+    showError: $showError,
+  },
+});
+
 const CardRow = styled.div`
   display: grid;
   grid-template-columns: 48px 1fr 48px;
@@ -70,6 +82,10 @@ const CardRow = styled.div`
 `;
 
 const CardRowFiller = styled.div``;
+
+const ErrorText = styled.div`
+  font-size: 1.8rem;
+`;
 
 const PageContainer = styled.div`
   display: flex;

@@ -10,8 +10,10 @@ export const pageStarted = createStart();
 export const logout = createEvent<void>();
 
 export const $fullName = createStore<string>('');
+export const $showError = createStore<boolean>(false);
 
 const sessionDeleteFx = attach({ effect: api.sessionDelete });
+const pageReady = checkAuthenticated({ when: pageStarted });
 
 sample({
   source: $session,
@@ -33,5 +35,7 @@ sample({
   target: historyPush,
   fn: (_) => '/login',
 });
+
+$showError.reset(pageReady).on(sessionDeleteFx.fail, (_) => true);
 
 checkAuthenticated({ when: pageStarted });

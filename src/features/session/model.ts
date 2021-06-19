@@ -34,11 +34,7 @@ $session
     }
     return session;
   })
-  .on(sessionDelete.done, () => null)
-  .on(sessionDelete.fail, (session, error) => {
-    console.error(error);
-    return session;
-  });
+  .on(sessionDelete.done, () => null);
 
 guard({
   source: readyToLoadSession,
