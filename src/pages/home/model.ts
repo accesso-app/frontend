@@ -2,7 +2,6 @@ import { checkAuthenticated, $session } from 'features/session';
 import { createStart } from 'lib/page-routing';
 import { attach, createEvent, createStore, guard, sample } from 'effector-root';
 import * as api from '../../api';
-import { sessionDelete } from '../../api';
 import { historyPush } from '../../features/navigation';
 
 export const pageStarted = createStart();
@@ -31,7 +30,7 @@ sample({
 });
 
 sample({
-  source: sessionDelete.done,
+  source: api.sessionDelete.done,
   target: historyPush,
   fn: (_) => '/login',
 });
