@@ -3,15 +3,20 @@ import styled from 'styled-components';
 import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
 import { useStore } from 'effector-react/ssr';
-import { $fullName } from './model';
+import { createEvent } from 'effector-root';
+import { reflect } from 'effector-reflect/ssr';
+import { $fullName, $showError } from './model';
 
 export const pageStarted = createStart();
+
+export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 
 export const HomePage = withStart(pageStarted, () => {
   const fullName = useStore($fullName);
   return (
     <PageContainer>
       <ProfileGroup>
+        <Failure />
         <ProfileTitle>Profile</ProfileTitle>
         <ProfileCard fullName={fullName} />
       </ProfileGroup>
@@ -29,6 +34,13 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
             <UserFullName>{fullName}</UserFullName>
             <UserEmail> somename@example.com </UserEmail>
           </UserFullNameGroup>
+          <Button
+            type="button"
+            text="Logout"
+            size="small"
+            variant="primary"
+            onClick={logoutClicked}
+          />
         </UserInfoGroup>
       </CardRow>
       <CardRow>
@@ -52,6 +64,16 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
   );
 };
 
+const Failure = reflect({
+  view: ({ showError }: { showError: boolean }) =>
+    showError ? (
+      <ErrorText>Something went wrong! Please, try again later</ErrorText>
+    ) : null,
+  bind: {
+    showError: $showError,
+  },
+});
+
 const CardRow = styled.div`
   display: grid;
   grid-template-columns: 48px 1fr 48px;
@@ -60,6 +82,10 @@ const CardRow = styled.div`
 `;
 
 const CardRowFiller = styled.div``;
+
+const ErrorText = styled.div`
+  font-size: 1.8rem;
+`;
 
 const PageContainer = styled.div`
   display: flex;

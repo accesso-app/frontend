@@ -7,7 +7,7 @@ import {
   Event,
   forward,
 } from 'effector-root';
-import { SessionCreateDone, sessionGet } from 'api';
+import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
 
@@ -33,7 +33,8 @@ $session
       return null;
     }
     return session;
-  });
+  })
+  .on(sessionDelete.done, () => null);
 
 guard({
   source: readyToLoadSession,
