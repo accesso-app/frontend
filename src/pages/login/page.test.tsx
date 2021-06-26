@@ -4,6 +4,7 @@ import { root, fork, Scope, hydrate } from 'effector-root';
 import { Provider } from 'effector-react/ssr';
 
 import { render, waitFor, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import { path } from 'pages/paths';
@@ -157,8 +158,18 @@ describe('events', () => {
     render(<LoginPage />, { wrapper: Wrapper });
     const submit = await selectors.submit();
 
-    // TODO: test form submit on Enter in input
     fireEvent.click(submit);
+
+    expect(submitFn).toHaveBeenCalledTimes(1);
+    expect(emailChangeFn).toHaveBeenCalledTimes(0);
+    expect(passwordChangeFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('formSubmittedByEnter', async () => {
+    render(<LoginPage />, { wrapper: Wrapper });
+    const email = await selectors.email();
+
+    userEvent.type(email, '{enter}');
 
     expect(submitFn).toHaveBeenCalledTimes(1);
     expect(emailChangeFn).toHaveBeenCalledTimes(0);
