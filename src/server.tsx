@@ -25,6 +25,10 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 import { Application } from './application';
 import { routes } from './pages/routes';
 
+// process.on('unhandledRejection', (reason, promise) => {
+//   console.log('reason', reason);
+// });
+
 const dotenvLoaded = dotenv.config();
 if (dotenvLoaded.error) {
   throw dotenvLoaded.error;

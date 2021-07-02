@@ -22,7 +22,7 @@
     "cookie-parser": "^1.4.5",
     "cross-fetch": "^3.0.4",
     "dotenv": "^8.2.0",
-    "effector": "^21.7.5",
+    "effector": "^21.8.12",
     "effector-inspector": "^0.4.1",
     "effector-logger": "^0.9.0",
     "effector-react": "^21.2.1",
