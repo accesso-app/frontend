@@ -22,7 +22,7 @@ export const Globals = createGlobalStyle`
     --block-shadow: 0 3px 12px -3px var(--border-color);
 
     /* titles */
-    --title-color: var(--black)
+    --title-color: var(--black);
     --title-height: 1.2rem;
 
     --h1-font-size: 4.2rem;

@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
-import { useStore } from 'effector-react/ssr';
+import { useEvent, useStore } from 'effector-react/ssr';
 import { createEvent } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
+import { historyPush } from '../../features/navigation';
+import { path } from '../paths';
 import { $fullName, $showError } from './model';
 
 export const pageStarted = createStart();
@@ -13,10 +15,15 @@ export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 
 export const HomePage = withStart(pageStarted, () => {
   const fullName = useStore($fullName);
+  const push = useEvent(historyPush);
+  const handle = () => {
+    push(path.login());
+  };
   return (
     <PageContainer>
       <ProfileGroup>
         <Failure />
+        <button onClick={handle}>Click!</button>
         <ProfileTitle>Profile</ProfileTitle>
         <ProfileCard fullName={fullName} />
       </ProfileGroup>

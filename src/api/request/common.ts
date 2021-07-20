@@ -12,8 +12,7 @@ import queryString from 'query-string';
 export interface Request {
   path: string;
   method: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  body?: object | null | void;
+  body?: Record<string, unknown> | null | void;
   query?: Record<string, string>;
   headers?: Record<string, string>;
   cookies?: string;
@@ -23,7 +22,7 @@ export interface Answer<T = unknown> {
   ok: boolean;
   body: T;
   status: number;
-  headers: Record<string, string>;
+  headers: Record<string, string | undefined>;
 }
 
 export const setCookiesForRequest = createEvent<string>();
@@ -39,7 +38,10 @@ export const requestInternalFx = createEffect<Request, Answer, Answer>();
 export const requestFx: Effect<Request, Answer, Answer> = attach({
   effect: requestInternalFx,
   source: $cookiesForRequest,
-  mapParams: (params, cookies) => ({ ...params, cookies }),
+  mapParams: (params, cookies) => ({
+    ...params,
+    cookies,
+  }),
 });
 
 if (process.env.BUILD_TARGET === 'server') {
@@ -51,7 +53,6 @@ if (process.env.BUILD_TARGET === 'server') {
     requestInternalFx.doneData,
     requestInternalFx.failData,
   ]).map(({ headers }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return headers['set-cookie'] ?? '';
   });
 

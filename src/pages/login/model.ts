@@ -33,8 +33,8 @@ export const $formPending = pending({
 export const $formDisabled = $formPending;
 const formDomain = createDomain();
 
-export const $email = formDomain.createStore<string>('');
-export const $password = formDomain.createStore<string>('');
+export const $email = formDomain.createStore('');
+export const $password = formDomain.createStore('');
 export const $error = formDomain.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
@@ -59,6 +59,12 @@ sample({
   target: sessionCreateFx,
 });
 
-forward({ from: sessionCreateFx.done, to: sessionGetFx });
-
-forward({ from: sessionGetFx.done, to: historyPush.prepend(path.home) });
+// forward({
+//   from: sessionCreateFx.done,
+//   to: sessionGetFx,
+// });
+//
+// forward({
+//   from: sessionGetFx.done,
+//   to: historyPush.prepend(path.home),
+// });

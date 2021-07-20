@@ -13,7 +13,7 @@ export const $counter = createStore(0);
 $counter.on(buttonClicked, (counter) => counter + 1);
 ```
 
-Create a page component in a `page.tsx`:
+Create a page component in a `page.ts`:
 
 ```tsx
 import React from 'react';

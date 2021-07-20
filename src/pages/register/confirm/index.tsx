@@ -90,9 +90,9 @@ const Welcome = () => {
   return <Title level={2}>You are welcome, {name}!</Title>;
 };
 
-const DisplayName: React.FC = () => {
+const DisplayName = () => {
   const name = useStore(model.$displayName);
-  const isValid = useStore(model.$isDisplayNameValid);
+  const hasLastName = !useStore(model.$isDisplayNameValid);
   const isPending = useStore(model.$isFormPending);
   const onChange = useEvent(model.displayNameChanged);
 
@@ -104,9 +104,9 @@ const DisplayName: React.FC = () => {
         value={name}
         onChange={onChange}
       />
-      <Branch if={name.length === 0}>
+      <Branch if={!name}>
         <Subtext>Enter your First name and Last name</Subtext>
-        <Branch if={isValid}>
+        <Branch if={hasLastName}>
           <Subtext>&nbsp;</Subtext>
           <Subtext>What about Last name?</Subtext>
         </Branch>
@@ -115,7 +115,7 @@ const DisplayName: React.FC = () => {
   );
 };
 
-const Passwords: React.FC = () => {
+const Passwords = () => {
   const isPending = useStore(model.$isFormPending);
   const password = useStore(model.$password);
   const passwordChanged = useEvent(model.passwordChanged);

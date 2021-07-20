@@ -3,7 +3,7 @@ import { path } from './paths';
 import { Error404Page } from './error404';
 import { HomePage } from './home';
 import { LoginPage } from './login';
-import { OAuthAuthorizePage } from './oauth/authorize';
+import { OAuthPage } from './oauth/page';
 import { RegisterConfirmPage } from './register/confirm';
 import { RegisterPage } from './register';
 import { AccessRecoveryPage } from './access-recovery';
@@ -26,11 +26,6 @@ export const routes = [
     component: RegisterPage,
   },
   {
-    path: path.oauthAuthorize(),
-    exact: true,
-    component: OAuthAuthorizePage,
-  },
-  {
     path: path.registerConfirm(':code'),
     exact: true,
     component: RegisterConfirmPage,
@@ -44,6 +39,10 @@ export const routes = [
     path: path.accessRecoveryConfirm(':code'),
     exact: true,
     component: AccessRecoveryConfirmPage,
+  },
+  {
+    path: path.oauth.base(),
+    component: OAuthPage,
   },
   {
     path: '*',

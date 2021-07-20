@@ -3,8 +3,8 @@ import { routes } from './routes';
 import { path } from './paths';
 
 test('matches exact route', () => {
-  const match = matchRoutes(routes, path.oauthAuthorize());
-  expect(match[0].route.path).toBe(path.oauthAuthorize());
+  const match = matchRoutes(routes, path.oauth.authorize());
+  expect(match[0].route.path).toBe(path.oauth.authorize());
 });
 
 test('matches not found', () => {

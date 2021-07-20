@@ -48,11 +48,11 @@ export const LoginPage = withStart(pageStarted, () => (
         <Title level={2}>Sign in</Title>
         <ErrorBlock />
 
-        <Email placeholder="email" />
-        <Password type="password" placeholder="password" />
+        <Email />
+        <Password />
 
         <Group>
-          <Submit variant="primary" />
+          <Submit />
           <Button
             as={Link}
             to={path.register()}
@@ -92,6 +92,7 @@ const Email = reflect({
     disabled: $formDisabled,
     value: $email,
     onChange: emailChanged,
+    placeholder: 'email',
   },
 });
 
@@ -101,6 +102,8 @@ const Password = reflect({
     disabled: $formDisabled,
     value: $password,
     onChange: passwordChanged,
+    type: 'password',
+    placeholder: 'password',
   },
 });
 
@@ -110,6 +113,7 @@ const Submit = reflect({
     type: 'submit',
     disabled: $formDisabled,
     text: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
+    variant: 'primary',
   },
 });
 

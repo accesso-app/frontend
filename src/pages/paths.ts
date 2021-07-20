@@ -5,5 +5,9 @@ export const path = {
   registerConfirm: (code: string) => `/register/confirm-${code}`,
   accessRecovery: () => '/access-recovery',
   accessRecoveryConfirm: (code: string) => `/access-recovery/confirm-${code}`,
-  oauthAuthorize: () => '/oauth/authorize',
+  oauth: {
+    base: () => '/oauth',
+    authorize: () => `${path.oauth.base()}/authorize`,
+    accessoDone: () => `${path.oauth.base()}/accesso/done`,
+  },
 };
