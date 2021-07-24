@@ -2,6 +2,7 @@ import {
   attach,
   createEffect,
   createEvent,
+  createStore,
   Effect,
   guard,
   merge,
@@ -32,7 +33,13 @@ export const setCookiesForRequest = createEvent<string>();
 export const $cookiesForRequest = restore(setCookiesForRequest, '');
 
 export const setCookiesFromResponse = createEvent<string>();
-export const $cookiesFromResponse = restore(setCookiesFromResponse, '');
+
+// Combine all cookies
+// TODO Cookies uniqueness should be checked, now it is duplicated in set-cookie header but is unique at browser
+export const $cookiesFromResponse = createStore<string>('');
+$cookiesFromResponse.on(setCookiesFromResponse, (state, cookie) => {
+  return state ? `${state}&${cookie}` : cookie;
+});
 
 export const requestInternalFx = createEffect<Request, Answer, Answer>();
 

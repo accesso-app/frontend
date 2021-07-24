@@ -3,7 +3,7 @@ import { queryToString, Request, requestInternalFx } from './common';
 
 requestInternalFx.use(requestServer);
 
-const API_PREFIX = process.env.BACKEND_URL ?? 'http://localhost:9005';
+const API_PREFIX = process.env.BACKEND_URL ?? 'http://accesso.local:9005';
 
 async function requestServer({ path, method, ...params }: Request) {
   const headers = new Headers({

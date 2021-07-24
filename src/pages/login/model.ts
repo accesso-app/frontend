@@ -3,29 +3,67 @@ import {
   combine,
   createDomain,
   createEvent,
+  createStore,
   forward,
   guard,
+  merge,
   sample,
 } from 'effector-root';
 import { pending } from 'patronum/pending';
 
 import * as api from 'api';
-import { createStart } from 'lib/page-routing';
-import { path } from 'pages/paths';
+import { createStart, StartParams } from 'lib/page-routing';
 import { checkAnonymous } from 'features/session';
-import { historyPush } from 'features/navigation';
 
+import { path } from '../paths';
+import { OAuthSettings } from '../../features/oauth';
+import { historyPush } from '../../features/navigation';
 import { Failure } from './types';
+
+interface RedirectParams {
+  url: string;
+}
 
 const sessionCreateFx = attach({ effect: api.sessionCreate });
 const sessionGetFx = attach({ effect: api.sessionGet });
 
+export const queryParamsCheck = createEvent<StartParams>();
+export const redirectCheck = createEvent<OAuthSettings | null>();
 export const pageStarted = createStart();
 export const formSubmit = createEvent();
 export const emailChange = createEvent<string>();
 export const passwordChange = createEvent<string>();
+export const $redirectParams = createStore<RedirectParams | null>(null);
 
-const pageReady = checkAnonymous({ when: pageStarted });
+const pageReady = checkAnonymous({ when: pageStarted, stop: queryParamsCheck });
+
+$redirectParams.on(pageStarted, (state, params) =>
+  queryParamsToLoginParams(params.query),
+);
+
+const redirectBack = guard({
+  source: merge([queryParamsCheck, sessionGetFx.done]),
+  filter: $redirectParams.map((params) => Boolean(params)),
+});
+
+guard({
+  source: queryParamsCheck,
+  filter: $redirectParams.map((params) => !params),
+  target: historyPush.prepend(path.home),
+});
+
+guard({
+  source: sessionGetFx.done,
+  filter: $redirectParams.map((params) => !params),
+  target: historyPush.prepend(path.home),
+});
+
+sample({
+  source: $redirectParams,
+  clock: redirectBack,
+  target: historyPush,
+  fn: (redirectParams: RedirectParams | null) => redirectParams!.url,
+});
 
 export const $formPending = pending({
   effects: [sessionCreateFx, sessionGetFx],
@@ -59,6 +97,18 @@ sample({
   target: sessionCreateFx,
 });
 
-forward({ from: sessionCreateFx.done, to: sessionGetFx });
+forward({
+  from: sessionCreateFx.done,
+  to: sessionGetFx,
+});
 
-forward({ from: sessionGetFx.done, to: historyPush.prepend(path.home) });
+function queryParamsToLoginParams(
+  queryParams: Record<string, string>,
+): RedirectParams | null {
+  if (!queryParams.redirectBackUrl) {
+    return null;
+  }
+  return {
+    url: queryParams.redirectBackUrl,
+  };
+}
