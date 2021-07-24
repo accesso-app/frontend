@@ -43,6 +43,7 @@
     "styled-components": "^5.0.1",
     "typed-contracts": "^2.3.0",
     "universal-fetch": "^1.0.0",
+    "use-query-params": "1.2.3",
     "woly": "0.1.10"
   },
   "devDependencies": {

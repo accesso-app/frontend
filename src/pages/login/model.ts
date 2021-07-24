@@ -10,22 +10,49 @@ import {
 import { pending } from 'patronum/pending';
 
 import * as api from 'api';
-import { createStart } from 'lib/page-routing';
-import { path } from 'pages/paths';
+import { createStart, StartParams } from 'lib/page-routing';
 import { checkAnonymous } from 'features/session';
-import { historyPush } from 'features/navigation';
 
+import { path } from '../paths';
+import {
+  OAuthQueryParams,
+  OAuthSettings,
+  queryParamsConvertToAuth,
+  redirectWithOAuthSettings,
+} from '../../features/oauth';
+import { historyPush } from '../../features/navigation';
 import { Failure } from './types';
 
 const sessionCreateFx = attach({ effect: api.sessionCreate });
 const sessionGetFx = attach({ effect: api.sessionGet });
 
+export const queryParamsCheck = createEvent<StartParams>();
+export const redirectCheck = createEvent<OAuthSettings | null>();
 export const pageStarted = createStart();
 export const formSubmit = createEvent();
 export const emailChange = createEvent<string>();
 export const passwordChange = createEvent<string>();
 
-const pageReady = checkAnonymous({ when: pageStarted });
+const pageReady = checkAnonymous({ when: pageStarted, stop: queryParamsCheck });
+
+sample({
+  source: queryParamsCheck.map<OAuthSettings | null>(({ query }) =>
+    queryParamsConvertToAuth(query as unknown as OAuthQueryParams),
+  ),
+  target: redirectCheck,
+});
+
+guard({
+  source: redirectCheck,
+  filter: (settings) => !settings,
+  target: historyPush.prepend(path.home),
+});
+
+guard({
+  source: redirectCheck,
+  filter: (settings) => Boolean(settings),
+  target: redirectWithOAuthSettings,
+});
 
 export const $formPending = pending({
   effects: [sessionCreateFx, sessionGetFx],

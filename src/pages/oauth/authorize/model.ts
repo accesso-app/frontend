@@ -27,7 +27,9 @@ const authorizeReceived = guard({
       state,
     } = query;
 
-    if (responseType !== 'code') return null;
+    if (responseType !== 'code') {
+      return null;
+    }
     if (!clientId) return null;
     if (!redirectUri) return null;
 
@@ -43,7 +45,10 @@ const authorizeReceived = guard({
 });
 
 sample({
-  source: authorizeReceived,
+  source: guard({
+    source: authorizeReceived,
+    filter: oauthAuthorizeRequest.pending.map((is) => !is),
+  }),
   fn: (authorize) => ({ body: authorize }),
   target: oauthAuthorizeRequest,
 });
