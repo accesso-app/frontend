@@ -75,12 +75,14 @@ export function checkAuthenticated<T>(config: {
 export function checkAnonymous<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
+  stop?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent<T>();
+  const stopLogic = config.stop ?? historyPush.prepend(path.home);
   guard({
     source: config.when,
     filter: $isAuthenticated,
-    target: historyPush.prepend(path.home),
+    target: stopLogic,
   });
   guard({
     source: config.when,
