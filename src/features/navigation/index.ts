@@ -27,3 +27,5 @@ if (process.env.BUILD_TARGET === 'client') {
   const events = merge([historyPush, historyReplace]);
   $lastPushed.on(events, (_, url) => url);
 }
+
+export { EffectorSsrRedirect } from './lib';

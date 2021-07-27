@@ -7,7 +7,7 @@ import { createEvent, createStore } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
 import { withStart, createStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
-import { CenterCardTemplate } from '@auth/ui';
+import { CenterCardTemplate } from 'ui';
 
 import { path } from 'pages/paths';
 import { Failure } from './types';
@@ -48,8 +48,8 @@ export const LoginPage = withStart(pageStarted, () => (
         <Title level={2}>Sign in</Title>
         <ErrorBlock />
 
-        <Email placeholder="email" />
-        <Password type="password" placeholder="password" />
+        <Email />
+        <Password />
 
         <Group>
           <Submit variant="primary" />
@@ -92,6 +92,7 @@ const Email = reflect({
     disabled: $formDisabled,
     value: $email,
     onChange: emailChanged,
+    placeholder: 'email',
   },
 });
 
@@ -101,6 +102,8 @@ const Password = reflect({
     disabled: $formDisabled,
     value: $password,
     onChange: passwordChanged,
+    type: 'password',
+    placeholder: 'password',
   },
 });
 

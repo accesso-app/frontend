@@ -6,6 +6,7 @@ import {
   Unit,
   Event,
   forward,
+  sample,
 } from 'effector-root';
 import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
@@ -55,10 +56,16 @@ export function checkAuthenticated<T>(config: {
     filter: $isAuthenticated,
     target: continueLogic,
   });
+  const typedWrapper = createEvent<T>();
+  sample({
+    clock: typedWrapper,
+    fn: () => undefined,
+    target: historyPush.prepend(path.login),
+  });
   guard({
     source: config.when,
     filter: $isAuthenticated.map((is) => !is),
-    target: historyPush.prepend(path.login),
+    target: typedWrapper,
   });
 
   const result = createEvent<T>();
@@ -77,14 +84,28 @@ export function checkAnonymous<T>(config: {
   continue?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent<T>();
-  guard({
-    source: config.when,
-    filter: $isAuthenticated,
+
+  const typedWrapper = createEvent<T>();
+  sample({
+    clock: typedWrapper,
+    fn: () => undefined,
     target: historyPush.prepend(path.home),
   });
   guard({
     source: config.when,
+    filter: $isAuthenticated,
+    target: typedWrapper,
+  });
+
+  const checkLoading = createEvent<T>();
+  guard({
+    source: config.when,
     filter: $isAuthenticated.map((is) => !is),
+    target: checkLoading,
+  });
+  guard({
+    clock: checkLoading,
+    filter: $sessionPending.map((is) => !is),
     target: continueLogic,
   });
 

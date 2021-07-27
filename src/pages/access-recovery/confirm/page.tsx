@@ -40,11 +40,11 @@ export const AccessRecoveryConfirmPage = withStart(pageStart, () => (
       <Logotype />
       <Title level={2}>Access Recovery</Title>
       <Form>
-        <NewPassword placeholder="New password" type="password" />
-        <RepeatPassword placeholder="Repeat password" type="password" />
+        <NewPassword />
+        <RepeatPassword />
         <Failure />
         <Group>
-          <Submit text="Save password" variant="primary" />
+          <Submit />
         </Group>
       </Form>
     </Container>
@@ -66,6 +66,8 @@ const NewPassword = reflect({
     value: $password,
     onChange: passwordChanged,
     disabled: $isPending,
+    placeholder: 'New password',
+    type: 'password',
   },
 });
 
@@ -75,6 +77,8 @@ const RepeatPassword = reflect({
     value: $rePassword,
     onChange: rePasswordChanged,
     disabled: $isPending,
+    placeholder: 'Repeat password',
+    type: 'password',
   },
 });
 
@@ -91,6 +95,7 @@ const Submit = reflect({
   bind: {
     type: 'submit',
     disabled: $isPending,
+    text: 'Save password',
   },
 });
 
