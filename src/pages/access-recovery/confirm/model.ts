@@ -67,5 +67,6 @@ sample({
   clock: guard(formSubmitted, {
     filter: $isPasswordValid,
   }),
-  target: changePasswordFx.prepend((body) => ({ body })),
+  fn: (body) => ({ body }),
+  target: changePasswordFx,
 });

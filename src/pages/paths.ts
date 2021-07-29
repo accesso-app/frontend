@@ -6,4 +6,9 @@ export const path = {
   accessRecovery: () => '/access-recovery',
   accessRecoveryConfirm: (code: string) => `/access-recovery/confirm-${code}`,
   oauthAuthorize: () => '/oauth/authorize',
+  settings: {
+    base: () => '/settings',
+    profile: () => `${path.settings.base()}/profile`,
+    emails: () => `${path.settings.base()}/emails`,
+  },
 };

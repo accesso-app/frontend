@@ -1,10 +1,10 @@
 import React from 'react';
+import { createEvent } from 'effector-root';
+import { useStore } from 'effector-react/ssr';
+import { reflect } from 'effector-reflect/ssr';
 import styled from 'styled-components';
 import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
-import { useStore } from 'effector-react/ssr';
-import { createEvent } from 'effector-root';
-import { reflect } from 'effector-reflect/ssr';
 import { $fullName, $showError } from './model';
 
 export const pageStarted = createStart();

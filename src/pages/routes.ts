@@ -8,6 +8,7 @@ import { RegisterConfirmPage } from './register/confirm';
 import { RegisterPage } from './register';
 import { AccessRecoveryPage } from './access-recovery';
 import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
+import { SettingsPage } from './settings';
 
 export const routes = [
   {
@@ -44,6 +45,11 @@ export const routes = [
     path: path.accessRecoveryConfirm(':code'),
     exact: true,
     component: AccessRecoveryConfirmPage,
+  },
+  {
+    path: path.settings.base(),
+    exact: false,
+    component: SettingsPage,
   },
   {
     path: '*',

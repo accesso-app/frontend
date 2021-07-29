@@ -44,7 +44,7 @@ export const AccessRecoveryConfirmPage = withStart(pageStart, () => (
         <RepeatPassword placeholder="Repeat password" type="password" />
         <Failure />
         <Group>
-          <Submit text="Save password" variant="primary" />
+          <Submit text="Save password" />
         </Group>
       </Form>
     </Container>

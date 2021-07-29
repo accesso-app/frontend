@@ -7,7 +7,7 @@ import { createEvent, createStore } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
 import { withStart, createStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
-import { CenterCardTemplate } from '@auth/ui';
+import { CenterCardTemplate } from 'ui';
 
 import { path } from 'pages/paths';
 import { Failure } from './types';
@@ -52,7 +52,7 @@ export const LoginPage = withStart(pageStarted, () => (
         <Password type="password" placeholder="password" />
 
         <Group>
-          <Submit variant="primary" />
+          <Submit variant="primary" type="submit" />
           <Button
             as={Link}
             to={path.register()}
@@ -107,7 +107,6 @@ const Password = reflect({
 const Submit = reflect({
   view: Button,
   bind: {
-    type: 'submit',
     disabled: $formDisabled,
     text: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
   },
