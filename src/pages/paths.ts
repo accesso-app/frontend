@@ -9,5 +9,6 @@ export const path = {
   settings: {
     base: () => '/settings',
     profile: () => `${path.settings.base()}/profile`,
+    emails: () => `${path.settings.base()}/emails`,
   },
 };

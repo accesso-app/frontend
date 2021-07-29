@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FormEvent } from 'react';
-import { Button, Input, Form, Title } from 'woly';
-import { createStore, createEvent, StoreValue } from 'effector-root';
+import { Button, Form, Input, Title } from 'woly';
+import { combine, createEvent, createStore, StoreValue } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
 import styled from 'styled-components';
-import { Failure } from './types';
+import { FieldError, RequestFailure } from './types';
 
 export const $userFirstName = createStore('');
 export const $userLastName = createStore('');
@@ -11,8 +11,28 @@ export const firstNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const lastNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const formSubmitted = createEvent<FormEvent>();
 
-export const $firstNameError = createStore<string | null>(null);
-export const $lastNameError = createStore<string | null>(null);
+export const $firstNameError = createStore<FieldError | null>(null);
+export const $lastNameError = createStore<FieldError | null>(null);
+const $firstNameErrorMessage = combine(
+  $firstNameError,
+  $userFirstName,
+  (error, firstName) => {
+    if (error === FieldError.required) return 'Field is required';
+    if (error === FieldError.maxLength)
+      return `Field is too long (${firstName.length}/32)`;
+    return null;
+  },
+);
+const $lastNameErrorMessage = combine(
+  $lastNameError,
+  $userLastName,
+  (error, lastName) => {
+    if (error === FieldError.required) return 'Field is required';
+    if (error === FieldError.maxLength)
+      return `Field is too long (${lastName.length}/32)`;
+    return null;
+  },
+);
 
 export const $isFormDisabled = createStore(false);
 export const $isSubmitDisabled = createStore(false);
@@ -22,7 +42,7 @@ const $submitText = $isFormPending.map((isPending) =>
   isPending ? 'Sending...' : 'Change',
 );
 
-export const $errorType = createStore<Failure | null>(null);
+export const $errorType = createStore<RequestFailure | null>(null);
 const $errorText = $errorType.map((errorType) => {
   if (!errorType) return null;
   return 'AAAA';
@@ -33,13 +53,13 @@ export const SettingsProfilePage = () => {
     <FormWrapper>
       <UserForm>
         <Title level={2}>First name</Title>
-        <FirstName />
+        <FirstName placeholder="First name" />
         <FirstNameError />
         <Title level={2}>Last name</Title>
-        <LastName />
+        <LastName placeholder="Last name" />
         <LastNameError />
         <ErrorBlock />
-        <Submit />
+        <Submit type="submit" />
       </UserForm>
     </FormWrapper>
   );
@@ -50,7 +70,6 @@ const FirstName = reflect({
   bind: {
     value: $userFirstName,
     onChange: firstNameChanged,
-    placeholder: 'First name',
     disabled: $isFormDisabled,
   },
 });
@@ -59,24 +78,23 @@ const LastName = reflect({
   bind: {
     value: $userLastName,
     onChange: lastNameChanged,
-    placeholder: 'Last name',
     disabled: $isFormDisabled,
   },
 });
 const FirstNameError = reflect({
   bind: {
-    error: $firstNameError,
+    error: $firstNameErrorMessage,
   },
-  view: ({ error }: { error: StoreValue<typeof $firstNameError> }) => {
+  view: ({ error }: { error: StoreValue<typeof $firstNameErrorMessage> }) => {
     if (error) return <ErrorTitle>{error}</ErrorTitle>;
     return null;
   },
 });
 const LastNameError = reflect({
   bind: {
-    error: $lastNameError,
+    error: $lastNameErrorMessage,
   },
-  view: ({ error }: { error: StoreValue<typeof $lastNameError> }) => {
+  view: ({ error }: { error: StoreValue<typeof $lastNameErrorMessage> }) => {
     if (error) return <ErrorTitle>{error}</ErrorTitle>;
     return null;
   },
@@ -97,7 +115,6 @@ const Submit = reflect({
   bind: {
     disabled: $isSubmitDisabled,
     text: $submitText,
-    type: 'submit',
   },
 });
 const UserForm = reflect({

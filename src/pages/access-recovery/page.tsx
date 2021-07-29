@@ -33,7 +33,7 @@ export const AccessRecoveryPage = withStart(pageStarted, () => (
       <Logotype />
       <Form>
         <Title level={2}>Access Recovery</Title>
-        <Email />
+        <Email placeholder="email" />
         <Failure />
 
         <Group>
@@ -58,7 +58,6 @@ const Email = reflect({
   bind: {
     value: $email,
     onChange: emailChanged,
-    placeholder: 'email',
   },
 });
 

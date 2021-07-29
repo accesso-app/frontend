@@ -8,7 +8,8 @@ import {
   guard,
 } from 'effector-root';
 import { $session } from 'features/session';
-import { Failure } from './types';
+import { sleep } from 'lib/sleep';
+import { RequestFailure, FieldError } from './types';
 
 export const pageStarted = createStart();
 
@@ -19,7 +20,11 @@ const requestFx = createEffect(
     if (isSuccess) {
       return req;
     }
-    const errorTypes = [Failure.one, Failure.two, Failure.unexpected];
+    const errorTypes = [
+      RequestFailure.one,
+      RequestFailure.two,
+      RequestFailure.unexpected,
+    ];
     const errorIndex = Math.floor(Math.random() * errorTypes.length);
     throw {
       type: errorTypes[errorIndex],
@@ -39,20 +44,13 @@ $userLastName
   .on(changeLastName, (_, e) => e.target.value)
   .on($session, (_, session) => session?.lastName);
 
-const $firstNameError = $userFirstName.map((firstName) => {
-  if (!firstName) return 'Field is required';
-  if (firstName.length > 32) {
-    return `Field is too long (${firstName.length}/32)`;
-  }
+function validateField(field: string) {
+  if (!field) return FieldError.required;
+  if (field.length > 32) return FieldError.maxLength;
   return null;
-});
-const $lastNameError = $userLastName.map((lastName) => {
-  if (!lastName) return 'Field is required';
-  if (lastName.length > 32) {
-    return `Field is too long (${lastName.length}/32)`;
-  }
-  return null;
-});
+}
+const $firstNameError = $userFirstName.map(validateField);
+const $lastNameError = $userLastName.map(validateField);
 
 const $isFirstNameValid = $firstNameError.map((error) => !error);
 const $isLastNameValid = $lastNameError.map((error) => !error);
@@ -71,7 +69,7 @@ const $isSubmitDisabled = combine(
 );
 const $isFormDisabled = $isFormPending.map((is) => is);
 
-const $errorType = createStore<Failure | null>(null);
+const $errorType = createStore<RequestFailure | null>(null);
 
 const submitForm = createEvent<FormEvent>();
 
@@ -92,9 +90,6 @@ requestFx.finally.watch((res) => {
   }
 });
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 export {
   $userFirstName,
   $userLastName,
