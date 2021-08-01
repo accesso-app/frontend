@@ -62,10 +62,14 @@ sample({
   target: $error,
 });
 
-sample({
+const formValid = guard({
   source: { password: $password, code: $code },
-  clock: guard(formSubmitted, {
-    filter: $isPasswordValid,
-  }),
-  target: changePasswordFx.prepend((body) => ({ body })),
+  clock: formSubmitted,
+  filter: $isPasswordValid,
+});
+
+sample({
+  clock: formValid,
+  fn: (body) => ({ body }),
+  target: changePasswordFx,
 });
