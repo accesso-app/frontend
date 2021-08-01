@@ -25,6 +25,11 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 import { Application } from './application';
 import { routes } from './pages/routes';
 
+process.on('unhandledRejection', (error) => {
+  // Will print "unhandledRejection err is not defined"
+  console.error('unhandledRejection', error);
+});
+
 const dotenvLoaded = dotenv.config();
 if (dotenvLoaded.error) {
   throw dotenvLoaded.error;
