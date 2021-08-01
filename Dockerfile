@@ -1,6 +1,6 @@
 #
 # ---- Build ----
-FROM node:14.14.0-alpine3.10 as build
+FROM node:16.6.0-alpine3.11 as build
 
 LABEL img.name="frontend/main" \
   img.description="Main frontend" \
@@ -20,7 +20,7 @@ RUN yarn build
 
 #
 # ---- Release ----
-FROM node:14.14.0-alpine3.10
+FROM node:16.6.0-alpine3.11
 
 WORKDIR /app
 
