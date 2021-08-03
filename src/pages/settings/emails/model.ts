@@ -49,7 +49,7 @@ const $isSubmitDisabled = combine(
   (isValid, isPending) => !isValid || isPending,
 );
 
-const $isFormDisabled = $isFormPending.map((is) => !is);
+const $isFormDisabled = $isFormPending.map((is) => is);
 
 const $errorType = createStore<RequestFailure | null>(null);
 
