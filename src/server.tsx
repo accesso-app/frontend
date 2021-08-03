@@ -115,6 +115,7 @@ export const server = express()
       },
       logLevel: 'debug',
       secure: false,
+      changeOrigin: true,
       onError(error) {
         console.error('[proxy error]', error);
       },
@@ -203,7 +204,7 @@ function htmlStart(assetsCss: string, assetsJs: string) {
 function htmlEnd(storesValues: Record<string, unknown>): string {
   return `</div>
         <script>
-          window.INITIAL_STATE = ${JSON.stringify(storesValues)}
+          window['INITIAL_STATE'] = ${JSON.stringify(storesValues)}
         </script>
     </body>
 </html>`;
