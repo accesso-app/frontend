@@ -4976,6 +4976,13 @@ debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1:
   dependencies:
     ms "2.1.2"
 
+debug@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.2.tgz#f0a49c18ac8779e31d4a0c6029dfb76873c7428b"
+  integrity sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw==
+  dependencies:
+    ms "2.1.2"
+
 decamelize-keys@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/decamelize-keys/-/decamelize-keys-1.1.0.tgz#d171a87933252807eb3cb61dc1c1445d078df2d9"
@@ -5348,13 +5355,21 @@ effector-inspector@^0.4.1:
     foliage "^0.103.1"
     forest "^0.19.2"
 
-effector-logger@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.9.0.tgz#9b4c2038200eaaa4f1a0219ff0beba4aeada311b"
-  integrity sha512-m+KG+846Fb9k5M4pCemJx4PJqKGLfTlIwhbQNDdhtdBVS/K8C/jPq9+0ID129pv9uO/m8+hg5kq7D+wHMNLpIw==
+effector-inspector@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/effector-inspector/-/effector-inspector-0.5.0.tgz#b3d4bf855553c2c87230ef85e2404e6cd00b5172"
+  integrity sha512-EDumwuUt6OwcEyl16d4gkU6H1dHZD+7oxVpwZxuUxBFliKxFpMY0zoNECobr0xN3CR4Gyy+KCjrFtLR1eSkhUw==
+  dependencies:
+    foliage "^0.106.0"
+    forest "^0.19.6"
+
+effector-logger@0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/effector-logger/-/effector-logger-0.11.0.tgz#36fe49aa7977d4243ae9b11238c2e21dd52f716e"
+  integrity sha512-NPx0wEoXfOYMOfsxITx8swqdSXBKQ35RO7JQxvkd9WZmPWTOF/TSkXKcRHyEzXHWBDv95QDEmRQYlEx/cszEww==
   dependencies:
     detect-node "2.0.4"
-    effector-inspector "^0.4.1"
+    effector-inspector "^0.5.0"
     just-debounce-it "^1.1.0"
     set-value "3.0.1"
 
@@ -6313,6 +6328,13 @@ foliage@^0.103.1:
   dependencies:
     stylis "^4.0.0"
 
+foliage@^0.106.0:
+  version "0.106.0"
+  resolved "https://registry.yarnpkg.com/foliage/-/foliage-0.106.0.tgz#5fa4dfa820d7b76b450187268f07e5e5e0e22993"
+  integrity sha512-rmxzH3kR1MM9gXJC4RESnW3B8Rztq4Jqe4nf8e2PGbyKGOfbPVLjnt3tmqiQomJm9uU6e/OWHxSdpn5lIlGUgw==
+  dependencies:
+    stylis "^4.0.0"
+
 follow-redirects@^1.0.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
@@ -6327,6 +6349,11 @@ forest@^0.19.2:
   version "0.19.3"
   resolved "https://registry.yarnpkg.com/forest/-/forest-0.19.3.tgz#f530e85e6c31eb3dd59604d53b73588ad691ccac"
   integrity sha512-cusgzNsBp9aMmy7hL7DX0KVLNG722rfMJ6fmIcjKcn2dbqYzeDRhXZF39tP7hZKdqiU7kSbHMfP5Sl7CrF211w==
+
+forest@^0.19.6:
+  version "0.19.6"
+  resolved "https://registry.yarnpkg.com/forest/-/forest-0.19.6.tgz#dcae2f4c96f21229a1243732af952eeadc15f868"
+  integrity sha512-pMj2Murs7JfSLGfjtcpBF++XVdL044weGttKEF39lNP0TIs1/S1yFCla5RWY9GfepVeK1FDQ87ORYBTX3/wd0w==
 
 forever-agent@~0.6.1:
   version "0.6.1"

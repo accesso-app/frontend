@@ -7,7 +7,12 @@ import {
   Event,
   forward,
 } from 'effector-root';
-import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
+import {
+  sessionCreate,
+  SessionCreateDone,
+  sessionDelete,
+  sessionGet,
+} from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
 
@@ -28,6 +33,7 @@ export const $sessionPending = combine(
 
 $session
   .on(sessionGet.doneData, (_, { answer }) => answer.user)
+  //TODO probably session should be filled on create too, otherwise next request on server won`t get session
   .on(sessionGet.failData, (session, { status }) => {
     if (status === 'unauthorized') {
       return null;
@@ -48,8 +54,10 @@ guard({
 export function checkAuthenticated<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
+  stop?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent();
+  const stopLogic = config.stop ?? historyPush.prepend(path.login);
   guard({
     source: config.when,
     filter: $isAuthenticated,
@@ -58,7 +66,7 @@ export function checkAuthenticated<T>(config: {
   guard({
     source: config.when,
     filter: $isAuthenticated.map((is) => !is),
-    target: historyPush.prepend(path.login),
+    target: stopLogic,
   });
 
   const result = createEvent<T>();
@@ -75,12 +83,14 @@ export function checkAuthenticated<T>(config: {
 export function checkAnonymous<T>(config: {
   when: Unit<T>;
   continue?: Unit<T>;
+  stop?: Unit<T>;
 }): Event<T> {
   const continueLogic = config.continue ?? createEvent<T>();
+  const stopLogic = config.stop ?? historyPush.prepend(path.home);
   guard({
     source: config.when,
     filter: $isAuthenticated,
-    target: historyPush.prepend(path.home),
+    target: stopLogic,
   });
   guard({
     source: config.when,

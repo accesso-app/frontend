@@ -11,6 +11,6 @@
 
 - `BACKEND_URL` (server) — full url to backend API endpoint to send requests from nodejs.
 
-Example `BACKEND_URL=https://accesso.sova.dev/api/internal`, request `/session/get` will sent to `https://accesso.sova.dev/api/internal/session/get`. If not set uses `http://localhost:9005`
+Example `BACKEND_URL=https://accesso.sova.dev/api/internal`, request `/session/get` will sent to `https://accesso.sova.dev/api/internal/session/get`. If not set uses `http://accesso.local:9005`
 
 - `CLIENT_BACKEND_URL` (client, build-time) — full url to backend to call from browser. By default `/api/internal`
