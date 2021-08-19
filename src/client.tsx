@@ -3,25 +3,24 @@ import * as ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { matchRoutes } from 'react-router-config';
 import { forward, root } from 'effector-root';
-import { fork, hydrate } from 'effector/fork';
+import { fork } from 'effector/fork';
 
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 import { history, historyChanged } from 'features/navigation';
 import { routes } from 'pages/routes';
 import { Application } from './application';
 
-hydrate(root, { values: INITIAL_STATE });
-
-const scope = fork(root);
-
 const routesMatched = historyChanged.map((change) => ({
   routes: matchRoutes(routes, change.pathname).filter(lookupStartEvent),
   query: Object.fromEntries(new URLSearchParams(change.search)),
 }));
 
-for (const { component } of routes) {
+for (const { component, path } of routes) {
   const startPageEvent = getStart(component);
-  if (!startPageEvent) continue;
+  if (!startPageEvent) {
+    console.log('no startPage event', component, path);
+    continue;
+  }
 
   const matchedRoute = routesMatched.filterMap(({ routes, query }) => {
     const route = routes.find(routeWithEvent(startPageEvent));
@@ -37,6 +36,7 @@ for (const { component } of routes) {
     })),
   });
 }
+const scope = fork(root, { values: INITIAL_STATE });
 
 ReactDOM.hydrate(
   <Router history={history!}>

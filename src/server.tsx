@@ -11,7 +11,7 @@ import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
 import { fork, serialize, allSettled } from 'effector/fork';
-import { forward, root, sample } from 'effector-root';
+import { forward, guard, root, sample } from 'effector-root';
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 
 import {
@@ -24,6 +24,10 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { Application } from './application';
 import { routes } from './pages/routes';
+import { setCookiesFromResponse } from './api/request/common';
+import { path } from './pages/paths';
+
+const OAUTH_CACHE_KEY = 'oauth-params';
 
 process.on('unhandledRejection', (error) => {
   // Will print "unhandledRejection err is not defined"
@@ -50,6 +54,7 @@ const routesMatched = requestHandled.map((req) => {
   return {
     routes: matchRoutes(routes, req.path).filter(lookupStartEvent),
     query: Object.fromEntries(new URL(url).searchParams),
+    originalUrl: req.originalUrl,
   };
 });
 
@@ -61,6 +66,18 @@ forward({
 forward({
   from: serverStarted,
   to: readyToLoadSession,
+});
+
+// TODO logged for each oauth/authorize, but never invalidated
+// TODO probably path should be set more precisely
+// TODO Also different from setCookiesFromResponse event should be sent
+guard({
+  source: routesMatched,
+  filter: ({ originalUrl }) => originalUrl.includes(path.oauthAuthorize()),
+  target: setCookiesFromResponse.prepend(
+    ({ query }: { query: Record<string, string> }) =>
+      `${OAUTH_CACHE_KEY}=${JSON.stringify(query)}; path=/`,
+  ),
 });
 
 for (const { component } of routes) {
@@ -109,7 +126,7 @@ export const server = express()
   .use(
     '/api/internal',
     createProxyMiddleware({
-      target: process.env.BACKEND_URL ?? 'http://localhost:9005',
+      target: process.env.BACKEND_URL ?? 'http://accesso.local:9005',
       pathRewrite: {
         '^/api/internal': '',
       },
