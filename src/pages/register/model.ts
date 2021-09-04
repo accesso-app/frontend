@@ -11,16 +11,19 @@ import { registerRequest } from 'api';
 import { checkAnonymous } from 'features/session';
 import { createStart } from 'lib/page-routing';
 
+export type RegisterFailure =
+  | 'email_already_registered'
+  | 'invalid_form'
+  | 'invalid_payload';
+
 export const pageLoaded = createStart();
 
 export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
+const changedEmail = emailChanged.map((event) => event.currentTarget.value);
 
 export const $emailSubmitted = createStore(false);
-export const $failure =
-  createStore<
-    null | 'email_already_registered' | 'invalid_form' | 'invalid_payload'
-  >(null);
+export const $failure = createStore<RegisterFailure | null>(null);
 
 export const $formPending = registerRequest.pending;
 
@@ -35,34 +38,30 @@ export const $isSubmitEnabled = combine(
   (pending, valid) => !pending && valid,
 );
 
-const $form = combine($email, (email) => ({ email }));
+const $form = combine({ email: $email });
 
 const pageReady = checkAnonymous({ when: pageLoaded });
 
-$emailSubmitted
-  .on(pageReady, () => false)
-  .on(registerRequest.done, () => true)
-  .on(registerRequest.fail, () => false);
+$emailSubmitted.on(pageReady, () => false);
+$failure.on(pageReady, () => null);
 
-$email.on(emailChanged, (_, event) => event.currentTarget.value);
-
-$failure
-  .on(pageReady, () => null)
-  .on(registerRequest, () => null)
-  .on(registerRequest.failData, (_, failure) => {
-    if (failure.status !== 'bad_request') {
-      return null;
-    }
-
-    return failure.error.error;
-  });
+$email.on(changedEmail, (_, email) => email);
 
 guard({
-  source: sample({
-    source: $form,
-    clock: formSubmitted,
-    fn: (body) => ({ body }),
-  }),
+  source: $form,
+  clock: formSubmitted,
   filter: $isSubmitEnabled,
-  target: registerRequest,
+  target: registerRequest.prepend((body: { email: string }) => ({ body })),
+});
+
+$failure.on(registerRequest, () => null);
+$emailSubmitted.on(registerRequest.done, () => true);
+
+$emailSubmitted.on(registerRequest.fail, () => false);
+$failure.on(registerRequest.failData, (_, failure) => {
+  if (failure.status !== 'bad_request') {
+    return null;
+  }
+
+  return failure.error.error;
 });
