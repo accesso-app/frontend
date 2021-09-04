@@ -48,8 +48,8 @@ $failure.on(pageReady, () => null);
 $email.on(changedEmail, (_, email) => email);
 
 guard({
-  source: $form,
   clock: formSubmitted,
+  source: $form,
   filter: $isSubmitEnabled,
   target: registerRequest.prepend((body: { email: string }) => ({ body })),
 });
