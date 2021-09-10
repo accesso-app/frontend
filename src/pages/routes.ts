@@ -6,8 +6,8 @@ import { LoginPage } from './login';
 import { OAuthAuthorizePage } from './oauth/authorize';
 import { RegisterConfirmPage } from './register/confirm';
 import { RegisterPage } from './register';
-import { AccessRecoveryPage } from './access-recovery';
-import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
+// import { AccessRecoveryPage } from './access-recovery';
+// import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
 
 export const routes = [
   {
@@ -35,16 +35,16 @@ export const routes = [
     exact: true,
     component: RegisterConfirmPage,
   },
-  {
-    path: path.accessRecovery(),
-    exact: true,
-    component: AccessRecoveryPage,
-  },
-  {
-    path: path.accessRecoveryConfirm(':code'),
-    exact: true,
-    component: AccessRecoveryConfirmPage,
-  },
+  // {
+  //   path: path.accessRecovery(),
+  //   exact: true,
+  //   component: AccessRecoveryPage,
+  // },
+  // {
+  //   path: path.accessRecoveryConfirm(':code'),
+  //   exact: true,
+  //   component: AccessRecoveryConfirmPage,
+  // },
   {
     path: '*',
     component: Error404Page,
