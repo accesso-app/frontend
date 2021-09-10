@@ -35,16 +35,16 @@ export const routes = [
     exact: true,
     component: RegisterConfirmPage,
   },
-  {
-    path: path.accessRecovery(),
-    exact: true,
-    component: AccessRecoveryPage,
-  },
-  {
-    path: path.accessRecoveryConfirm(':code'),
-    exact: true,
-    component: AccessRecoveryConfirmPage,
-  },
+  // {
+  //   path: path.accessRecovery(),
+  //   exact: true,
+  //   component: AccessRecoveryPage,
+  // },
+  // {
+  //   path: path.accessRecoveryConfirm(':code'),
+  //   exact: true,
+  //   component: AccessRecoveryConfirmPage,
+  // },
   {
     path: '*',
     component: Error404Page,

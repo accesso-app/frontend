@@ -60,12 +60,12 @@ export const LoginPage = withStart(pageStarted, () => {
               text="Sign up"
               variant="text"
             />
-            <Button
-              as={Link}
-              to={path.accessRecovery()}
-              text="Reset password"
-              variant="text"
-            />
+            {/*<Button*/}
+            {/*  as={Link}*/}
+            {/*  to={path.accessRecovery()}*/}
+            {/*  text="Reset password"*/}
+            {/*  variant="text"*/}
+            {/*/>*/}
           </Group>
         </Form>
         <Footer>
