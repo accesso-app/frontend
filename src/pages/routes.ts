@@ -6,8 +6,8 @@ import { LoginPage } from './login';
 import { OAuthAuthorizePage } from './oauth/authorize';
 import { RegisterConfirmPage } from './register/confirm';
 import { RegisterPage } from './register';
-import { AccessRecoveryPage } from './access-recovery';
-import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
+// import { AccessRecoveryPage } from './access-recovery';
+// import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
 
 export const routes = [
   {
