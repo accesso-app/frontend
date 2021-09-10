@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { Button } from 'woly';
 import { withStart, createStart } from 'lib/page-routing';
 import { useStore } from 'effector-react/ssr';
-import { createEvent } from 'effector-root';
+import { createEvent, createStore } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
-import { $fullName, $showError } from './model';
 
 export const pageStarted = createStart();
+export const $fullName = createStore('');
+export const $showError = createStore(false);
 
 export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 

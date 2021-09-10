@@ -61,7 +61,7 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
                 />
                 <Button
                   as={Link}
-                  text="Enter email again"
+                  text="Sign up"
                   variant="text"
                   to={path.register()}
                 />
@@ -152,13 +152,18 @@ const failureText = {
   code_invalid_or_expired: () => (
     <span>
       Code invalid or expired,{' '}
-      <Link to={path.register()}>request another one</Link>
+      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
+        request another one in chat
+      </a>
     </span>
   ),
   email_already_activated: () => (
     <span>
       Wow! This email is already activated. <Link to={path.login()}>Login</Link>{' '}
-      or <Link to={path.register()}>enter another one</Link>.
+      or{' '}
+      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
+        request another one in chat
+      </a>
     </span>
   ),
   invalid_form: () => (

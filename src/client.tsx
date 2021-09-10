@@ -18,7 +18,6 @@ const routesMatched = historyChanged.map((change) => ({
 for (const { component, path } of routes) {
   const startPageEvent = getStart(component);
   if (!startPageEvent) {
-    console.log('no startPage event', component, path);
     continue;
   }
 
