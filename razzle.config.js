@@ -31,7 +31,7 @@ module.exports = {
         key: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.key')),
         cert: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.crt')),
         https: true,
-        host: 'accesso.local',
+        host: process.env.RAZZLE_DEV_SERVER_HOST || 'localhost',
       };
     }
 
