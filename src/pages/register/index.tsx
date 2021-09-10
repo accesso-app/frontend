@@ -15,10 +15,11 @@ export const RegisterPage = withStart(model.pageLoaded, () => {
     <CenterCardTemplate>
       <Container>
         <Logotype />
-        <Title>
-          Registration is available by invite <br />
+        <Title>Registration closed at the moment</Title>
+        <Title level={3}>
+          You can obtain an invitation by{' '}
           <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
-            Join our chat to get it
+            joining our early adopters chat
           </a>
         </Title>
         <SignInButton
