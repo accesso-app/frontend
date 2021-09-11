@@ -52,16 +52,31 @@ export const SettingsProfilePage = () => {
   return (
     <FormWrapper>
       <UserForm>
-        <Title level={2}>First name</Title>
-        <FirstName placeholder="First name" />
-        <FirstNameError />
-        <Title level={2}>Last name</Title>
-        <LastName placeholder="Last name" />
-        <LastNameError />
+        <FirstNameField />
+        <LastNameField />
         <ErrorBlock />
         <Submit type="submit" />
       </UserForm>
     </FormWrapper>
+  );
+};
+
+const FirstNameField = () => {
+  return (
+    <FieldWrapper>
+      <Title level={2}>First name</Title>
+      <FirstName placeholder="First name" />
+      <FirstNameError />
+    </FieldWrapper>
+  );
+};
+const LastNameField = () => {
+  return (
+    <FieldWrapper>
+      <Title level={2}>Last name</Title>
+      <LastName placeholder="Last name" />
+      <LastNameError />
+    </FieldWrapper>
   );
 };
 
@@ -133,4 +148,8 @@ const Fail = styled.div`
 `;
 const ErrorTitle = styled.span`
   color: red;
+`;
+const FieldWrapper = styled.div`
+  padding: 2rem;
+  border: 1px solid;
 `;
