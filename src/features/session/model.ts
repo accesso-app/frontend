@@ -7,12 +7,7 @@ import {
   Event,
   forward,
 } from 'effector-root';
-import {
-  sessionCreate,
-  SessionCreateDone,
-  sessionDelete,
-  sessionGet,
-} from 'api';
+import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
 
