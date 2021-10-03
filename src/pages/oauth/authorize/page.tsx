@@ -1,4 +1,4 @@
-import { withStart, createStart } from 'lib/page-routing';
+import { createStart, withStart } from 'lib/page-routing';
 
 export const pageStarted = createStart();
 

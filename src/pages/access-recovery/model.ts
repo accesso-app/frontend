@@ -1,11 +1,11 @@
 import {
+  attach,
   createEvent,
   createStore,
   guard,
-  sample,
   restore,
-  attach,
-} from 'effector-root';
+  sample,
+} from 'effector';
 
 import * as api from 'api';
 import { validateEmail } from 'lib/email';

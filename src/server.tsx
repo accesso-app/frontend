@@ -10,8 +10,16 @@ import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
 import { ServerStyleSheet } from 'styled-components';
 
-import { fork, serialize, allSettled } from 'effector/fork';
-import { forward, guard, root, sample } from 'effector-root';
+import {
+  createEvent,
+  fork,
+  serialize,
+  allSettled,
+  forward,
+  guard,
+  sample,
+} from 'effector';
+
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 
 import {
@@ -40,7 +48,7 @@ if (dotenvLoaded.error) {
 }
 
 const serverStarted =
-  root.createEvent<{
+  createEvent<{
     req: express.Request;
     res: express.Response;
   }>();
@@ -143,7 +151,7 @@ export const server = express()
   .get('/*', async (req: express.Request, res: express.Response) => {
     console.info('[REQUEST] %s %s', req.method, req.url);
     const timeStart = performance.now();
-    const scope = fork(root);
+    const scope = fork();
 
     try {
       await allSettled(serverStarted, {

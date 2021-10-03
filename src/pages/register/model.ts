@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent } from 'react';
-import { combine, createEvent, createStore, guard } from 'effector-root';
+import { combine, createEvent, createStore, guard } from 'effector';
 import { registerRequest } from 'api';
 
 import { checkAnonymous } from 'features/session';

@@ -1,11 +1,11 @@
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { Button, Title, Input } from 'woly';
+import { Button, Input, Title } from 'woly';
 import { Link } from 'react-router-dom';
 
-import { createEvent, createStore } from 'effector-root';
-import { reflect } from 'effector-reflect/ssr';
-import { withStart, createStart } from 'lib/page-routing';
+import { createEvent, createStore } from 'effector';
+import { reflect } from '@effector/reflect/ssr';
+import { createStart, withStart } from 'lib/page-routing';
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';
 
@@ -81,7 +81,7 @@ const Form = reflect({
   view: styled.form``,
   bind: {
     onSubmit: formSubmitted,
-    // TODO remove after merge https://github.com/EvgenyiFedotov/effector-reflect/pull/4
+    // TODO remove after merge https://github.com/EvgenyiFedotov/@effector/reflect/pull/4
     'data-demo': $email,
     placeholder: 'asdasd',
   },

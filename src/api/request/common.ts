@@ -7,7 +7,7 @@ import {
   guard,
   merge,
   restore,
-} from 'effector-root';
+} from 'effector';
 import queryString from 'query-string';
 
 export interface Request {

@@ -8,16 +8,16 @@ import {
   guard,
   merge,
   sample,
-} from 'effector-root';
+} from 'effector';
 import { pending } from 'patronum/pending';
 
 import * as api from 'api';
 import { createStart, StartParams } from 'lib/page-routing';
 import { checkAnonymous } from 'features/session';
 
-import { path } from '../paths';
-import { OAuthSettings } from '../../features/oauth';
-import { historyPush } from '../../features/navigation';
+import { OAuthSettings } from 'features/oauth';
+import { historyPush } from 'features/navigation';
+import { path } from 'pages/paths';
 import { Failure } from './types';
 
 interface RedirectParams {
