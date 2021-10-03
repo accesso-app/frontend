@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'woly';
-import { withStart, createStart } from 'lib/page-routing';
+import { createStart, withStart } from 'lib/page-routing';
 import { useStore } from 'effector-react/ssr';
-import { createEvent, createStore } from 'effector-root';
-import { reflect } from 'effector-reflect/ssr';
+import { createEvent, createStore } from 'effector';
+import { reflect } from '@effector/reflect/ssr';
 
 export interface ProfileCardProps {
   fullName: string;

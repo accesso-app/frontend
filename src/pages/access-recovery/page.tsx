@@ -1,8 +1,8 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
-import { Button, Title, Input } from 'woly';
-import { createStore, createEvent } from 'effector-root';
-import { reflect } from 'effector-reflect/ssr';
+import { Button, Input, Title } from 'woly';
+import { createEvent, createStore } from 'effector';
+import { reflect } from '@effector/reflect/ssr';
 
 import Logo from 'logo.svg';
 import { CenterCardTemplate } from '@auth/ui';

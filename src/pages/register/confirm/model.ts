@@ -1,11 +1,5 @@
 import { ChangeEvent } from 'react';
-import {
-  combine,
-  createEvent,
-  createStore,
-  guard,
-  sample,
-} from 'effector-root';
+import { combine, createEvent, createStore, guard, sample } from 'effector';
 import * as typed from 'typed-contracts';
 import { registerConfirmation, registerConfirmationBadRequest } from 'api';
 

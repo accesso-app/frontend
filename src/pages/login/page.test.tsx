@@ -1,9 +1,9 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { root, fork, Scope, hydrate } from 'effector-root';
+import { fork, hydrate, Scope } from 'effector';
 import { Provider } from 'effector-react/ssr';
 
-import { render, waitFor, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -23,7 +23,7 @@ import {
 let scope: Scope;
 
 beforeEach(() => {
-  scope = fork(root);
+  scope = fork();
 });
 
 const selectors = {

@@ -1,16 +1,10 @@
-import {
-  combine,
-  createEvent,
-  createStore,
-  guard,
-  sample,
-} from 'effector-root';
+import { combine, createEvent, createStore, guard, sample } from 'effector';
 import { createStart, StartParams } from 'lib/page-routing';
 import { $isAuthenticated, checkAuthenticated } from 'features/session';
 import { oauthAuthorizeRequest } from 'api';
 import { historyPush, historyPushWithParams } from 'features/navigation';
 import { parse } from 'cookie';
-import { path } from '../../paths';
+import { path } from 'pages/paths';
 
 const COOKIE_PATH = 'oauth-params';
 
@@ -105,14 +99,12 @@ sample({
     filter: $queryIsGoodAndNotAuthed,
   }),
   target: historyPushWithParams,
-  fn: () => {
-    return {
-      pathname: path.login(),
-      params: {
-        redirectBackUrl: path.oauthAuthorize(),
-      },
-    };
-  },
+  fn: () => ({
+    pathname: path.login(),
+    params: {
+      redirectBackUrl: path.oauthAuthorize(),
+    },
+  }),
 });
 
 // TODO probably should log or emit some error

@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import { createStore, createEvent, merge, sample } from 'effector-root';
+import { createStore, createEvent, merge, sample } from 'effector';
 import { queryToString } from '../../api/request/common';
 
 export const history =

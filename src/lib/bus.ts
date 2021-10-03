@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { forward, Event, Store } from 'effector-root';
+import { forward, Event, Store } from 'effector';
 
 // https://t.me/ts_ru/123234
 type Equal<A, B> = (<X>() => X extends A ? 1 : 2) extends <X>() => X extends B

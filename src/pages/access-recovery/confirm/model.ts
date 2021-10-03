@@ -1,11 +1,11 @@
 import {
-  createStore,
-  createEvent,
-  guard,
-  sample,
-  restore,
   attach,
-} from 'effector-root';
+  createEvent,
+  createStore,
+  guard,
+  restore,
+  sample,
+} from 'effector';
 import { splitMap } from 'patronum/split-map';
 
 import * as api from 'api';

@@ -1,4 +1,4 @@
-import { createEvent, guard, sample } from 'effector-root';
+import { createEvent, guard, sample } from 'effector';
 import { historyPush, historyPushWithParams } from '../navigation';
 import { path } from '../../pages/paths';
 

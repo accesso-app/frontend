@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Button, Title, Input } from 'woly';
+import { Button, Input, Title } from 'woly';
 import { Link } from 'react-router-dom';
-import { useStore, useEvent } from 'effector-react/ssr';
+import { useEvent, useStore } from 'effector-react/ssr';
 
 import Logo from 'logo.svg';
 import { path } from 'pages/paths';

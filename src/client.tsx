@@ -2,8 +2,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { matchRoutes } from 'react-router-config';
-import { forward, root } from 'effector-root';
-import { fork } from 'effector/fork';
+import { forward, fork } from 'effector';
 
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
 import { history, historyChanged } from 'features/navigation';
@@ -35,7 +34,7 @@ for (const { component, path } of routes) {
     })),
   });
 }
-const scope = fork(root, { values: INITIAL_STATE });
+const scope = fork({ values: INITIAL_STATE });
 
 ReactDOM.hydrate(
   <Router history={history!}>

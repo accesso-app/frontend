@@ -6,7 +6,7 @@ module.exports = {
     [
       'effector-openapi-preset',
       {
-        effectorImport: 'effector-root',
+        effectorImport: 'effector',
         requestName: 'requestFx',
         requestPath: './request',
       },

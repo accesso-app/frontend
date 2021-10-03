@@ -6,7 +6,7 @@ import {
   Unit,
   Event,
   forward,
-} from 'effector-root';
+} from 'effector';
 import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';

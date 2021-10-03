@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Event, createEvent } from 'effector-root';
+import { Event, createEvent } from 'effector';
 import { MatchedRoute } from 'react-router-config';
 
 const START = `☄️/start-event`;
