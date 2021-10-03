@@ -6,26 +6,33 @@ import { useStore } from 'effector-react/ssr';
 import { createEvent, createStore } from 'effector-root';
 import { reflect } from 'effector-reflect/ssr';
 
+export interface ProfileCardProps {
+  fullName: string;
+  email: string;
+}
+
 export const pageStarted = createStart();
 export const $fullName = createStore('');
+export const $email = createStore('');
 export const $showError = createStore(false);
 
 export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 
 export const HomePage = withStart(pageStarted, () => {
   const fullName = useStore($fullName);
+  const email = useStore($email);
   return (
     <PageContainer>
       <ProfileGroup>
         <Failure />
         <ProfileTitle>Profile</ProfileTitle>
-        <ProfileCard fullName={fullName} />
+        <ProfileCard fullName={fullName} email={email} />
       </ProfileGroup>
     </PageContainer>
   );
 });
 
-export const ProfileCard = ({ fullName }: { fullName: string }) => {
+export const ProfileCard = ({ fullName, email }: ProfileCardProps) => {
   return (
     <ProfileCardContainer>
       <CardRow>
@@ -33,7 +40,7 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
         <UserInfoGroup>
           <UserFullNameGroup>
             <UserFullName>{fullName}</UserFullName>
-            <UserEmail> somename@example.com </UserEmail>
+            <UserEmail>{email}</UserEmail>
           </UserFullNameGroup>
           <Button
             type="button"
@@ -44,23 +51,23 @@ export const ProfileCard = ({ fullName }: { fullName: string }) => {
           />
         </UserInfoGroup>
       </CardRow>
-      <CardRow>
-        <CardRowFiller />
-        <div>
-          <SocialButton
-            type="button"
-            size="small"
-            variant="default"
-            text="Connect Google"
-          />
-          <SocialButton
-            type="button"
-            size="small"
-            variant="default"
-            text="Connect Facebook"
-          />
-        </div>
-      </CardRow>
+      {/*<CardRow>*/}
+      {/*  <CardRowFiller />*/}
+      {/*  <div>*/}
+      {/*    <SocialButton*/}
+      {/*      type="button"*/}
+      {/*      size="small"*/}
+      {/*      variant="default"*/}
+      {/*      text="Connect Google"*/}
+      {/*    />*/}
+      {/*    <SocialButton*/}
+      {/*      type="button"*/}
+      {/*      size="small"*/}
+      {/*      variant="default"*/}
+      {/*      text="Connect Facebook"*/}
+      {/*    />*/}
+      {/*  </div>*/}
+      {/*</CardRow>*/}
     </ProfileCardContainer>
   );
 };

@@ -9,6 +9,7 @@ export const pageStarted = createStart();
 export const logout = createEvent<void>();
 
 export const $fullName = createStore<string>('');
+export const $email = createStore<string>('');
 export const $showError = createStore<boolean>(false);
 
 const sessionDeleteFx = attach({ effect: api.sessionDelete });
@@ -18,6 +19,12 @@ sample({
   source: $session,
   target: $fullName,
   fn: (session) => `${session?.firstName} ${session?.lastName}`,
+});
+
+sample({
+  source: $session,
+  target: $email,
+  fn: (session) => session?.email || '',
 });
 
 sample({

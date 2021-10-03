@@ -450,6 +450,7 @@ type SessionCreate = {
 export const sessionCreateCreated = typed.object({
   firstName: typed.string,
   lastName: typed.string,
+  email: typed.string,
 });
 export type SessionCreateDone = {
   status: 'created';
@@ -506,6 +507,7 @@ export const sessionGetOk = typed.object({
   user: typed.object({
     firstName: typed.string,
     lastName: typed.string,
+    email: typed.string,
   }),
 });
 export type SessionGetDone = {
