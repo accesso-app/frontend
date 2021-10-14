@@ -108,7 +108,7 @@ const DisplayName: React.FC = () => {
         <Subtext>Enter your First name and Last name</Subtext>
         <Branch if={isValid}>
           <Subtext>&nbsp;</Subtext>
-          <Subtext>What about Last name?</Subtext>
+          <Subtext data-style="failure">What about Last name?</Subtext>
         </Branch>
       </Branch>
     </>
@@ -142,7 +142,7 @@ const Passwords: React.FC = () => {
         onChange={repeatChanged}
       />
       <Branch if={!isPasswordValid && repeat.length > 3}>
-        <Subtext>Looks like your password is not match confirmation</Subtext>
+        <Subtext data-style="failure">Looks like your password is not match confirmation</Subtext>
       </Branch>
     </>
   );
@@ -179,7 +179,7 @@ const Failure = () => {
     return null;
   }
 
-  return <Subtext>{failureText[failure]()}</Subtext>;
+  return <Subtext data-style="failure">{failureText[failure]()}</Subtext>;
 };
 
 const Logotype = styled(Logo)`
@@ -209,6 +209,9 @@ const Group = styled.div`
 
 const Subtext = styled.div`
   font-size: 1.2rem;
+  &[data-style="failure"] {
+    color: red;
+  }
 `;
 
 const Footer = styled.footer`
