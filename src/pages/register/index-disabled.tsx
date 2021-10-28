@@ -54,8 +54,7 @@ export const RegisterPage = withStart(model.pageLoaded, () => {
           </Branch>
         </form>
         <Footer>
-          By joining nameproject you accept our Terms of Service and Privacy
-          Policy
+          By joining Accesso you accept our Terms of Service and Privacy Policy
         </Footer>
       </Container>
     </CenterCardTemplate>

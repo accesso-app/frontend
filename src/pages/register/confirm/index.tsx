@@ -78,8 +78,7 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
           </>
         </Branch>
         <Footer>
-          By joining nameproject you accept our Terms of Service and Privacy
-          Policy
+          By joining Accesso you accept our Terms of Service and Privacy Policy
         </Footer>
       </Container>
     </CenterCardTemplate>
