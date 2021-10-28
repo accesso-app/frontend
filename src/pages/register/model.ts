@@ -4,6 +4,8 @@ import { registerRequest } from 'api';
 
 import { checkAnonymous } from 'features/session';
 import { createStart } from 'lib/page-routing';
+import { historyPush } from 'features/navigation';
+import { path } from 'pages/paths';
 
 export type RegisterFailure =
   | 'email_already_registered'
@@ -15,6 +17,12 @@ export const pageLoaded = createStart();
 export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 const changedEmail = emailChanged.map((event) => event.currentTarget.value);
+export const haveInviteClicked = createEvent();
+export const continueWithInviteClicked = createEvent();
+export const alreadyRegisteredInviteClicked = createEvent();
+export const inviteCodeChanged = createEvent<string>();
+
+export const $mode = createStore<'request' | 'invite'>('request');
 
 export const $emailSubmitted = createStore(false);
 export const $failure = createStore<RegisterFailure | null>(null);
@@ -30,6 +38,12 @@ export const $isSubmitEnabled = combine(
   $formPending,
   $isEmailValid,
   (pending, valid) => !pending && valid,
+);
+
+export const $inviteCode = createStore('');
+const inviteRegex = /^\w+-\w+-\w+-\w+$/gi;
+export const $isInviteValid = $inviteCode.map(
+  (code) => code.match(inviteRegex) !== null,
 );
 
 const $form = combine({ email: $email });
@@ -59,3 +73,17 @@ $failure.on(registerRequest.failData, (_, failure) => {
 
   return failure.error.error;
 });
+
+$mode
+  .on(haveInviteClicked, () => 'invite')
+  .reset(alreadyRegisteredInviteClicked, pageLoaded);
+$inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(pageLoaded);
+
+guard({
+  source: $inviteCode,
+  filter: $isInviteValid,
+  clock: continueWithInviteClicked,
+  target: historyPush.prepend((code: string) => path.registerConfirm(code)),
+});
+
+continueWithInviteClicked.watch(() => console.log('clicked'));

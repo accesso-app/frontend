@@ -77,12 +77,16 @@ $failure
   .on(pageReady, () => null)
   .on(registerConfirmation, () => null)
   .on(registerConfirmation.failData, (_, failure) => {
-    if (failure.status !== 'bad_request') {
+    if ((failure.status as any as number) !== 400) {
       return null;
     }
 
-    return failure.error.error;
+    return (failure as any).body.error;
   });
+
+registerConfirmation.failData.watch((f) =>
+  console.warn('registerConfirm FAIL', f),
+);
 
 guard({
   source: sample({

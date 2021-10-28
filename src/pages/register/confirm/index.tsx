@@ -56,21 +56,23 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
                 <Button
                   disabled={isSubmitDisabled}
                   type="submit"
-                  text="Sign up"
+                  text="Confirm registration"
                   variant="primary"
                 />
-                <Button
-                  as={Link}
-                  text="Sign up"
-                  variant="text"
-                  to={path.register()}
-                />
-                <Button
-                  as={Link}
-                  text="Sign in"
-                  variant="text"
-                  to={path.login()}
-                />
+                <Group data-direction="column">
+                  <Button
+                    as={Link}
+                    text="It's not my invite"
+                    variant="text"
+                    to={path.register()}
+                  />
+                  <Button
+                    as={Link}
+                    text="I'm already registered"
+                    variant="text"
+                    to={path.login()}
+                  />
+                </Group>
               </Group>
             </form>
           </>
@@ -142,7 +144,9 @@ const Passwords: React.FC = () => {
         onChange={repeatChanged}
       />
       <Branch if={!isPasswordValid && repeat.length > 3}>
-        <Subtext data-style="failure">Looks like your password is not match confirmation</Subtext>
+        <Subtext data-style="failure">
+          Looks like your password is not match confirmation
+        </Subtext>
       </Branch>
     </>
   );
@@ -192,6 +196,7 @@ const Group = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 3rem;
+  align-items: flex-start;
 
   & *:not(:first-child) {
     margin-left: 2rem;
@@ -200,16 +205,17 @@ const Group = styled.div`
   &[data-direction='column'] {
     flex-direction: column;
 
+    margin-top: 0;
     & *:not(:first-child) {
-      margin-left: initial;
+      margin-left: 0;
       margin-top: 1rem;
     }
   }
 `;
 
 const Subtext = styled.div`
-  font-size: 1.2rem;
-  &[data-style="failure"] {
+  font-size: 1.5rem;
+  &[data-style='failure'] {
     color: red;
   }
 `;

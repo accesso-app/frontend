@@ -57,7 +57,7 @@ export const LoginPage = withStart(pageStarted, () => {
             <Button
               as={Link}
               to={path.register()}
-              text="Sign up"
+              text="Register"
               variant="text"
             />
             {/*<Button*/}
@@ -69,8 +69,7 @@ export const LoginPage = withStart(pageStarted, () => {
           </Group>
         </Form>
         <Footer>
-          By joining nameproject you accept our Terms of Service and Privacy
-          Policy
+          By joining Accesso you accept our Terms of Service and Privacy Policy
         </Footer>
       </Container>
     </CenterCardTemplate>
