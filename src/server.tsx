@@ -231,6 +231,11 @@ function htmlEnd(storesValues: Record<string, unknown>): string {
         <script>
           window['INITIAL_STATE'] = ${JSON.stringify(storesValues)}
         </script>
+        ${
+          process.env.STATUSPAGE_ID
+            ? `<script src="https://${process.env.STATUSPAGE_ID}.statuspage.io/embed/script.js"></script>`
+            : ''
+        }
     </body>
 </html>`;
 }
