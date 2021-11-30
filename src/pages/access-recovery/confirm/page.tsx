@@ -1,14 +1,15 @@
-import { CenterCardTemplate } from '@auth/ui';
 import { reflect } from '@effector/reflect/ssr';
+import Logo from 'app/logo.svg';
 import { createEvent, createStore } from 'effector';
 import React, { ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
 
+import { CenterCardTemplate } from 'shared/ui';
+
 import { ofErrors } from 'lib/errors';
 import { createStart, withStart } from 'lib/page-routing';
 
-import Logo from '../../../app/logo.svg';
 import { ConfirmationError } from './types';
 
 export const pageStart = createStart();

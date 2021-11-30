@@ -13,8 +13,6 @@ module.exports = {
   modifyWebpackConfig({ webpackConfig, env: { dev, target } }) {
     webpackConfig.resolve.modules.unshift(path.resolve(__dirname, 'src'));
 
-    webpackConfig.resolve.alias['@auth/ui'] = path.resolve(__dirname, 'src', 'ui');
-
     webpackConfig.module.rules[1].exclude.push(/\.svg$/);
     webpackConfig.module.rules.push({
       test: /\.svg$/,

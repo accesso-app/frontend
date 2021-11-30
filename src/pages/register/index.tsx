@@ -1,15 +1,17 @@
-import { CenterCardTemplate } from '@auth/ui';
 import { reflect } from '@effector/reflect/ssr';
+import Logo from 'app/logo.svg';
 import { useStore, useEvent } from 'effector-react/ssr';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Title, Input } from 'woly';
 
+import { path } from 'pages/paths';
+
+import { CenterCardTemplate } from 'shared/ui';
+
 import { withStart } from 'lib/page-routing';
 
-import Logo from '../../app/logo.svg';
-import { path } from '../paths';
 import * as model from './model';
 
 const Registration = () => (

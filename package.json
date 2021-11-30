@@ -115,9 +115,6 @@
     ],
     "moduleFileExtensions": ["ts", "tsx", "js", "json"],
     "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
-    "moduleNameMapper": {
-      "^@auth/ui$": "<rootDir>/src/ui/index.ts"
-    },
     "moduleDirectories": ["node_modules", "src"]
   },
   "config": {

@@ -1,4 +1,4 @@
-import { CenterCardTemplate } from '@auth/ui';
+import Logo from 'app/logo.svg';
 import { useEvent, useStore } from 'effector-react/ssr';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -7,10 +7,11 @@ import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
 
+import { CenterCardTemplate } from 'shared/ui';
+
 import { Branch } from 'lib/branch';
 import { withStart } from 'lib/page-routing';
 
-import Logo from '../../../app/logo.svg';
 import * as model from './model';
 
 export const RegisterConfirmPage = withStart(model.pageStart, () => {

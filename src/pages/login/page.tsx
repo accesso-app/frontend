@@ -3,10 +3,11 @@ import { createEvent, createStore } from 'effector';
 import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { CenterCardTemplate } from 'ui';
 import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
+
+import { CenterCardTemplate } from 'shared/ui';
 
 import { createStart, withStart } from 'lib/page-routing';
 

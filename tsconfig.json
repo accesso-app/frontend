@@ -42,10 +42,6 @@
       "./typings/styled",
       "./typings/svg"
     ],
-    "paths": {
-      "@auth/ui": ["./ui"],
-      "@auth/ui/*": ["./ui/*"]
-    },
     "plugins": [
       {
         "name": "typescript-styled-plugin",
