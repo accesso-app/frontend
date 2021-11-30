@@ -64,7 +64,7 @@ function parseByStatus<
 
 //#endregion prebuilt code/* --- */
 //#region oauthAuthorizeRequest
-interface OauthAuthorizeRequest {
+type OauthAuthorizeRequest = {
   body: {
     /* responseType is set to code indicating that you want an authorization code as the response. */
     responseType: 'code';
@@ -88,7 +88,7 @@ interface OauthAuthorizeRequest {
      * When the user is redirected back to your app, double check that the state value matches what you set it to originally. This will ensure an attacker can’t intercept the authorization flow. */
     state?: string;
   };
-}
+};
 
 /* Authorization completed, now access token can be obtained. */
 export const oauthAuthorizeRequestOk = typed.object({
@@ -101,10 +101,10 @@ export const oauthAuthorizeRequestOk = typed.object({
   /* If the initial request contained a state parameter, the response must also include the exact value from the request. The client will be using this to associate this response with the initial request. */
   state: typed.string.optional,
 });
-export interface OauthAuthorizeRequestDone {
+export type OauthAuthorizeRequestDone = {
   status: 'ok';
   answer: typed.Get<typeof oauthAuthorizeRequestOk>;
-}
+};
 
 /* There are two different kinds of errors to handle. The first kind of error is when the developer did something wrong when creating the authorization request. The other kind of error is when the user rejects the request (clicks the “Deny” button).
  * If there is something wrong with the syntax of the request, such as the redirect_uri or client_id is invalid, then it’s important not to redirect the user and instead you should show the error message directly. This is to avoid letting your authorization server be used as an open redirector.
@@ -180,18 +180,18 @@ export const oauthAuthorizeRequest = createEffect<
 
 /* --- */
 //#region accessRecoverySendEmail
-interface AccessRecoverySendEmail {
+type AccessRecoverySendEmail = {
   body: {
     email: string;
   };
-}
+};
 
 /* Password changed successfully */
 export const accessRecoverySendEmailOk = typed.nul;
-export interface AccessRecoverySendEmailDone {
+export type AccessRecoverySendEmailDone = {
   status: 'ok';
   answer: typed.Get<typeof accessRecoverySendEmailOk>;
-}
+};
 
 /* Reset code or password is invalid */
 export const accessRecoverySendEmailBadRequest = typed.object({
@@ -235,19 +235,19 @@ export const accessRecoverySendEmail = createEffect<
 
 /* --- */
 //#region accessRecoverySetPassword
-interface AccessRecoverySetPassword {
+type AccessRecoverySetPassword = {
   body: {
     password: string;
     code: string;
   };
-}
+};
 
 /* Confirmation code is sent to email */
 export const accessRecoverySetPasswordOk = typed.nul;
-export interface AccessRecoverySetPasswordDone {
+export type AccessRecoverySetPasswordDone = {
   status: 'ok';
   answer: typed.Get<typeof accessRecoverySetPasswordOk>;
-}
+};
 export const accessRecoverySetPasswordBadRequest = typed.object({
   error: typed.union('invalid_code', 'password_is_too_short', 'password_is_too_weak'),
 });
@@ -289,21 +289,21 @@ export const accessRecoverySetPassword = createEffect<
 
 /* --- */
 //#region registerRequest
-interface RegisterRequest {
+type RegisterRequest = {
   body: {
     email: string;
   };
-}
+};
 
 /* Registration link sent to email, now user can find out when the link expires */
 export const registerRequestCreated = typed.object({
   /* UTC Unix TimeStamp when the link expires */
   expiresAt: typed.number,
 });
-export interface RegisterRequestDone {
+export type RegisterRequestDone = {
   status: 'created';
   answer: typed.Get<typeof registerRequestCreated>;
-}
+};
 
 /* Please, login or recover password */
 export const registerRequestBadRequest = typed.object({
@@ -347,21 +347,21 @@ export const registerRequest = createEffect<
 
 /* --- */
 //#region registerConfirmation
-interface RegisterConfirmation {
+type RegisterConfirmation = {
   body: {
     confirmationCode: string;
     firstName: string;
     lastName: string;
     password: string;
   };
-}
+};
 
 /* Okay, user created */
 export const registerConfirmationCreated = typed.nul;
-export interface RegisterConfirmationDone {
+export type RegisterConfirmationDone = {
   status: 'created';
   answer: typed.Get<typeof registerConfirmationCreated>;
-}
+};
 
 /* Please, login or recover password */
 export const registerConfirmationBadRequest = typed.object({
@@ -410,22 +410,22 @@ export const registerConfirmation = createEffect<
 
 /* --- */
 //#region sessionCreate
-interface SessionCreate {
+type SessionCreate = {
   body: {
     email: string;
     password: string;
   };
-}
+};
 
 /* Session created, token wrote to cookies */
 export const sessionCreateCreated = typed.object({
   firstName: typed.string,
   lastName: typed.string,
 });
-export interface SessionCreateDone {
+export type SessionCreateDone = {
   status: 'created';
   answer: typed.Get<typeof sessionCreateCreated>;
-}
+};
 
 /* Login failed */
 export const sessionCreateBadRequest = typed.object({
@@ -465,7 +465,7 @@ export const sessionCreate = createEffect<SessionCreate, SessionCreateDone, Sess
 
 /* --- */
 //#region sessionGet
-interface SessionGet {}
+type SessionGet = {};
 
 /* Session exists */
 export const sessionGetOk = typed.object({
@@ -476,10 +476,10 @@ export const sessionGetOk = typed.object({
     email: typed.string,
   }),
 });
-export interface SessionGetDone {
+export type SessionGetDone = {
   status: 'ok';
   answer: typed.Get<typeof sessionGetOk>;
-}
+};
 
 /* User not authorized */
 export const sessionGetUnauthorized = typed.nul;
@@ -516,18 +516,18 @@ export const sessionGet = createEffect<SessionGet, SessionGetDone, SessionGetFai
 
 /* --- */
 //#region sessionDelete
-interface SessionDelete {
+type SessionDelete = {
   body: {
     deleteAllSessions: boolean;
   };
-}
+};
 
 /* session deleted */
 export const sessionDeleteOk = typed.nul;
-export interface SessionDeleteDone {
+export type SessionDeleteDone = {
   status: 'ok';
   answer: typed.Get<typeof sessionDeleteOk>;
-}
+};
 
 /* failed to delete session */
 export const sessionDeleteBadRequest = typed.object({
@@ -575,12 +575,12 @@ export const sessionDelete = createEffect<SessionDelete, SessionDeleteDone, Sess
 
 /* --- */
 //#region accountEdit
-interface AccountEdit {
+type AccountEdit = {
   body: {
     firstName: string;
     lastName: string;
   };
-}
+};
 
 /* account edit successfully */
 export const accountEditOk = typed.object({
@@ -591,10 +591,10 @@ export const accountEditOk = typed.object({
     email: typed.string,
   }),
 });
-export interface AccountEditDone {
+export type AccountEditDone = {
   status: 'ok';
   answer: typed.Get<typeof accountEditOk>;
-}
+};
 
 /* failed to edit account */
 export const accountEditBadRequest = typed.object({
@@ -642,12 +642,12 @@ export const accountEdit = createEffect<AccountEdit, AccountEditDone, AccountEdi
 
 /* --- */
 //#region applicationGet
-interface ApplicationGet {
+type ApplicationGet = {
   body?: {
     /* Application id */
     applicationId: string;
   };
-}
+};
 
 /* Found application by id */
 export const applicationGetOk = typed.object({
@@ -659,10 +659,10 @@ export const applicationGetOk = typed.object({
     avatar: typed.string.optional,
   }),
 });
-export interface ApplicationGetDone {
+export type ApplicationGetDone = {
   status: 'ok';
   answer: typed.Get<typeof applicationGetOk>;
-}
+};
 
 /* CLIENT_ERROR */
 export const applicationGetBadRequest = typed.object({

@@ -2,4 +2,6 @@
 /*.js
 /*.ts
 /scripts
-/src/api/index.ts
+/build
+/cache
+/src/shared/api/index.ts
