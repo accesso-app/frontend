@@ -7,8 +7,7 @@ import { historyPush } from 'features/navigation';
 import { checkAnonymous } from 'features/session';
 
 import { registerRequest } from 'shared/api';
-
-import { createStart } from 'lib/page-routing';
+import { createStart } from 'shared/lib/page-routing';
 
 export type RegisterFailure = 'email_already_registered' | 'invalid_form' | 'invalid_payload';
 

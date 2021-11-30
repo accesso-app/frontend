@@ -5,8 +5,7 @@ import * as typed from 'typed-contracts';
 import { checkAnonymous } from 'features/session';
 
 import { registerConfirmation, registerConfirmationBadRequest } from 'shared/api';
-
-import { createStart } from 'lib/page-routing';
+import { createStart } from 'shared/lib/page-routing';
 
 type BadRequestStatus = typed.Get<typeof registerConfirmationBadRequest>['error'];
 

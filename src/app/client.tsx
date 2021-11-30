@@ -8,7 +8,7 @@ import { routes } from 'pages/routes';
 
 import { history, historyChanged } from 'features/navigation';
 
-import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
+import { getStart, lookupStartEvent, routeWithEvent } from 'shared/lib/page-routing';
 
 import { Application } from './application';
 

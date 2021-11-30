@@ -18,8 +18,7 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { $cookiesForRequest, $cookiesFromResponse, setCookiesForRequest } from 'shared/api/request';
 import { setCookiesFromResponse } from 'shared/api/request/common';
-
-import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
+import { getStart, lookupStartEvent, routeWithEvent } from 'shared/lib/page-routing';
 
 import { Application } from './application';
 

@@ -6,15 +6,6 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "useTabs": false,
-  "importOrder": [
-    "^pages/",
-    "^features/",
-    "^entities/",
-    "^shared/",
-    "^lib/",
-    "^api/",
-    "^ui/",
-    "^[./]"
-  ],
+  "importOrder": ["^pages/", "^features/", "^entities/", "^shared/", "^[./]"],
   "importOrderSeparation": true
 }

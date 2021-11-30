@@ -7,9 +7,8 @@ import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
 
+import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
-
-import { createStart, withStart } from 'lib/page-routing';
 
 import Logo from '../../app/logo.svg';
 import { Failure } from './types';

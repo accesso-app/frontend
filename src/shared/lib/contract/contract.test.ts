@@ -8,7 +8,7 @@ import {
   forward,
 } from 'effector';
 
-import { contract } from '.';
+import { contract } from './index';
 
 test('events forwarded from page to model', () => {
   const fnPage = jest.fn();

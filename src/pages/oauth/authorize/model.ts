@@ -7,8 +7,7 @@ import { historyPush, historyPushWithParams } from 'features/navigation';
 import { $isAuthenticated, checkAuthenticated } from 'features/session';
 
 import { oauthAuthorizeRequest } from 'shared/api';
-
-import { createStart, StartParams } from 'lib/page-routing';
+import { createStart, StartParams } from 'shared/lib/page-routing';
 
 const COOKIE_PATH = 'oauth-params';
 

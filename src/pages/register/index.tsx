@@ -8,9 +8,8 @@ import { Button, Title, Input } from 'woly';
 
 import { path } from 'pages/paths';
 
+import { withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
-
-import { withStart } from 'lib/page-routing';
 
 import * as model from './model';
 

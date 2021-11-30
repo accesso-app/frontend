@@ -2,9 +2,8 @@ import { attach, createEvent, createStore, guard, restore, sample } from 'effect
 import { splitMap } from 'patronum/split-map';
 
 import * as api from 'shared/api';
-
-import { validateEmail } from 'lib/email';
-import { createStart } from 'lib/page-routing';
+import { validateEmail } from 'shared/lib/email';
+import { createStart } from 'shared/lib/page-routing';
 
 import { AccessRecoveryError } from './types';
 

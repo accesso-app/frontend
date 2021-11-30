@@ -4,9 +4,8 @@ import { splitMap } from 'patronum/split-map';
 import { checkAnonymous } from 'features/session';
 
 import * as api from 'shared/api';
-
-import { createStart } from 'lib/page-routing';
-import { validatePassword } from 'lib/password';
+import { createStart } from 'shared/lib/page-routing';
+import { validatePassword } from 'shared/lib/password';
 
 import { ConfirmationError } from './types';
 

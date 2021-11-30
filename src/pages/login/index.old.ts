@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent } from 'react';
 
-import { bus } from 'lib/bus';
+import { bus } from 'shared/lib/bus';
 
 // import { StartParams } from 'lib/page-routing';
 import * as model from './model';

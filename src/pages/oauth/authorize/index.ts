@@ -1,4 +1,4 @@
-import { contract } from 'lib/contract';
+import { contract } from 'shared/lib/contract';
 
 import * as model from './model';
 import * as page from './page';

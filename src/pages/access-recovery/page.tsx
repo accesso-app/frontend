@@ -5,10 +5,9 @@ import React, { ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
 
+import { ofErrors } from 'shared/lib/errors';
+import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
-
-import { ofErrors } from 'lib/errors';
-import { createStart, withStart } from 'lib/page-routing';
 
 import { AccessRecoveryError } from './types';
 

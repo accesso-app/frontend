@@ -18,8 +18,7 @@ import { OAuthSettings } from 'features/oauth';
 import { checkAnonymous } from 'features/session';
 
 import * as api from 'shared/api';
-
-import { createStart, StartParams } from 'lib/page-routing';
+import { createStart, StartParams } from 'shared/lib/page-routing';
 
 import { Failure } from './types';
 

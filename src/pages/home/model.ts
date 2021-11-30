@@ -4,8 +4,7 @@ import { historyPush } from 'features/navigation';
 import { $session, checkAuthenticated } from 'features/session';
 
 import * as api from 'shared/api';
-
-import { createStart } from 'lib/page-routing';
+import { createStart } from 'shared/lib/page-routing';
 
 export const pageStarted = createStart();
 

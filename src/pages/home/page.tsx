@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'woly';
 
-import { createStart, withStart } from 'lib/page-routing';
+import { createStart, withStart } from 'shared/lib/page-routing';
 
 export interface ProfileCardProps {
   fullName: string;
