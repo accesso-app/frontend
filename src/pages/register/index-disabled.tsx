@@ -1,4 +1,3 @@
-import Logo from 'app/logo.svg';
 import { useEvent, useStore } from 'effector-react/ssr';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
 
+import Logo from 'shared/assets/logo.svg';
 import { Branch } from 'shared/lib/branch';
 import { withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';

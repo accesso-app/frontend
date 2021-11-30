@@ -7,10 +7,10 @@ import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
 
+import Logo from 'shared/assets/logo.svg';
 import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
 
-import Logo from '../../app/logo.svg';
 import { Failure } from './types';
 
 // Model

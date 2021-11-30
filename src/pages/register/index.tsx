@@ -1,5 +1,4 @@
 import { reflect } from '@effector/reflect/ssr';
-import Logo from 'app/logo.svg';
 import { useStore, useEvent } from 'effector-react/ssr';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { Button, Title, Input } from 'woly';
 
 import { path } from 'pages/paths';
 
+import Logo from 'shared/assets/logo.svg';
 import { withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
 
