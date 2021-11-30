@@ -21,6 +21,7 @@ if (module.hot) {
 }
 
 const port = Number.parseInt(process.env.PORT ?? '3005', 10);
+const isHttps = process.env.HTTPS === 'true';
 
 function createServer() {
   if (process.env.NODE_ENV === 'development') {
@@ -39,7 +40,7 @@ function createServer() {
 }
 
 const server = createServer().listen(port, () => {
-  console.log(`> Started on port ${port}`);
+  console.log(`> Listening ${isHttps ? 'https' : 'http'}://localhost:${port}/`);
 });
 
 export default server;
