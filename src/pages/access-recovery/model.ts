@@ -1,24 +1,17 @@
-import {
-  attach,
-  createEvent,
-  createStore,
-  guard,
-  restore,
-  sample,
-} from 'effector';
-
 import * as api from 'api';
+import { attach, createEvent, createStore, guard, restore, sample } from 'effector';
+import { splitMap } from 'patronum/split-map';
+
 import { validateEmail } from 'lib/email';
 import { createStart } from 'lib/page-routing';
-import { splitMap } from 'patronum/split-map';
+
 import { AccessRecoveryError } from './types';
 
 const sendRecoveryEmailFx = attach({ effect: api.accessRecoverySendEmail });
 const { sentFailed, __: unexpectedFailure } = splitMap({
   source: sendRecoveryEmailFx.failData,
   cases: {
-    sentFailed: (answer) =>
-      answer.status === 'bad_request' ? answer.error : undefined,
+    sentFailed: (answer) => (answer.status === 'bad_request' ? answer.error : undefined),
   },
 });
 

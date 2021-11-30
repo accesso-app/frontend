@@ -1,15 +1,16 @@
-import React, { ChangeEvent } from 'react';
-import styled from 'styled-components';
-import { Button, Input, Title } from 'woly';
-import { Link } from 'react-router-dom';
-
-import { createEvent, createStore } from 'effector';
 import { reflect } from '@effector/reflect/ssr';
-import { createStart, withStart } from 'lib/page-routing';
-import Logo from 'logo.svg';
-import { CenterCardTemplate } from '@auth/ui';
+import { createEvent, createStore } from 'effector';
+import React, { ChangeEvent } from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { CenterCardTemplate } from 'ui';
+import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
+
+import { createStart, withStart } from 'lib/page-routing';
+
+import Logo from '../../app/logo.svg';
 import { Failure } from './types';
 
 // Model
@@ -54,12 +55,7 @@ export const LoginPage = withStart(pageStarted, () => {
 
           <Group>
             <Submit variant="primary" />
-            <Button
-              as={Link}
-              to={path.register()}
-              text="Register"
-              variant="text"
-            />
+            <Button as={Link} to={path.register()} text="Register" variant="text" />
             {/*<Button*/}
             {/*  as={Link}*/}
             {/*  to={path.accessRecovery()}*/}
@@ -68,9 +64,7 @@ export const LoginPage = withStart(pageStarted, () => {
             {/*/>*/}
           </Group>
         </Form>
-        <Footer>
-          By joining Accesso you accept our Terms of Service and Privacy Policy
-        </Footer>
+        <Footer>By joining Accesso you accept our Terms of Service and Privacy Policy</Footer>
       </Container>
     </CenterCardTemplate>
   );

@@ -1,14 +1,13 @@
-import { ChangeEvent } from 'react';
-import { combine, createEvent, createStore, guard, sample } from 'effector';
-import * as typed from 'typed-contracts';
 import { registerConfirmation, registerConfirmationBadRequest } from 'api';
+import { combine, createEvent, createStore, guard, sample } from 'effector';
+import { ChangeEvent } from 'react';
+import * as typed from 'typed-contracts';
 
 import { checkAnonymous } from 'features/session';
+
 import { createStart } from 'lib/page-routing';
 
-type BadRequestStatus = typed.Get<
-  typeof registerConfirmationBadRequest
->['error'];
+type BadRequestStatus = typed.Get<typeof registerConfirmationBadRequest>['error'];
 
 export const pageStart = createStart();
 const codeReceived = pageStart.filterMap(({ params }) => params.code);
@@ -29,9 +28,7 @@ export const $displayName = createStore<string>('');
 export const $password = createStore<string>('');
 export const $repeat = createStore<string>('');
 
-const $pairs = $displayName.map((name) =>
-  name.replace(/\s+/, ' ').trim().split(' '),
-);
+const $pairs = $displayName.map((name) => name.replace(/\s+/, ' ').trim().split(' '));
 
 // TODO: handle error to show in page
 
@@ -65,9 +62,7 @@ const pageReady = checkAnonymous({ when: pageStart });
 
 $code.on(codeReceived, (_, code) => code);
 
-$isRegistrationFinished
-  .on(pageReady, () => false)
-  .on(registerConfirmation.done, () => true);
+$isRegistrationFinished.on(pageReady, () => false).on(registerConfirmation.done, () => true);
 
 $displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);
 $password.on(passwordChanged, (_, event) => event.currentTarget.value);
@@ -84,9 +79,7 @@ $failure
     return (failure as any).body.error;
   });
 
-registerConfirmation.failData.watch((f) =>
-  console.warn('registerConfirm FAIL', f),
-);
+registerConfirmation.failData.watch((f) => console.warn('registerConfirm FAIL', f));
 
 guard({
   source: sample({

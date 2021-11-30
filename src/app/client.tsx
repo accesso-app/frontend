@@ -1,12 +1,15 @@
+import { fork, forward } from 'effector';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { matchRoutes } from 'react-router-config';
-import { forward, fork } from 'effector';
+
+import { routes } from 'pages/routes';
+
+import { history, historyChanged } from 'features/navigation';
 
 import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
-import { history, historyChanged } from 'features/navigation';
-import { routes } from 'pages/routes';
+
 import { Application } from './application';
 
 const routesMatched = historyChanged.map((change) => ({

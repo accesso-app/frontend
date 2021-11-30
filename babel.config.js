@@ -3,6 +3,7 @@ module.exports = {
     '@babel/preset-typescript',
     '@babel/preset-react',
     ['@babel/preset-env', { targets: { node: 'current' } }],
+    // 'razzle',
     // 'patronum/babel-preset'
   ],
   plugins: [

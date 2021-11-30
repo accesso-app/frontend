@@ -7,27 +7,23 @@ module.exports = {
       name: 'typescript',
       options: {
         useBabel: true,
-        forkTsChecker: {
-          tslint: false,
-        },
       },
     },
   ],
-  modify(config, { target, dev }, webpack, options) {
-    config.resolve.modules.unshift(path.resolve(__dirname, 'src'));
+  modifyWebpackConfig({ webpackConfig, env: { dev, target } }) {
+    webpackConfig.resolve.modules.unshift(path.resolve(__dirname, 'src'));
 
-    config.resolve.alias['@auth/ui'] = path.resolve(__dirname, 'src', 'ui');
+    webpackConfig.resolve.alias['@auth/ui'] = path.resolve(__dirname, 'src', 'ui');
 
-    // TODO: how do not find rule to config
-    config.module.rules[2].exclude.push(/\.svg$/);
-    config.module.rules.push({
+    webpackConfig.module.rules[1].exclude.push(/\.svg$/);
+    webpackConfig.module.rules.push({
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     });
 
     if (dev) {
-      config.devServer = {
-        ...config.devServer,
+      webpackConfig.devServer = {
+        ...webpackConfig.devServer,
         key: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.key')),
         cert: fs.readFileSync(path.resolve(__dirname, 'tls', 'accesso.crt')),
         https: true,
@@ -35,6 +31,6 @@ module.exports = {
       };
     }
 
-    return config;
+    return webpackConfig;
   },
 };

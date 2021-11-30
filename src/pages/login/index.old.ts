@@ -1,7 +1,8 @@
 import { ChangeEvent, FormEvent } from 'react';
-import { bus } from 'lib/bus';
-// import { StartParams } from 'lib/page-routing';
 
+import { bus } from 'lib/bus';
+
+// import { StartParams } from 'lib/page-routing';
 import * as model from './model';
 import * as page from './page';
 

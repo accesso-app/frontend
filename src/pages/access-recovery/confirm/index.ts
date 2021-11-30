@@ -1,5 +1,6 @@
 import { contract } from 'lib/contract';
 import { getValue } from 'lib/input';
+
 import * as model from './model';
 import * as page from './page';
 

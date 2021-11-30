@@ -1,6 +1,7 @@
 import { contract } from 'lib/contract';
-import * as page from './page';
+
 import * as model from './model';
+import * as page from './page';
 
 export { OAuthAuthorizePage } from './page';
 

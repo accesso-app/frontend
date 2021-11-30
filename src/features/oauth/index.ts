@@ -1,6 +1,7 @@
 import { createEvent, guard, sample } from 'effector';
-import { historyPush, historyPushWithParams } from '../navigation';
+
 import { path } from '../../pages/paths';
+import { historyPush, historyPushWithParams } from '../navigation';
 
 export const redirectOAuthAuthorize = createEvent<OAuthSettings>();
 

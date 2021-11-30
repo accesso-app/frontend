@@ -1,15 +1,16 @@
+import { CenterCardTemplate } from '@auth/ui';
+import { useEvent, useStore } from 'effector-react/ssr';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
-import { Link } from 'react-router-dom';
-import { useEvent, useStore } from 'effector-react/ssr';
 
-import { withStart } from 'lib/page-routing';
-import { Branch } from 'lib/branch';
 import { path } from 'pages/paths';
-import { CenterCardTemplate } from '@auth/ui';
-import Logo from 'logo.svg';
 
+import { Branch } from 'lib/branch';
+import { withStart } from 'lib/page-routing';
+
+import Logo from '../../../app/logo.svg';
 import * as model from './model';
 
 export const RegisterConfirmPage = withStart(model.pageStart, () => {
@@ -34,12 +35,7 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
           <>
             <Welcome />
             <Group>
-              <Button
-                as={Link}
-                text="Sign in"
-                variant="primary"
-                to={path.login()}
-              />
+              <Button as={Link} text="Sign in" variant="primary" to={path.login()} />
             </Group>
           </>
           <>
@@ -60,12 +56,7 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
                   variant="primary"
                 />
                 <Group data-direction="column">
-                  <Button
-                    as={Link}
-                    text="It's not my invite"
-                    variant="text"
-                    to={path.register()}
-                  />
+                  <Button as={Link} text="It's not my invite" variant="text" to={path.register()} />
                   <Button
                     as={Link}
                     text="I'm already registered"
@@ -77,9 +68,7 @@ export const RegisterConfirmPage = withStart(model.pageStart, () => {
             </form>
           </>
         </Branch>
-        <Footer>
-          By joining Accesso you accept our Terms of Service and Privacy Policy
-        </Footer>
+        <Footer>By joining Accesso you accept our Terms of Service and Privacy Policy</Footer>
       </Container>
     </CenterCardTemplate>
   );
@@ -99,12 +88,7 @@ const DisplayName: React.FC = () => {
 
   return (
     <>
-      <Input
-        disabled={isPending}
-        placeholder="display name"
-        value={name}
-        onChange={onChange}
-      />
+      <Input disabled={isPending} placeholder="display name" value={name} onChange={onChange} />
       <Branch if={name.length === 0}>
         <Subtext>Enter your First name and Last name</Subtext>
         <Branch if={isValid}>
@@ -143,9 +127,7 @@ const Passwords: React.FC = () => {
         onChange={repeatChanged}
       />
       <Branch if={!isPasswordValid && repeat.length > 3}>
-        <Subtext data-style="failure">
-          Looks like your password is not match confirmation
-        </Subtext>
+        <Subtext data-style="failure">Looks like your password is not match confirmation</Subtext>
       </Branch>
     </>
   );
@@ -155,23 +137,16 @@ const failureText = {
   code_invalid_or_expired: () => (
     <span>
       Code invalid or expired,{' '}
-      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
-        request another one in chat
-      </a>
+      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">request another one in chat</a>
     </span>
   ),
   email_already_activated: () => (
     <span>
-      Wow! This email is already activated. <Link to={path.login()}>Login</Link>{' '}
-      or{' '}
-      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
-        request another one in chat
-      </a>
+      Wow! This email is already activated. <Link to={path.login()}>Login</Link> or{' '}
+      <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">request another one in chat</a>
     </span>
   ),
-  invalid_form: () => (
-    <span>Please, retype your form, we found unexpected errors.</span>
-  ),
+  invalid_form: () => <span>Please, retype your form, we found unexpected errors.</span>,
   invalid_payload: () => failureText.invalid_form(),
 };
 

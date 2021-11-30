@@ -1,10 +1,13 @@
-import { combine, createEvent, createStore, guard, sample } from 'effector';
-import { createStart, StartParams } from 'lib/page-routing';
-import { $isAuthenticated, checkAuthenticated } from 'features/session';
 import { oauthAuthorizeRequest } from 'api';
-import { historyPush, historyPushWithParams } from 'features/navigation';
 import { parse } from 'cookie';
+import { combine, createEvent, createStore, guard, sample } from 'effector';
+
 import { path } from 'pages/paths';
+
+import { historyPush, historyPushWithParams } from 'features/navigation';
+import { $isAuthenticated, checkAuthenticated } from 'features/session';
+
+import { createStart, StartParams } from 'lib/page-routing';
 
 const COOKIE_PATH = 'oauth-params';
 
@@ -72,10 +75,7 @@ const $queryIsGoodAndAuthed = combine([$isAuthenticated, $hasOauthParams]).map(
   ([isAuthenticated, hasOauthParams]) => isAuthenticated && hasOauthParams,
 );
 
-const $queryIsGoodAndNotAuthed = combine([
-  $isAuthenticated,
-  $hasOauthParams,
-]).map(
+const $queryIsGoodAndNotAuthed = combine([$isAuthenticated, $hasOauthParams]).map(
   ([isAuthenticated, hasOauthParams]) => !isAuthenticated && hasOauthParams,
 );
 

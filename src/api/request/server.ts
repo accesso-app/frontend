@@ -1,4 +1,5 @@
 import fetch, { Headers } from 'node-fetch';
+
 import { queryToString, Request, requestInternalFx } from './common';
 
 requestInternalFx.use(requestServer);
@@ -11,16 +12,11 @@ async function requestServer({ path, method, ...params }: Request) {
     cookie: combineCookies(params.headers?.cookie, params.cookies),
   });
   contentDefault(headers, 'application/json; charset=utf-8');
-  headers.set(
-    'user-agent',
-    `accesso-frontend/unknown node/${process.version}-${process.platform}`,
-  );
+  headers.set('user-agent', `accesso-frontend/unknown node/${process.version}-${process.platform}`);
 
   const query = queryToString(params.query);
   const body =
-    contentIs(headers, 'application/json') && params.body
-      ? JSON.stringify(params.body)
-      : undefined;
+    contentIs(headers, 'application/json') && params.body ? JSON.stringify(params.body) : undefined;
 
   try {
     const response = await fetch(`${API_PREFIX}${path}${query}`, {

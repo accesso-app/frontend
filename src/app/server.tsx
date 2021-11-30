@@ -1,39 +1,27 @@
-import { performance } from 'perf_hooks';
-import express from 'express';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-
+import { allSettled, createEvent, fork, forward, guard, sample, serialize } from 'effector';
+import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+import { performance } from 'perf_hooks';
 import * as React from 'react';
 import * as ReactDOMServer from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
 import { matchRoutes } from 'react-router-config';
+import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
 
-import {
-  createEvent,
-  fork,
-  serialize,
-  allSettled,
-  forward,
-  guard,
-  sample,
-} from 'effector';
+import { path } from 'pages/paths';
+import { routes } from 'pages/routes';
 
-import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
-
-import {
-  setCookiesForRequest,
-  $cookiesFromResponse,
-  $cookiesForRequest,
-} from 'api/request';
 import { $lastPushed } from 'features/navigation';
 import { readyToLoadSession, sessionLoaded } from 'features/session';
 
+import { getStart, lookupStartEvent, routeWithEvent } from 'lib/page-routing';
+
+import { $cookiesForRequest, $cookiesFromResponse, setCookiesForRequest } from 'api/request';
+import { setCookiesFromResponse } from 'api/request/common';
+
 import { Application } from './application';
-import { routes } from './pages/routes';
-import { setCookiesFromResponse } from './api/request/common';
-import { path } from './pages/paths';
 
 const OAUTH_CACHE_KEY = 'oauth-params';
 
@@ -47,11 +35,10 @@ if (dotenvLoaded.error) {
   throw dotenvLoaded.error;
 }
 
-const serverStarted =
-  createEvent<{
-    req: express.Request;
-    res: express.Response;
-  }>();
+const serverStarted = createEvent<{
+  req: express.Request;
+  res: express.Response;
+}>();
 
 const requestHandled = serverStarted.map(({ req }) => req);
 
@@ -92,13 +79,11 @@ for (const { component } of routes) {
   const startPageEvent = getStart(component);
   if (!startPageEvent) continue;
 
-  const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(
-    ({ routes, query }) => {
-      const route = routes.find(routeWithEvent(startPageEvent));
-      if (route) return { route, query };
-      return undefined;
-    },
-  );
+  const matchedRoute = sample(routesMatched, sessionLoaded).filterMap(({ routes, query }) => {
+    const route = routes.find(routeWithEvent(startPageEvent));
+    if (route) return { route, query };
+    return undefined;
+  });
 
   forward({
     from: matchedRoute,
@@ -182,24 +167,18 @@ export const server = express()
       return;
     }
 
-    const stream = sheet.interleaveWithNodeStream(
-      ReactDOMServer.renderToNodeStream(jsx),
-    );
+    const stream = sheet.interleaveWithNodeStream(ReactDOMServer.renderToNodeStream(jsx));
 
     const storesValues = serialize(scope, {
       ignore: [$cookiesForRequest, $cookiesFromResponse],
       onlyChanges: true,
     });
-
     res.write(htmlStart(assets.client.css, assets.client.js));
     stream.pipe(res, { end: false });
     stream.on('end', () => {
       res.end(htmlEnd(storesValues));
       cleanUp();
-      console.info(
-        '[PERF] sent page at %sms',
-        (performance.now() - timeStart).toFixed(2),
-      );
+      console.info('[PERF] sent page at %sms', (performance.now() - timeStart).toFixed(2));
     });
 
     function cleanUp() {
@@ -207,7 +186,27 @@ export const server = express()
     }
   });
 
-function htmlStart(assetsCss: string, assetsJs: string) {
+function createCssLinks(css?: string[]) {
+  if (css) {
+    return css.map((link) => `<link rel="stylesheet" href="${link}">`).join('');
+  }
+  return '';
+}
+
+function createJsLinks(js?: string[]) {
+  if (js) {
+    return js
+      .map((src) =>
+        process.env.NODE_ENV === 'production'
+          ? `<script src="${src}" defer></script>`
+          : `<script src="${src}" defer crossorigin></script>`,
+      )
+      .join('');
+  }
+  return '';
+}
+
+function htmlStart(assetsCss: string[], assetsJs: string[]) {
   return `<!doctype html>
     <html lang="">
     <head>
@@ -215,12 +214,8 @@ function htmlStart(assetsCss: string, assetsJs: string) {
         <meta charSet='utf-8' />
         <title>Accesso</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        ${assetsCss ? `<link rel="stylesheet" href="${assetsCss}">` : ''}
-          ${
-            process.env.NODE_ENV === 'production'
-              ? `<script src="${assetsJs}" defer></script>`
-              : `<script src="${assetsJs}" defer crossorigin></script>`
-          }
+        ${createCssLinks(assetsCss)}
+        ${createJsLinks(assetsJs)}
     </head>
     <body>
         <div id="root">`;

@@ -393,10 +393,7 @@ declare namespace jest {
      * @see
      * [testing-library/jest-dom#tohavetextcontent](https:github.com/testing-library/jest-dom#tohavetextcontent)
      */
-    toHaveTextContent(
-      text: string | RegExp,
-      options?: { normalizeWhitespace: boolean },
-    ): R;
+    toHaveTextContent(text: string | RegExp, options?: { normalizeWhitespace: boolean }): R;
     /**
      * @description
      * Check whether the given form element has the specified value.
@@ -487,9 +484,7 @@ declare namespace jest {
      * @see
      * [testing-library/jest-dom#tohavedescription](https:github.com/testing-library/jest-dom#tohavedescription)
      */
-    toHaveDescription(
-      text?: string | RegExp | ReturnType<typeof expect.stringContaining>,
-    ): R;
+    toHaveDescription(text?: string | RegExp | ReturnType<typeof expect.stringContaining>): R;
     /**
      * @description
      * This allows you to check whether the given element is partially checked.

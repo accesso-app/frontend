@@ -54,13 +54,12 @@ if (process.env.BUILD_TARGET === 'server') {
   $cookiesForRequest.on(setCookiesForRequest, (_, cookies) => cookies);
 
   // Save cookies from the response to send to the client
-  const setCookieHeader = merge([
-    requestInternalFx.doneData,
-    requestInternalFx.failData,
-  ]).map(({ headers }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return headers['set-cookie'] ?? '';
-  });
+  const setCookieHeader = merge([requestInternalFx.doneData, requestInternalFx.failData]).map(
+    ({ headers }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      return headers['set-cookie'] ?? '';
+    },
+  );
 
   guard({
     source: setCookieHeader,
@@ -74,21 +73,15 @@ if (process.env.DEBUG || process.env.NODE_ENV === 'development') {
     console.log(`[requestInternal] ${method} ${path}`);
   });
 
-  requestInternalFx.done.watch(
-    ({ params: { path, method }, result: { status } }) => {
-      console.log(`[requestInternal.done] ${method} ${path} : ${status}`);
-    },
-  );
+  requestInternalFx.done.watch(({ params: { path, method }, result: { status } }) => {
+    console.log(`[requestInternal.done] ${method} ${path} : ${status}`);
+  });
 
-  requestInternalFx.fail.watch(
-    ({ params: { path, method }, error: { status } }) => {
-      console.log(`[requestInternal.fail] ${method} ${path} : ${status}`);
-    },
-  );
+  requestInternalFx.fail.watch(({ params: { path, method }, error: { status } }) => {
+    console.log(`[requestInternal.fail] ${method} ${path} : ${status}`);
+  });
 }
 
-export function queryToString(
-  query: Record<string, string> | undefined,
-): string {
+export function queryToString(query: Record<string, string> | undefined): string {
   return query ? `?${queryString.stringify(query)}` : '';
 }

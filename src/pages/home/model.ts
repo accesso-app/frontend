@@ -1,8 +1,10 @@
-import { $session, checkAuthenticated } from 'features/session';
-import { createStart } from 'lib/page-routing';
-import { attach, createEvent, createStore, guard, sample } from 'effector';
 import * as api from 'api';
+import { attach, createEvent, createStore, guard, sample } from 'effector';
+
 import { historyPush } from 'features/navigation';
+import { $session, checkAuthenticated } from 'features/session';
+
+import { createStart } from 'lib/page-routing';
 
 export const pageStarted = createStart();
 

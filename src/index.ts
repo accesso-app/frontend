@@ -1,17 +1,18 @@
-import https from 'https';
-import http from 'http';
+import 'dotenv/config';
 import fs from 'fs';
+import http from 'http';
+import https from 'https';
 import path from 'path';
 
 // this require is necessary for server HMR to recover from error
 // tslint:disable-next-line:no-var-requires
-let app = require('./server').server;
+let app = require('./app/server').server;
 
 if (module.hot) {
-  module.hot.accept('./server', () => {
-    console.log('🔁  HMR Reloading `./server`...');
+  module.hot.accept('./app/server', () => {
+    console.log('🔁  HMR Reloading `./app/server`...');
     try {
-      app = require('./server').server;
+      app = require('./app/server').server;
     } catch (error) {
       console.error(error);
     }

@@ -1,9 +1,9 @@
-import { createBrowserHistory } from 'history';
 import { createStore, createEvent, merge, sample } from 'effector';
+import { createBrowserHistory } from 'history';
+
 import { queryToString } from '../../api/request/common';
 
-export const history =
-  process.env.BUILD_TARGET === 'client' ? createBrowserHistory() : null;
+export const history = process.env.BUILD_TARGET === 'client' ? createBrowserHistory() : null;
 
 export const $lastPushed = createStore('');
 

@@ -1,15 +1,16 @@
+import { CenterCardTemplate } from '@auth/ui';
+import { useEvent, useStore } from 'effector-react/ssr';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
-import { Link } from 'react-router-dom';
-import { useEvent, useStore } from 'effector-react/ssr';
 
-import Logo from 'logo.svg';
 import { path } from 'pages/paths';
-import { withStart } from 'lib/page-routing';
-import { Branch } from 'lib/branch';
-import { CenterCardTemplate } from '@auth/ui';
 
+import { Branch } from 'lib/branch';
+import { withStart } from 'lib/page-routing';
+
+import Logo from '../../app/logo.svg';
 import * as model from './model';
 
 export const RegisterPage = withStart(model.pageLoaded, () => {
@@ -43,19 +44,12 @@ export const RegisterPage = withStart(model.pageLoaded, () => {
                   text="Continue"
                   variant="primary"
                 />
-                <Button
-                  as={Link}
-                  text="Sign in"
-                  variant="text"
-                  to={path.login()}
-                />
+                <Button as={Link} text="Sign in" variant="text" to={path.login()} />
               </Group>
             </>
           </Branch>
         </form>
-        <Footer>
-          By joining Accesso you accept our Terms of Service and Privacy Policy
-        </Footer>
+        <Footer>By joining Accesso you accept our Terms of Service and Privacy Policy</Footer>
       </Container>
     </CenterCardTemplate>
   );
@@ -68,9 +62,7 @@ const failureText = {
     </span>
   ),
   invalid_form: () => (
-    <span>
-      Maybe you've entered an invalid email, enter another email and try again.
-    </span>
+    <span>Maybe you've entered an invalid email, enter another email and try again.</span>
   ),
   invalid_payload: () => failureText.invalid_form(),
   default: () => <span>Enter an email</span>,
@@ -85,16 +77,9 @@ const Email: React.FC = () => {
 
   return (
     <>
-      <Input
-        disabled={isDisabled}
-        placeholder="email"
-        value={email}
-        onChange={onChange}
-      />
+      <Input disabled={isDisabled} placeholder="email" value={email} onChange={onChange} />
       <Branch if={isValid && failure === null}>
-        <Subtext>
-          On the next step you should enter code from received email.
-        </Subtext>
+        <Subtext>On the next step you should enter code from received email.</Subtext>
         <Subtext>{failureText[failure ?? 'default']()}</Subtext>
       </Branch>
     </>

@@ -1,6 +1,7 @@
 import { matchRoutes } from 'react-router-config';
-import { routes } from './routes';
+
 import { path } from './paths';
+import { routes } from './routes';
 
 test('matches exact route', () => {
   const match = matchRoutes(routes, path.oauthAuthorize());

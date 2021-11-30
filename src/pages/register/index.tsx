@@ -1,14 +1,14 @@
-import * as React from 'react';
-import styled from 'styled-components';
-
-import Logo from 'logo.svg';
-import { withStart } from 'lib/page-routing';
 import { CenterCardTemplate } from '@auth/ui';
-
-import { Button, Title, Input } from 'woly';
-import { Link } from 'react-router-dom';
-import { useStore, useEvent } from 'effector-react/ssr';
 import { reflect } from '@effector/reflect/ssr';
+import { useStore, useEvent } from 'effector-react/ssr';
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { Button, Title, Input } from 'woly';
+
+import { withStart } from 'lib/page-routing';
+
+import Logo from '../../app/logo.svg';
 import { path } from '../paths';
 import * as model from './model';
 
@@ -19,17 +19,10 @@ const Registration = () => (
       <Title>Registration closed at the moment</Title>
       <Title level={3}>
         You can obtain an invitation by{' '}
-        <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">
-          joining our early adopters chat
-        </a>
+        <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">joining our early adopters chat</a>
       </Title>
       <Group>
-        <ButtonPrimary
-          as={Link}
-          text="I already registered"
-          variant="primary"
-          to={path.login()}
-        />
+        <ButtonPrimary as={Link} text="I already registered" variant="primary" to={path.login()} />
         <Button
           text="I have an invite code"
           variant="text"

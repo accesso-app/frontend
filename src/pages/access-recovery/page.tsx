@@ -1,14 +1,14 @@
+import { CenterCardTemplate } from '@auth/ui';
+import { reflect } from '@effector/reflect/ssr';
+import { createEvent, createStore } from 'effector';
 import React, { ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
-import { createEvent, createStore } from 'effector';
-import { reflect } from '@effector/reflect/ssr';
-
-import Logo from 'logo.svg';
-import { CenterCardTemplate } from '@auth/ui';
-import { createStart, withStart } from 'lib/page-routing';
 
 import { ofErrors } from 'lib/errors';
+import { createStart, withStart } from 'lib/page-routing';
+
+import Logo from '../../app/logo.svg';
 import { AccessRecoveryError } from './types';
 
 export const pageStarted = createStart();
@@ -62,8 +62,7 @@ const Email = reflect({
 });
 
 const Failure = reflect({
-  view: ({ error }: { error: string | null }) =>
-    error ? <Text>{error}</Text> : null,
+  view: ({ error }: { error: string | null }) => (error ? <Text>{error}</Text> : null),
   bind: {
     error: $errorText,
   },

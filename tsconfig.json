@@ -55,12 +55,5 @@
     "declaration": true,
     "emitDeclarationOnly": true
   },
-  "exclude": [
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest",
-    "razzle.config.js"
-  ]
+  "exclude": ["build", "scripts", "acceptance-tests", "webpack", "jest", "razzle.config.js"]
 }

@@ -1,25 +1,19 @@
-import {
-  attach,
-  createEvent,
-  createStore,
-  guard,
-  restore,
-  sample,
-} from 'effector';
+import * as api from 'api';
+import { attach, createEvent, createStore, guard, restore, sample } from 'effector';
 import { splitMap } from 'patronum/split-map';
 
-import * as api from 'api';
+import { checkAnonymous } from 'features/session';
+
 import { createStart } from 'lib/page-routing';
 import { validatePassword } from 'lib/password';
-import { checkAnonymous } from 'features/session';
+
 import { ConfirmationError } from './types';
 
 const changePasswordFx = attach({ effect: api.accessRecoverySetPassword });
 const { sentFailed, __: unexpectedFailure } = splitMap({
   source: changePasswordFx.failData,
   cases: {
-    sentFailed: (answer) =>
-      answer.status === 'bad_request' ? answer.error : undefined,
+    sentFailed: (answer) => (answer.status === 'bad_request' ? answer.error : undefined),
   },
 });
 

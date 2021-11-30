@@ -1,10 +1,11 @@
+import { reflect } from '@effector/reflect/ssr';
+import { createEvent, createStore } from 'effector';
+import { useStore } from 'effector-react/ssr';
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'woly';
+
 import { createStart, withStart } from 'lib/page-routing';
-import { useStore } from 'effector-react/ssr';
-import { createEvent, createStore } from 'effector';
-import { reflect } from '@effector/reflect/ssr';
 
 export interface ProfileCardProps {
   fullName: string;
@@ -74,9 +75,7 @@ export const ProfileCard = ({ fullName, email }: ProfileCardProps) => {
 
 const Failure = reflect({
   view: ({ showError }: { showError: boolean }) =>
-    showError ? (
-      <ErrorText>Something went wrong! Please, try again later</ErrorText>
-    ) : null,
+    showError ? <ErrorText>Something went wrong! Please, try again later</ErrorText> : null,
   bind: {
     showError: $showError,
   },

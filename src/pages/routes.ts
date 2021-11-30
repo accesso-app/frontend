@@ -1,11 +1,12 @@
-import { path } from './paths';
+import { path } from 'pages/paths';
 
 import { Error404Page } from './error404';
 import { HomePage } from './home';
 import { LoginPage } from './login';
 import { OAuthAuthorizePage } from './oauth/authorize';
-import { RegisterConfirmPage } from './register/confirm';
 import { RegisterPage } from './register';
+import { RegisterConfirmPage } from './register/confirm';
+
 // import { AccessRecoveryPage } from './access-recovery';
 // import { AccessRecoveryConfirmPage } from './access-recovery/confirm';
 

@@ -1,16 +1,15 @@
-import { ChangeEvent, FormEvent } from 'react';
-import { combine, createEvent, createStore, guard } from 'effector';
 import { registerRequest } from 'api';
+import { combine, createEvent, createStore, guard } from 'effector';
+import { ChangeEvent, FormEvent } from 'react';
 
-import { checkAnonymous } from 'features/session';
-import { createStart } from 'lib/page-routing';
-import { historyPush } from 'features/navigation';
 import { path } from 'pages/paths';
 
-export type RegisterFailure =
-  | 'email_already_registered'
-  | 'invalid_form'
-  | 'invalid_payload';
+import { historyPush } from 'features/navigation';
+import { checkAnonymous } from 'features/session';
+
+import { createStart } from 'lib/page-routing';
+
+export type RegisterFailure = 'email_already_registered' | 'invalid_form' | 'invalid_payload';
 
 export const pageLoaded = createStart();
 
@@ -30,9 +29,7 @@ export const $failure = createStore<RegisterFailure | null>(null);
 export const $formPending = registerRequest.pending;
 
 export const $email = createStore<string>('');
-export const $isEmailValid = $email.map(
-  (email) => email.includes('@') && email.length > 5,
-);
+export const $isEmailValid = $email.map((email) => email.includes('@') && email.length > 5);
 
 export const $isSubmitEnabled = combine(
   $formPending,
@@ -42,9 +39,7 @@ export const $isSubmitEnabled = combine(
 
 export const $inviteCode = createStore('');
 const inviteRegex = /^\w+-\w+-\w+-\w+$/gi;
-export const $isInviteValid = $inviteCode.map(
-  (code) => code.match(inviteRegex) !== null,
-);
+export const $isInviteValid = $inviteCode.map((code) => code.match(inviteRegex) !== null);
 
 const $form = combine({ email: $email });
 
@@ -74,9 +69,7 @@ $failure.on(registerRequest.failData, (_, failure) => {
   return failure.error.error;
 });
 
-$mode
-  .on(haveInviteClicked, () => 'invite')
-  .reset(alreadyRegisteredInviteClicked, pageLoaded);
+$mode.on(haveInviteClicked, () => 'invite').reset(alreadyRegisteredInviteClicked, pageLoaded);
 $inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(pageLoaded);
 
 guard({

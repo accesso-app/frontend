@@ -1,13 +1,13 @@
-import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
-import { fork, hydrate, Scope } from 'effector';
-import { Provider } from 'effector-react/ssr';
-
+import '@testing-library/jest-dom/extend-expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '@testing-library/jest-dom/extend-expect';
+import { fork, hydrate, Scope } from 'effector';
+import { Provider } from 'effector-react/ssr';
+import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 import { path } from 'pages/paths';
+
 import {
   $email,
   $error,
@@ -57,9 +57,7 @@ test('render on default states', async () => {
 
 test('render on filled states', async () => {
   hydrate(scope, {
-    values: new Map()
-      .set($email, 'example@domain.dev')
-      .set($password, 'qweasd123'),
+    values: new Map().set($email, 'example@domain.dev').set($password, 'qweasd123'),
   });
 
   render(<LoginPage />, { wrapper: Wrapper });

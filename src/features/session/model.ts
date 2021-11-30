@@ -1,15 +1,9 @@
-import {
-  createStore,
-  createEvent,
-  combine,
-  guard,
-  Unit,
-  Event,
-  forward,
-} from 'effector';
 import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
-import { historyPush } from 'features/navigation';
+import { createStore, createEvent, combine, guard, Unit, Event, forward } from 'effector';
+
 import { path } from 'pages/paths';
+
+import { historyPush } from 'features/navigation';
 
 type SessionUser = SessionCreateDone['answer'];
 

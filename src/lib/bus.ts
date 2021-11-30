@@ -2,9 +2,7 @@
 import { forward, Event, Store } from 'effector';
 
 // https://t.me/ts_ru/123234
-type Equal<A, B> = (<X>() => X extends A ? 1 : 2) extends <X>() => X extends B
-  ? 1
-  : 2
+type Equal<A, B> = (<X>() => X extends A ? 1 : 2) extends <X>() => X extends B ? 1 : 2
   ? true
   : false;
 
@@ -21,11 +19,7 @@ export function bus<E, S>(config: {
       : never
   >;
   stores: Array<
-    S extends [Store<infer A>, Store<infer B>]
-      ? Equal<A, B> extends true
-        ? S
-        : never
-      : never
+    S extends [Store<infer A>, Store<infer B>] ? (Equal<A, B> extends true ? S : never) : never
   >;
 }) {
   for (const [fromEvent, toEvent, mapFn] of config.events) {

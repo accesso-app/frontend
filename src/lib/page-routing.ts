@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { Event, createEvent } from 'effector';
+import * as React from 'react';
 import { MatchedRoute } from 'react-router-config';
 
 const START = `☄️/start-event`;
@@ -20,9 +20,7 @@ export function createStart(...params: string[]): Event<StartParams> {
  * Loads start event on browser side and pass params and query
  */
 export function useStart(_startEvent: Event<StartParams>) {
-  console.warn(
-    '[deprecated] `useStart` is deprecated. Please, use `withStart` as HOC instead',
-  );
+  console.warn('[deprecated] `useStart` is deprecated. Please, use `withStart` as HOC instead');
 }
 
 /**
@@ -43,9 +41,7 @@ export function withStart<P extends Record<string, unknown>>(
   return component;
 }
 
-export function lookupStartEvent<P>(
-  match: MatchedRoute<P>,
-): Event<StartParams> | undefined {
+export function lookupStartEvent<P>(match: MatchedRoute<P>): Event<StartParams> | undefined {
   if (match.route.component) {
     return getStart(match.route.component);
   }

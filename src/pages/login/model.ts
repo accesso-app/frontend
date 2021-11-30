@@ -1,3 +1,4 @@
+import * as api from 'api';
 import {
   attach,
   combine,
@@ -11,13 +12,14 @@ import {
 } from 'effector';
 import { pending } from 'patronum/pending';
 
-import * as api from 'api';
-import { createStart, StartParams } from 'lib/page-routing';
+import { path } from 'pages/paths';
+
+import { historyPush } from 'features/navigation';
+import { OAuthSettings } from 'features/oauth';
 import { checkAnonymous } from 'features/session';
 
-import { OAuthSettings } from 'features/oauth';
-import { historyPush } from 'features/navigation';
-import { path } from 'pages/paths';
+import { createStart, StartParams } from 'lib/page-routing';
+
 import { Failure } from './types';
 
 interface RedirectParams {
@@ -37,9 +39,7 @@ export const $redirectParams = createStore<RedirectParams | null>(null);
 
 const pageReady = checkAnonymous({ when: pageStarted, stop: queryParamsCheck });
 
-$redirectParams.on(pageStarted, (state, params) =>
-  queryParamsToLoginParams(params.query),
-);
+$redirectParams.on(pageStarted, (state, params) => queryParamsToLoginParams(params.query));
 
 const redirectBack = guard({
   source: merge([queryParamsCheck, sessionGetFx.done]),
@@ -82,14 +82,12 @@ formDomain.onCreateStore(($store) => $store.reset(pageReady));
 $email.on(emailChange, (_, email) => email);
 $password.on(passwordChange, (_, password) => password);
 
-$error
-  .reset(pageReady, sessionCreateFx)
-  .on(sessionCreateFx.failData, (_, failed) => {
-    if (failed.status === 'bad_request') {
-      return failed.error.error;
-    }
-    return 'unexpected';
-  });
+$error.reset(pageReady, sessionCreateFx).on(sessionCreateFx.failData, (_, failed) => {
+  if (failed.status === 'bad_request') {
+    return failed.error.error;
+  }
+  return 'unexpected';
+});
 
 sample({
   source: $form.map((body) => ({ body })),
@@ -102,9 +100,7 @@ forward({
   to: sessionGetFx,
 });
 
-function queryParamsToLoginParams(
-  queryParams: Record<string, string>,
-): RedirectParams | null {
+function queryParamsToLoginParams(queryParams: Record<string, string>): RedirectParams | null {
   if (!queryParams.redirectBackUrl) {
     return null;
   }
