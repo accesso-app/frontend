@@ -1,7 +1,7 @@
 import { createStore, createEvent, merge, sample } from 'effector';
 import { createBrowserHistory } from 'history';
 
-import { queryToString } from '../../api/request/common';
+import { queryToString } from '../../shared/api/request/common';
 
 export const history = process.env.BUILD_TARGET === 'client' ? createBrowserHistory() : null;
 

@@ -1,4 +1,3 @@
-import { registerRequest } from 'api';
 import { combine, createEvent, createStore, guard } from 'effector';
 import { ChangeEvent, FormEvent } from 'react';
 
@@ -6,6 +5,8 @@ import { path } from 'pages/paths';
 
 import { historyPush } from 'features/navigation';
 import { checkAnonymous } from 'features/session';
+
+import { registerRequest } from 'shared/api';
 
 import { createStart } from 'lib/page-routing';
 

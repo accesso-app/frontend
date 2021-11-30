@@ -1,9 +1,10 @@
-import { SessionCreateDone, sessionDelete, sessionGet } from 'api';
 import { createStore, createEvent, combine, guard, Unit, Event, forward } from 'effector';
 
 import { path } from 'pages/paths';
 
 import { historyPush } from 'features/navigation';
+
+import { SessionCreateDone, sessionDelete, sessionGet } from 'shared/api';
 
 type SessionUser = SessionCreateDone['answer'];
 

@@ -1,4 +1,3 @@
-import * as api from 'api';
 import {
   attach,
   combine,
@@ -17,6 +16,8 @@ import { path } from 'pages/paths';
 import { historyPush } from 'features/navigation';
 import { OAuthSettings } from 'features/oauth';
 import { checkAnonymous } from 'features/session';
+
+import * as api from 'shared/api';
 
 import { createStart, StartParams } from 'lib/page-routing';
 

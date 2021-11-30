@@ -1,9 +1,10 @@
-import { registerConfirmation, registerConfirmationBadRequest } from 'api';
 import { combine, createEvent, createStore, guard, sample } from 'effector';
 import { ChangeEvent } from 'react';
 import * as typed from 'typed-contracts';
 
 import { checkAnonymous } from 'features/session';
+
+import { registerConfirmation, registerConfirmationBadRequest } from 'shared/api';
 
 import { createStart } from 'lib/page-routing';
 

@@ -1,6 +1,7 @@
-import * as api from 'api';
 import { attach, createEvent, createStore, guard, restore, sample } from 'effector';
 import { splitMap } from 'patronum/split-map';
+
+import * as api from 'shared/api';
 
 import { validateEmail } from 'lib/email';
 import { createStart } from 'lib/page-routing';

@@ -1,4 +1,3 @@
-import { oauthAuthorizeRequest } from 'api';
 import { parse } from 'cookie';
 import { combine, createEvent, createStore, guard, sample } from 'effector';
 
@@ -6,6 +5,8 @@ import { path } from 'pages/paths';
 
 import { historyPush, historyPushWithParams } from 'features/navigation';
 import { $isAuthenticated, checkAuthenticated } from 'features/session';
+
+import { oauthAuthorizeRequest } from 'shared/api';
 
 import { createStart, StartParams } from 'lib/page-routing';
 
