@@ -1,17 +1,21 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { reflect } from '@effector/reflect/ssr';
 import { createEvent, createStore } from 'effector';
+import { useEvent } from 'effector-react/scope';
 import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Input, Title } from 'woly';
 
 import { path } from 'pages/paths';
 
 import Logo from 'shared/assets/logo.svg';
+import * as design from 'shared/design';
 import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';
+
+//region Public API
 
 // Model
 export const pageStarted = createStart();
@@ -27,18 +31,22 @@ export const $error = createStore<Failure | null>(null);
 const $errorText = $error.map((failure) => {
   switch (failure) {
     case 'invalid_credentials':
-      return 'Invalid email or password.';
+      return 'Looks like your password or email is invalid. Please, try again.';
     case 'invalid_form':
-      return 'Form filled incorrect. Try to enter a valid email and password again.';
+      return 'Form is filled incorrect, please check for typos.';
+    case 'empty_form':
+      return 'Please, fill form fields before continue.';
     case 'invalid_payload':
     case 'unexpected':
-      return 'Something wrong happened. Reload page and try again. If nothing changed, please try again later.';
+      return 'Something wrong is happened. Please, reload page or try again later.';
     case null:
       return null;
     default:
       return null;
   }
 });
+
+//endregion
 
 export const LoginPage = withStart(pageStarted, () => {
   return (
@@ -47,22 +55,24 @@ export const LoginPage = withStart(pageStarted, () => {
         <Logotype />
 
         <Form>
-          <Title level={2}>Sign in</Title>
-          <ErrorBlock />
+          <design.Heading2>Sign in to Accesso account</design.Heading2>
 
-          <Email placeholder="email" />
-          <Password type="password" placeholder="password" />
+          <design.Field label="Email">
+            <Email placeholder="name@domain.com" />
+          </design.Field>
+          <design.Field label="Password">
+            <Password type="password" placeholder="p@s$w03d" />
+          </design.Field>
 
           <Group>
-            <Submit variant="primary" />
-            <Button as={Link} to={path.register()} text="Register" variant="text" />
-            {/*<Button*/}
-            {/*  as={Link}*/}
-            {/*  to={path.accessRecovery()}*/}
-            {/*  text="Reset password"*/}
-            {/*  variant="text"*/}
-            {/*/>*/}
+            <Submit />
+            {/* @ts-ignore */}
+            <design.Button as={Link} to={path.register()}>
+              Register
+            </design.Button>
+            {/*<design.Button>Reset password</design.Button>*/}
           </Group>
+          <ErrorBlock />
         </Form>
         <Footer>By joining Accesso you accept our Terms of Service and Privacy Policy</Footer>
       </Container>
@@ -70,19 +80,20 @@ export const LoginPage = withStart(pageStarted, () => {
   );
 });
 
-const Form = reflect({
-  view: styled.form``,
-  bind: {
-    onSubmit: formSubmitted,
-    // TODO remove after merge https://github.com/EvgenyiFedotov/@effector/reflect/pull/4
-    'data-demo': $email,
-    placeholder: 'asdasd',
-  },
-});
+const Form: React.FC = (props) => {
+  const onSubmit = useEvent(formSubmitted);
+
+  return (
+    <form onSubmit={onSubmit} className="flex flex-col space-y-8">
+      {props.children}
+    </form>
+  );
+};
+
 formSubmitted.watch((event) => event.preventDefault());
 
 const Email = reflect({
-  view: Input,
+  view: design.Input,
   bind: {
     disabled: $formDisabled,
     value: $email,
@@ -91,7 +102,7 @@ const Email = reflect({
 });
 
 const Password = reflect({
-  view: Input,
+  view: design.Input,
   bind: {
     disabled: $formDisabled,
     value: $password,
@@ -100,24 +111,21 @@ const Password = reflect({
 });
 
 const Submit = reflect({
-  view: Button,
+  view: design.ButtonPrimary,
   bind: {
     type: 'submit',
     disabled: $formDisabled,
-    text: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
+    children: $formPending.map((pending) => (pending ? 'Sending…' : 'Sign in')),
   },
 });
 
+const Fail: React.FC = (props) => (
+  <div className="font-medium text-2xl text-red-500">{props.children ?? <>&nbsp;</>}</div>
+);
+
 const ErrorBlock = reflect({
-  bind: {
-    failure: $errorText,
-  },
-  view: ({ failure }: { failure: string | null }) => {
-    if (failure) {
-      return <Fail>{failure}</Fail>;
-    }
-    return null;
-  },
+  bind: { children: $errorText },
+  view: Fail,
 });
 
 const Logotype = styled(Logo)`
@@ -126,24 +134,7 @@ const Logotype = styled(Logo)`
   flex-shrink: 0;
 `;
 
-const Group = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-top: 3rem;
-
-  & *:not(:first-child) {
-    margin-left: 2rem;
-  }
-
-  &[data-direction='column'] {
-    flex-direction: column;
-
-    & *:not(:first-child) {
-      margin-left: initial;
-      margin-top: 1rem;
-    }
-  }
-`;
+const Group: React.FC = (props) => <div className="flex flex-row space-x-4">{props.children}</div>;
 
 const Container = styled.div`
   display: flex;
@@ -153,12 +144,4 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Footer = styled.footer`
-  margin-top: 6rem;
-  font-size: 1.2rem;
-`;
-
-const Fail = styled.div`
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-`;
+const Footer: React.FC = (props) => <footer className="text-xl mt-6">{props.children}</footer>;

@@ -65,9 +65,7 @@ sample({
   fn: (redirectParams: RedirectParams | null) => redirectParams!.url,
 });
 
-export const $formPending = pending({
-  effects: [sessionCreateFx, sessionGetFx],
-});
+export const $formPending = pending({ effects: [sessionCreateFx, sessionGetFx] });
 export const $formDisabled = $formPending;
 const formDomain = createDomain();
 
@@ -76,22 +74,36 @@ export const $password = formDomain.createStore<string>('');
 export const $error = formDomain.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
+const $isFormEmpty = combine(
+  $email,
+  $password,
+  (email, password) => email.trim().length === 0 || password.trim().length === 0,
+);
 
 formDomain.onCreateStore(($store) => $store.reset(pageReady));
 
 $email.on(emailChange, (_, email) => email);
 $password.on(passwordChange, (_, password) => password);
 
-$error.reset(pageReady, sessionCreateFx).on(sessionCreateFx.failData, (_, failed) => {
-  if (failed.status === 'bad_request') {
-    return failed.error.error;
-  }
-  return 'unexpected';
+$error.reset(pageReady, sessionCreateFx);
+
+const formChangedAfterEmpty = guard({
+  clock: $form.updates,
+  filter: $isFormEmpty,
 });
 
-sample({
+$error.on(formChangedAfterEmpty, () => null);
+
+const $allowToSubmitForm = combine(
+  $isFormEmpty,
+  $formDisabled,
+  (empty, disabled) => !empty && !disabled,
+);
+
+guard({
+  clock: formSubmit,
   source: $form.map((body) => ({ body })),
-  clock: guard(formSubmit, { filter: $formDisabled.map((is) => !is) }),
+  filter: $allowToSubmitForm,
   target: sessionCreateFx,
 });
 
@@ -99,6 +111,21 @@ forward({
   from: sessionCreateFx.done,
   to: sessionGetFx,
 });
+
+$error.on(sessionCreateFx.failData, (_, failed) => {
+  // TODO: fix generator, because contract is broken
+  if ((failed as any).status === 400) {
+    return (failed as any).body.error;
+  }
+  return 'unexpected';
+});
+
+const formEmptySubmitted = guard({
+  source: formSubmit,
+  filter: $isFormEmpty,
+});
+
+$error.on(formEmptySubmitted, () => 'empty_form');
 
 function queryParamsToLoginParams(queryParams: Record<string, string>): RedirectParams | null {
   if (!queryParams.redirectBackUrl) {

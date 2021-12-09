@@ -9,10 +9,12 @@
   ],
   "parser": "@typescript-eslint/parser",
   "rules": {
+    "@typescript-eslint/no-non-null-assertion": "off",
     "import/no-unresolved": "off",
-    "sonarjs/no-duplicate-string": "off",
-    "no-console": "off",
     "import/order": "off",
-    "@typescript-eslint/no-non-null-assertion": "off"
+    "no-console": "off",
+    "react/destructuring-assignment": "off",
+    "react/jsx-props-no-spreading": "off",
+    "sonarjs/no-duplicate-string": "off"
   }
 }
