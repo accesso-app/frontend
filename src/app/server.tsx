@@ -187,7 +187,7 @@ export const server = express()
 
 function createCssLinks(css?: string[]) {
   if (css) {
-    return css.map((link) => `<link rel="stylesheet" href="${link}">`).join('');
+    return css.map((link) => `<link rel='stylesheet' href='${link}'>`).join('');
   }
   return '';
 }
@@ -197,8 +197,8 @@ function createJsLinks(js?: string[]) {
     return js
       .map((src) =>
         process.env.NODE_ENV === 'production'
-          ? `<script src="${src}" defer></script>`
-          : `<script src="${src}" defer crossorigin></script>`,
+          ? `<script src='${src}' defer></script>`
+          : `<script src='${src}' defer crossorigin></script>`,
       )
       .join('');
   }
@@ -207,17 +207,17 @@ function createJsLinks(js?: string[]) {
 
 function htmlStart(assetsCss: string[], assetsJs: string[]) {
   return `<!doctype html>
-    <html lang="">
+    <html lang=''>
     <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv='X-UA-Compatible' content='IE=edge' />
         <meta charSet='utf-8' />
         <title>Accesso</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
         ${createCssLinks(assetsCss)}
         ${createJsLinks(assetsJs)}
     </head>
     <body>
-        <div id="root">`;
+        <div id='root' class='bg-gray-50'>`;
 }
 
 function htmlEnd(storesValues: Record<string, unknown>): string {
@@ -227,7 +227,7 @@ function htmlEnd(storesValues: Record<string, unknown>): string {
         </script>
         ${
           process.env.STATUSPAGE_ID
-            ? `<script src="https://${process.env.STATUSPAGE_ID}.statuspage.io/embed/script.js"></script>`
+            ? `<script src='https://${process.env.STATUSPAGE_ID}.statuspage.io/embed/script.js'></script>`
             : ''
         }
     </body>
