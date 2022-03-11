@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { Pages } from '../pages';
 import './application.css';
-import { Globals } from './globals';
 
 interface Props {
   scope: Scope;
@@ -12,9 +11,6 @@ interface Props {
 
 export const Application: React.FC<Props> = ({ scope }) => (
   <Provider value={scope}>
-    <>
-      <Globals />
-      <Pages />
-    </>
+    <Pages />
   </Provider>
 );
