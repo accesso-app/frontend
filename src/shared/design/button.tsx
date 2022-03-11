@@ -2,9 +2,12 @@ import React from 'react';
 
 interface Extendable {
   as?: any;
+  [key: string]: any;
 }
 
-export const Button = (props: React.HTMLProps<HTMLButtonElement> & Extendable) => {
+type Props<T> = Omit<React.HTMLProps<T>, 'as'> & Extendable;
+
+export function Button(props: Props<HTMLButtonElement>) {
   const Component = props.as ?? 'button';
   return (
     <Component
@@ -17,9 +20,9 @@ export const Button = (props: React.HTMLProps<HTMLButtonElement> & Extendable) =
       }
     />
   );
-};
+}
 
-export const ButtonPrimary = (props: React.HTMLProps<HTMLButtonElement> & Extendable) => {
+export const ButtonPrimary = (props: Props<HTMLButtonElement>) => {
   const Component = props.as ?? 'button';
   return (
     <Component

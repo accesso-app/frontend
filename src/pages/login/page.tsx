@@ -4,11 +4,9 @@ import { createEvent, createStore } from 'effector';
 import { useEvent } from 'effector-react/scope';
 import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
 import { path } from 'pages/paths';
 
-import Logo from 'shared/assets/logo.svg';
 import * as design from 'shared/design';
 import { CenterCardTemplate } from 'shared/ui';
 
@@ -49,12 +47,8 @@ const $errorText = $error.map((failure) => {
 export const LoginPage = () => {
   return (
     <CenterCardTemplate>
-      <Container>
-        <Logotype />
-
+      <design.AccessoCard heading="Sign in to Accesso account">
         <Form>
-          <design.Heading2>Sign in to Accesso account</design.Heading2>
-
           <design.Field label="Email">
             <Email placeholder="name@domain.com" autoComplete="email" />
           </design.Field>
@@ -72,8 +66,7 @@ export const LoginPage = () => {
           </Group>
           <ErrorBlock />
         </Form>
-        <Footer>By joining Accesso you accept our Terms of Service and Privacy Policy</Footer>
-      </Container>
+      </design.AccessoCard>
     </CenterCardTemplate>
   );
 };
@@ -82,7 +75,7 @@ const Form: React.FC = (props) => {
   const onSubmit = useEvent(formSubmitted);
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col space-y-8">
+    <form onSubmit={onSubmit} className="space-y-8 flex flex-col">
       {props.children}
     </form>
   );
@@ -126,20 +119,4 @@ const ErrorBlock = reflect({
   view: Fail,
 });
 
-const Logotype = styled(Logo)`
-  margin-bottom: 3rem;
-  display: flex;
-  flex-shrink: 0;
-`;
-
 const Group: React.FC = (props) => <div className="flex flex-row space-x-4">{props.children}</div>;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: content-box;
-  height: 100%;
-`;
-
-const Footer: React.FC = (props) => <footer className="text-xl mt-6">{props.children}</footer>;

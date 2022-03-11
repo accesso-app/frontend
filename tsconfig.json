@@ -42,6 +42,7 @@
       "./typings/styled",
       "./typings/svg"
     ],
+    "paths": {},
     "plugins": [
       {
         "name": "typescript-styled-plugin",

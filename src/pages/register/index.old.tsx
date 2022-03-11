@@ -79,7 +79,7 @@ const Invite = reflect({
   },
 });
 
-export const RegisterPage = withStart(model.pageLoaded, () => {
+export const RegisterPage = withStart(model.start, () => {
   const mode = useStore(model.$mode);
 
   if (mode === 'request') return <Registration />;

@@ -11,7 +11,7 @@ import { createStart } from 'shared/lib/page-routing';
 
 export type RegisterFailure = 'email_already_registered' | 'invalid_form' | 'invalid_payload';
 
-export const pageLoaded = createStart();
+export const start = createStart();
 
 export const formSubmitted = createEvent<FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -43,7 +43,7 @@ export const $isInviteValid = $inviteCode.map((code) => code.match(inviteRegex) 
 
 const $form = combine({ email: $email });
 
-const pageReady = checkAnonymous({ when: pageLoaded });
+const pageReady = checkAnonymous({ when: start });
 
 $emailSubmitted.on(pageReady, () => false);
 $failure.on(pageReady, () => null);
@@ -69,8 +69,8 @@ $failure.on(registerRequest.failData, (_, failure) => {
   return failure.error.error;
 });
 
-$mode.on(haveInviteClicked, () => 'invite').reset(alreadyRegisteredInviteClicked, pageLoaded);
-$inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(pageLoaded);
+$mode.on(haveInviteClicked, () => 'invite').reset(alreadyRegisteredInviteClicked, start);
+$inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(start);
 
 guard({
   source: $inviteCode,
@@ -78,5 +78,3 @@ guard({
   clock: continueWithInviteClicked,
   target: historyPush.prepend((code: string) => path.registerConfirm(code)),
 });
-
-continueWithInviteClicked.watch(() => console.log('clicked'));
