@@ -15,7 +15,7 @@ import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';
 
-//region Public API
+//#region Public API
 
 // Model
 export const pageStarted = createStart();
@@ -46,7 +46,7 @@ const $errorText = $error.map((failure) => {
   }
 });
 
-//endregion
+//#endregion
 
 export const LoginPage = withStart(pageStarted, () => {
   return (
@@ -58,10 +58,10 @@ export const LoginPage = withStart(pageStarted, () => {
           <design.Heading2>Sign in to Accesso account</design.Heading2>
 
           <design.Field label="Email">
-            <Email placeholder="name@domain.com" />
+            <Email placeholder="name@domain.com" autoComplete="email" />
           </design.Field>
           <design.Field label="Password">
-            <Password type="password" placeholder="p@s$w03d" />
+            <Password type="password" placeholder="p@s$w03d" autoComplete="current-password" />
           </design.Field>
 
           <Group>

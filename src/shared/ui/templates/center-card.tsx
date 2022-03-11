@@ -21,7 +21,7 @@ export const CenterCardTemplate: Styled<Props> = styled.div.attrs(wrap)`
 
   & ${Block} {
     width: 100%;
-    max-width: 55rem;
+    max-width: 60rem;
     box-sizing: border-box; /* remove after woly: 0.1.4 */
     flex-shrink: 0;
   }

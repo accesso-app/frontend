@@ -23,7 +23,7 @@ const Registration = () => (
         <a href="https://t.me/joinchat/WLsDNClpU3phOWIy">joining our early adopters chat</a>
       </Title>
       <Group>
-        <ButtonPrimary as={Link} text="I already registered" variant="primary" to={path.login()} />
+        <ButtonPrimary as={Link} text="Log in" variant="primary" to={path.login()} />
         <Button
           text="I have an invite code"
           variant="text"
