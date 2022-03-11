@@ -31,15 +31,15 @@ const sessionGetFx = attach({ effect: api.sessionGet });
 
 export const queryParamsCheck = createEvent<StartParams>();
 export const redirectCheck = createEvent<OAuthSettings | null>();
-export const pageStarted = createStart();
+export const start = createStart();
 export const formSubmit = createEvent();
 export const emailChange = createEvent<string>();
 export const passwordChange = createEvent<string>();
 export const $redirectParams = createStore<RedirectParams | null>(null);
 
-const pageReady = checkAnonymous({ when: pageStarted, stop: queryParamsCheck });
+const pageReady = checkAnonymous({ when: start, stop: queryParamsCheck });
 
-$redirectParams.on(pageStarted, (state, params) => queryParamsToLoginParams(params.query));
+$redirectParams.on(start, (_, params) => queryParamsToLoginParams(params.query));
 
 const redirectBack = guard({
   source: merge([queryParamsCheck, sessionGetFx.done]),

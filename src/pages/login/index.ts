@@ -1,11 +1,10 @@
 import { ChangeEvent } from 'react';
 
 import { contract } from 'shared/lib/contract';
+import { withStart } from 'shared/lib/page-routing';
 
 import * as model from './model';
 import * as page from './page';
-
-export { LoginPage } from './page';
 
 contract({
   page,
@@ -16,6 +15,8 @@ contract({
     passwordChanged: model.passwordChange.prepend(getValue),
   },
 });
+
+export const LoginPage = withStart(model.start, page.LoginPage);
 
 function getValue(event: ChangeEvent<HTMLInputElement>): string {
   return event.currentTarget.value;

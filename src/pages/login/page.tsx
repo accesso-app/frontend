@@ -10,7 +10,6 @@ import { path } from 'pages/paths';
 
 import Logo from 'shared/assets/logo.svg';
 import * as design from 'shared/design';
-import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';
@@ -18,7 +17,6 @@ import { Failure } from './types';
 //#region Public API
 
 // Model
-export const pageStarted = createStart();
 export const formSubmitted = createEvent<React.FormEvent<HTMLFormElement>>();
 export const emailChanged = createEvent<ChangeEvent<HTMLInputElement>>();
 export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
@@ -48,7 +46,7 @@ const $errorText = $error.map((failure) => {
 
 //#endregion
 
-export const LoginPage = withStart(pageStarted, () => {
+export const LoginPage = () => {
   return (
     <CenterCardTemplate>
       <Container>
@@ -78,7 +76,7 @@ export const LoginPage = withStart(pageStarted, () => {
       </Container>
     </CenterCardTemplate>
   );
-});
+};
 
 const Form: React.FC = (props) => {
   const onSubmit = useEvent(formSubmitted);
