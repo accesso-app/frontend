@@ -9,9 +9,11 @@ module.exports = {
       colors: {
         primary: colors.blue,
       },
-      leading: {
-        11: 'line-height: 2.75rem',
-        12: 'line-height: 3rem',
+      lineHeight: {
+        11: '2.75rem',
+        12: '3rem',
+        13: '4.25rem',
+        14: '4.5rem',
       },
     },
   },

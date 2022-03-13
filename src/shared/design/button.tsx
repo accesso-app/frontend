@@ -7,8 +7,8 @@ interface Extendable {
 
 type Props<T> = Omit<React.HTMLProps<T>, 'as'> & Extendable;
 
-export function Button(props: Props<HTMLButtonElement>) {
-  const Component = props.as ?? 'button';
+export function Button({ as, ...props }: Props<HTMLButtonElement>) {
+  const Component = as ?? 'button';
   return (
     <Component
       {...(props as never)}
@@ -22,8 +22,8 @@ export function Button(props: Props<HTMLButtonElement>) {
   );
 }
 
-export const ButtonPrimary = (props: Props<HTMLButtonElement>) => {
-  const Component = props.as ?? 'button';
+export const ButtonPrimary = ({ as, ...props }: Props<HTMLButtonElement>) => {
+  const Component = as ?? 'button';
   return (
     <Component
       type="submit"

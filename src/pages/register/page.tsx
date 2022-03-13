@@ -38,13 +38,13 @@ const Registration = () => {
         >
           joining our chat
         </a>
-        <div className="flex mt-8 space-x-4">
-          <ViaInvite>I have an invite</ViaInvite>
-          <Button as={Link} to={path.login()}>
-            Log in
-          </Button>
-        </div>
       </Heading3>
+      <div className="flex mt-8 space-x-4">
+        <ViaInvite>I have an invite</ViaInvite>
+        <Button as={Link} to={path.login()}>
+          Log in
+        </Button>
+      </div>
     </AccessoCard>
   );
 };
@@ -64,7 +64,7 @@ const EnterCode = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col justify-between box-content h-full">
       <AccessoCard heading="Use your invite code">
         <Field label="Enter invite code provided by our team">
           <InviteCode placeholder="just-four-words-code" />
