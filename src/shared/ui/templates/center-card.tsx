@@ -26,9 +26,10 @@ export const CenterCardTemplate: Styled<Props> = styled.div.attrs(wrap)`
     flex-shrink: 0;
   }
 
-  @media screen and (max-width: 550px) {
+  @media screen and (max-width: 600px) {
     & ${Block} {
       min-height: 100vh;
+      padding: 24px 30px;
     }
     justify-content: flex-start;
   }

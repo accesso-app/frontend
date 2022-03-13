@@ -15,6 +15,9 @@ module.exports = {
         13: '4.25rem',
         14: '4.5rem',
       },
+      screens: {
+        xs: '390px',
+      },
     },
   },
   variants: {
