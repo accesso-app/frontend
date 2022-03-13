@@ -105,7 +105,7 @@ const ViaInvite = reflect({
 const ContinueInvite = reflect({
   view: ButtonPrimary,
   bind: {
-    disabled: $isInviteValid,
+    disabled: $isInviteValid.map((is) => !is),
   },
 });
 

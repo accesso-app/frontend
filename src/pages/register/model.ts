@@ -70,7 +70,7 @@ $failure.on(registerRequest.failData, (_, failure) => {
 });
 
 $mode.on(haveInviteClicked, () => 'invite').reset(alreadyRegisteredInviteClicked, start);
-$inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(start);
+$inviteCode.on(inviteCodeChanged, (_, invite) => invite).reset(continueWithInviteClicked, start);
 
 guard({
   source: $inviteCode,
