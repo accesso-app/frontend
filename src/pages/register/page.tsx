@@ -4,7 +4,15 @@ import { useEvent, useStore } from 'effector-react/scope';
 import React, { ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { AccessoCard, Button, ButtonPrimary, Field, Heading3, Input } from 'shared/design';
+import {
+  AccessoCard,
+  Button,
+  ButtonPrimary,
+  FailureText,
+  Field,
+  Heading3,
+  Input,
+} from 'shared/design';
 import { CenterCardTemplate } from 'shared/ui';
 
 import { path } from '../paths';
@@ -69,11 +77,13 @@ const EnterCode = () => {
         <Field label="Enter invite code provided by our team">
           <InviteCode placeholder="just-four-words-code" />
         </Field>
-        <Fail>
-          {!isValidInvite && !isEmptyInvite
-            ? 'Looks, like your invite code is invalid. Please, copy-paste it'
-            : null}
-        </Fail>
+        <FailureText
+          text={
+            !isValidInvite && !isEmptyInvite
+              ? 'Looks, like your invite code is invalid. Please, copy-paste it'
+              : null
+          }
+        />
         <div className="flex space-x-4">
           <ContinueInvite type="submit">Continue</ContinueInvite>
           <Button as={Link} to={path.login()} onClick={alreadyRegistered}>
@@ -89,10 +99,6 @@ export const RegisterPage = () => (
   <CenterCardTemplate>
     {useStore($mode) === 'request' ? <Registration /> : <EnterCode />}
   </CenterCardTemplate>
-);
-
-const Fail: React.FC = (props) => (
-  <div className="font-medium text-2xl text-red-500">{props.children ?? <>&nbsp;</>}</div>
 );
 
 const ViaInvite = reflect({

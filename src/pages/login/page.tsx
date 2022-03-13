@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import { path } from 'pages/paths';
 
 import * as design from 'shared/design';
+import { FailureText } from 'shared/design';
 import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';
@@ -110,13 +111,9 @@ const Submit = reflect({
   },
 });
 
-const Fail: React.FC = (props) => (
-  <div className="font-medium text-2xl text-red-500">{props.children ?? <>&nbsp;</>}</div>
-);
-
 const ErrorBlock = reflect({
-  bind: { children: $errorText },
-  view: Fail,
+  bind: { text: $errorText },
+  view: FailureText,
 });
 
 const Group: React.FC = (props) => <div className="flex flex-row space-x-4">{props.children}</div>;
