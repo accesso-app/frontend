@@ -1,5 +1,4 @@
-import { combine, createEvent, createStore, guard, sample } from 'effector';
-import { ChangeEvent } from 'react';
+import { combine, createEvent, createStore, guard, sample, Store, Event } from 'effector';
 import * as typed from 'typed-contracts';
 
 import { checkAnonymous } from 'features/session';
@@ -8,47 +7,48 @@ import { registerConfirmation, registerConfirmationBadRequest } from 'shared/api
 import { createStart } from 'shared/lib/page-routing';
 
 type BadRequestStatus = typed.Get<typeof registerConfirmationBadRequest>['error'];
+type LocalErrors = 'empty_first_name' | 'empty_last_name' | 'incorrect_password_repeat';
 
-export const pageStart = createStart();
-const codeReceived = pageStart.filterMap(({ params }) => params.code);
+export const start = createStart();
+const codeReceived = start.filterMap(({ params }) => params.code);
 
 export const formSubmitted = createEvent();
-export const displayNameChanged = createEvent<ChangeEvent<HTMLInputElement>>();
-export const passwordChanged = createEvent<ChangeEvent<HTMLInputElement>>();
-export const repeatChanged = createEvent<ChangeEvent<HTMLInputElement>>();
+export const firstNameChanged = createEvent<string>();
+export const lastNameChanged = createEvent<string>();
+export const passwordChanged = createEvent<string>();
+export const repeatChanged = createEvent<string>();
 
 export const $isFormPending = registerConfirmation.pending;
 
+export const $isFormChanged = createStore(false);
 export const $isRegistrationFinished = createStore(false);
-export const $failure = createStore<null | BadRequestStatus>(null);
+export const $failure = createStore<null | BadRequestStatus | LocalErrors>(null);
 
 export const $code = createStore('');
 
-export const $displayName = createStore<string>('');
+export const $firstName = createStore<string>('');
+export const $lastName = createStore<string>('');
 export const $password = createStore<string>('');
 export const $repeat = createStore<string>('');
 
-const $pairs = $displayName.map((name) => name.replace(/\s+/, ' ').trim().split(' '));
+export const $displayName = combine([$firstName, $lastName], (names) => names.join(' '));
 
-// TODO: handle error to show in page
-
-const $firstName = $pairs.map((pairs) => pairs[0].trim());
-const $lastName = $pairs.map(([, ...last]) => last.join(' ').trim());
-
-export const $isDisplayNameValid = combine(
-  [$firstName, $lastName],
-  ([first, last]) => first.length > 1 && last.length > 1,
+const $isDisplayNameValid = combine(
+  $firstName,
+  $lastName,
+  (first, last) => first.trim().length > 1 && last.trim().length > 1,
 );
 
-export const $isPasswordValid = combine(
-  [$password, $repeat],
-  ([password, repeat]) => password === repeat,
+const $isPasswordValid = combine(
+  $password,
+  $repeat,
+  (password, repeat) => password.length >= 8 && password === repeat,
 );
 
-export const $isSubmitDisabled = combine(
+export const $isSubmitEnabled = combine(
   $isDisplayNameValid,
   $isPasswordValid,
-  (isName, isPassw) => !isName || !isPassw,
+  (nameValid, passwordValid) => nameValid && passwordValid,
 );
 
 const $form = combine({
@@ -58,15 +58,18 @@ const $form = combine({
   password: $password,
 });
 
-const pageReady = checkAnonymous({ when: pageStart });
+const pageReady = checkAnonymous({ when: start });
 
 $code.on(codeReceived, (_, code) => code);
 
 $isRegistrationFinished.on(pageReady, () => false).on(registerConfirmation.done, () => true);
 
-$displayName.on(displayNameChanged, (_, event) => event.currentTarget.value);
-$password.on(passwordChanged, (_, event) => event.currentTarget.value);
-$repeat.on(repeatChanged, (_, event) => event.currentTarget.value);
+$firstName.on(firstNameChanged, (_, name) => name);
+$lastName.on(lastNameChanged, (_, name) => name);
+$password.on(passwordChanged, (_, password) => password);
+$repeat.on(repeatChanged, (_, confirmation) => confirmation);
+
+$failure.on([firstNameChanged, lastNameChanged, passwordChanged, repeatChanged], () => null);
 
 $failure
   .on(pageReady, () => null)
@@ -87,6 +90,8 @@ guard({
     clock: formSubmitted,
     fn: (body) => ({ body }),
   }),
-  filter: $isSubmitDisabled.map((is) => !is),
+  filter: $isSubmitEnabled,
   target: registerConfirmation,
 });
+
+// TODO: add error showing when formSubmitted but password incorrect or/and first last names empty

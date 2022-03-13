@@ -13,7 +13,7 @@ import { CenterCardTemplate } from 'shared/ui';
 
 import * as model from './model';
 
-export const RegisterConfirmPage = withStart(model.pageStart, () => {
+export const RegisterConfirmPage = withStart(model.start, () => {
   const isSubmitDisabled = useStore(model.$isSubmitDisabled);
   const isRegistrationFinished = useStore(model.$isRegistrationFinished);
   const formSubmitted = useEvent(model.formSubmitted);
