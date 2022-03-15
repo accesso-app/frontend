@@ -3,7 +3,6 @@ import {
   combine,
   createDomain,
   createEvent,
-  createStore,
   forward,
   guard,
   merge,
@@ -29,30 +28,29 @@ interface RedirectParams {
 const sessionCreateFx = attach({ effect: api.sessionCreate });
 const sessionGetFx = attach({ effect: api.sessionGet });
 
+export const start = createStart();
+
 export const queryParamsCheck = createEvent<StartParams>();
 export const redirectCheck = createEvent<OAuthSettings | null>();
-export const start = createStart();
 export const formSubmit = createEvent();
 export const emailChange = createEvent<string>();
 export const passwordChange = createEvent<string>();
-export const $redirectParams = createStore<RedirectParams | null>(null);
+export const $redirectParams = start.$query.map(queryParamsToLoginParams);
 
 const pageReady = checkAnonymous({ when: start, stop: queryParamsCheck });
 
-$redirectParams.on(start, (_, params) => queryParamsToLoginParams(params.query));
-
-const redirectBack = guard({
+const redirectBack = sample({
   source: merge([queryParamsCheck, sessionGetFx.done]),
   filter: $redirectParams.map((params) => Boolean(params)),
 });
 
-guard({
+sample({
   source: queryParamsCheck,
   filter: $redirectParams.map((params) => !params),
   target: historyPush.prepend(path.home),
 });
 
-guard({
+sample({
   source: sessionGetFx.done,
   filter: $redirectParams.map((params) => !params),
   target: historyPush.prepend(path.home),
@@ -67,17 +65,15 @@ sample({
 
 export const $formPending = pending({ effects: [sessionCreateFx, sessionGetFx] });
 export const $formDisabled = $formPending;
-const formDomain = createDomain();
 
+const formDomain = createDomain();
 export const $email = formDomain.createStore<string>('');
 export const $password = formDomain.createStore<string>('');
 export const $error = formDomain.createStore<Failure | null>(null);
 
 const $form = combine({ email: $email, password: $password });
-const $isFormEmpty = combine(
-  $email,
-  $password,
-  (email, password) => email.trim().length === 0 || password.trim().length === 0,
+const $isFormEmpty = $form.map(
+  ({ email, password }) => email.trim().length === 0 || password.trim().length === 0,
 );
 
 formDomain.onCreateStore(($store) => $store.reset(pageReady));
@@ -120,7 +116,7 @@ $error.on(sessionCreateFx.failData, (_, failed) => {
   return 'unexpected';
 });
 
-const formEmptySubmitted = guard({
+const formEmptySubmitted = sample({
   source: formSubmit,
   filter: $isFormEmpty,
 });
