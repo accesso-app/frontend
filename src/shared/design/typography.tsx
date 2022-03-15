@@ -11,5 +11,5 @@ export const Heading2 = (props: React.HTMLProps<HTMLHeadingElement> & Extendable
 
 export const Heading3 = (props: React.HTMLProps<HTMLHeadingElement> & Extendable) => {
   const Component = props.as ?? 'h3';
-  return <Component {...(props as never)} className="font-light text-4xl py-4 leading-10" />;
+  return <Component {...(props as never)} className="font-light text-4xl py-4 leading-12" />;
 };
