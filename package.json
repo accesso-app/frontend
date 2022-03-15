@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "razzle start",
+    "start": "NODE_ENV=development razzle start",
     "build": "razzle build --noninteractive",
     "gen:api": "openapi && prettier --write src/shared/api/index.ts",
     "test": "razzle test --env=jsdom",

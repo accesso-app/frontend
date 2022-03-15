@@ -1,7 +1,5 @@
-import { createStore, createEvent, merge, sample } from 'effector';
+import { createEvent, createStore, merge, Scope, scopeBind } from 'effector';
 import { createBrowserHistory } from 'history';
-
-import { queryToString } from '../../shared/api/request/common';
 
 export const history = process.env.BUILD_TARGET === 'client' ? createBrowserHistory() : null;
 
@@ -25,21 +23,17 @@ export const historyPush = createEvent<string>();
 export const historyPushWithParams = createEvent<HistoryWithParamsProps>();
 export const historyReplace = createEvent<string>();
 
-if (process.env.BUILD_TARGET === 'client') {
-  historyPush.watch((url) => history!.push(url));
-  historyPushWithParams.watch(({ pathname, params }) =>
-    history!.push(`${pathname}${queryToString(params)}`),
-  );
-  historyReplace.watch((url) => history!.replace(url));
-  history!.listen(({ pathname, search, hash }, action) => {
-    historyChanged({ pathname, search, hash, action });
+export function initializeClientHistory(scope: Scope) {
+  historyPush.watch((url) => history?.push(url));
+  historyReplace.watch((url) => history?.replace(url));
+  historyPushWithParams.watch((params) => history?.push(params));
+  const boundHistoryChange = scopeBind(historyChanged, { scope });
+  history?.listen(({ pathname, search, hash }, action) => {
+    boundHistoryChange({ pathname, search, hash, action });
   });
-} else {
-  const events = merge([historyPush, historyReplace]);
-  $lastPushed.on(events, (_, url) => url);
-  sample({
-    source: historyPushWithParams,
-    target: historyPush,
-    fn: ({ pathname, params }) => `${pathname}${queryToString(params)}`,
-  });
+}
+
+export function initializeServerHistory() {
+  const historyUpdate = merge([historyPush, historyReplace]);
+  $lastPushed.on(historyUpdate, (_, url) => url);
 }

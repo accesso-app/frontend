@@ -13,7 +13,7 @@ import { ServerStyleSheet } from 'styled-components';
 import { path } from 'pages/paths';
 import { routes } from 'pages/routes';
 
-import { $lastPushed } from 'features/navigation';
+import { $lastPushed, initializeServerHistory } from 'features/navigation';
 import { readyToLoadSession, sessionLoaded } from 'features/session';
 
 import { $cookiesForRequest, $cookiesFromResponse, setCookiesForRequest } from 'shared/api/request';
@@ -33,6 +33,8 @@ const dotenvLoaded = dotenv.config();
 if (dotenvLoaded.error) {
   throw dotenvLoaded.error;
 }
+
+initializeServerHistory();
 
 const serverStarted = createEvent<{
   req: express.Request;

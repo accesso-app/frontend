@@ -6,7 +6,7 @@ import { matchRoutes } from 'react-router-config';
 
 import { routes } from 'pages/routes';
 
-import { history, historyChanged } from 'features/navigation';
+import { history, historyChanged, initializeClientHistory } from 'features/navigation';
 
 import { getStart, lookupStartEvent, routeWithEvent } from 'shared/lib/page-routing';
 
@@ -38,6 +38,8 @@ for (const { component, path } of routes) {
   });
 }
 const scope = fork({ values: INITIAL_STATE });
+
+initializeClientHistory(scope);
 
 ReactDOM.hydrate(
   <Router history={history!}>
