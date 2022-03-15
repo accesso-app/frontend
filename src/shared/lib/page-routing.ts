@@ -1,4 +1,4 @@
-import { Event, createEvent } from 'effector';
+import { createEvent, createStore, Event, Store } from 'effector';
 import * as React from 'react';
 import { MatchedRoute } from 'react-router-config';
 
@@ -9,11 +9,26 @@ export interface StartParams {
   query: Record<string, string>;
 }
 
+export interface WithStores {
+  $params: Store<Record<string, string>>;
+  $query: Store<Record<string, string>>;
+}
+
 /**
  * Creates event to handle universal page loading
  */
-export function createStart(...params: string[]): Event<StartParams> {
-  return createEvent(...params);
+export function createStart(...params: string[]): Event<StartParams> & WithStores {
+  const start = createEvent<StartParams>(...params);
+  const $params = createStore<Record<string, string>>({});
+  const $query = createStore<Record<string, string>>({});
+
+  $params.on(start, (_, { params }) => params);
+  $query.on(start, (_, { query }) => query);
+
+  const another = start as Event<StartParams> & WithStores;
+  another.$params = $params;
+  another.$query = $query;
+  return another;
 }
 
 /**
