@@ -11,7 +11,8 @@ module.exports = {
     [
       'effector/babel-plugin',
       {
-        factories: ['lib/page-routing', 'features/session'],
+        debugSids: process.env.EFFECTOR_DEBUG === 'true',
+        factories: ['shared/lib/page-routing', 'features/session'],
       },
     ],
   ],
