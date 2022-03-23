@@ -96,7 +96,7 @@ $failure
 
     return (failure as any).body.error;
   })
-  .on(registerConfirmationFx.pending.updates.filter({ fn: (is) => is }), () => null);
+  .on(registerConfirmationFx, () => null);
 
 registerConfirmationFx.failData.watch((f) => console.warn('registerConfirm FAIL', f));
 
