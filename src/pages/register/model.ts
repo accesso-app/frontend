@@ -1,13 +1,12 @@
 import { combine, createEvent, createStore, guard } from 'effector';
 import { ChangeEvent, FormEvent } from 'react';
 
-import { path } from 'pages/paths';
-
 import { historyPush } from 'features/navigation';
 import { checkAnonymous } from 'features/session';
 
 import { registerRequest } from 'shared/api';
 import { createStart } from 'shared/lib/page-routing';
+import { path } from 'shared/paths';
 
 export type RegisterFailure = 'email_already_registered' | 'invalid_form' | 'invalid_payload';
 

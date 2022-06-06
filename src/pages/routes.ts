@@ -1,4 +1,4 @@
-import { path } from 'pages/paths';
+import { path } from 'shared/paths';
 
 import { Error404Page } from './error404';
 import { HomePage } from './home';

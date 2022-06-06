@@ -4,8 +4,6 @@ import { useEvent, useStore } from 'effector-react/scope';
 import React, { ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { path } from 'pages/paths';
-
 import {
   AccessoCard,
   Button,
@@ -15,6 +13,7 @@ import {
   Heading3,
   Input,
 } from 'shared/design';
+import { path } from 'shared/paths';
 import { CenterCardTemplate } from 'shared/ui';
 
 //#region Public API

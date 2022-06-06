@@ -10,14 +10,13 @@ import {
 } from 'effector';
 import { pending } from 'patronum/pending';
 
-import { path } from 'pages/paths';
-
 import { historyPush } from 'features/navigation';
 import { OAuthSettings } from 'features/oauth';
 import { checkAnonymous } from 'features/session';
 
 import * as api from 'shared/api';
 import { createStart, StartParams } from 'shared/lib/page-routing';
+import { path } from 'shared/paths';
 
 import { Failure } from './types';
 

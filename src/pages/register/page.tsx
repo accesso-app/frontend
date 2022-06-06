@@ -13,9 +13,8 @@ import {
   Heading3,
   Input,
 } from 'shared/design';
+import { path } from 'shared/paths';
 import { CenterCardTemplate } from 'shared/ui';
-
-import { path } from '../paths';
 
 //#region Public API
 export const haveInviteClicked = createEvent();

@@ -1,13 +1,12 @@
 import { parse } from 'cookie';
 import { combine, createEvent, createStore, guard, sample } from 'effector';
 
-import { path } from 'pages/paths';
-
 import { historyPush, historyPushWithParams } from 'features/navigation';
 import { $isAuthenticated, checkAuthenticated } from 'features/session';
 
 import { oauthAuthorizeRequest } from 'shared/api';
 import { createStart, StartParams } from 'shared/lib/page-routing';
+import { path } from 'shared/paths';
 
 const COOKIE_PATH = 'oauth-params';
 

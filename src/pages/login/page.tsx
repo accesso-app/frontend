@@ -5,10 +5,9 @@ import { useEvent } from 'effector-react/scope';
 import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { path } from 'pages/paths';
-
 import * as design from 'shared/design';
 import { FailureText } from 'shared/design';
+import { path } from 'shared/paths';
 import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';

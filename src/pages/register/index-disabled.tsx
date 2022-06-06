@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, Title } from 'woly';
 
-import { path } from 'pages/paths';
-
 import Logo from 'shared/assets/logo.svg';
 import { Branch } from 'shared/lib/branch';
 import { withStart } from 'shared/lib/page-routing';
+import { path } from 'shared/paths';
 import { CenterCardTemplate } from 'shared/ui';
 
 import * as model from './model';

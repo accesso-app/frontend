@@ -10,7 +10,6 @@ import { matchRoutes } from 'react-router-config';
 import { StaticRouter } from 'react-router-dom';
 import { ServerStyleSheet } from 'styled-components';
 
-import { path } from 'pages/paths';
 import { routes } from 'pages/routes';
 
 import { $lastPushed, initializeServerHistory } from 'features/navigation';
@@ -19,6 +18,7 @@ import { readyToLoadSession, sessionLoaded } from 'features/session';
 import { $cookiesForRequest, $cookiesFromResponse, setCookiesForRequest } from 'shared/api/request';
 import { setCookiesFromResponse } from 'shared/api/request/common';
 import { getStart, lookupStartEvent, routeWithEvent } from 'shared/lib/page-routing';
+import { path } from 'shared/paths';
 
 import { Application } from './application';
 
