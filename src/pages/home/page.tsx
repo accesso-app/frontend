@@ -4,21 +4,17 @@ import { useStore } from 'effector-react/scope';
 import React from 'react';
 
 import { AccessoCard, ButtonPrimary, FailureText } from 'shared/design';
-import { createStart, withStart } from 'shared/lib/page-routing';
 import { CenterCardTemplate } from 'shared/ui';
 
 //#region Ports
+export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
 
-export const pageStarted = createStart();
 export const $fullName = createStore('');
 export const $email = createStore('');
 export const $showError = createStore(false);
-
-export const logoutClicked = createEvent<React.MouseEvent<HTMLButtonElement>>();
-
 //#endregion
 
-export const HomePage = withStart(pageStarted, () => {
+export const HomePage = () => {
   const fullName = useStore($fullName);
   const email = useStore($email);
   return (
@@ -35,7 +31,7 @@ export const HomePage = withStart(pageStarted, () => {
       </AccessoCard>
     </CenterCardTemplate>
   );
-});
+};
 
 const ErrorBlock = variant({
   source: $showError.map(String),

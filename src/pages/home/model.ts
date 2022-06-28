@@ -9,7 +9,7 @@ import { createStart } from 'shared/lib/page-routing';
 
 export const pageStarted = createStart();
 
-export const logout = createEvent<void>();
+export const logoutClicked = createEvent();
 
 export const $fullName = createStore<string>('');
 export const $email = createStore<string>('');
@@ -31,7 +31,7 @@ sample({
 });
 
 sample({
-  clock: logout,
+  clock: logoutClicked,
   filter: not(sessionDeleteFx.pending),
   fn: () => ({ body: { deleteAllSessions: true } }),
   target: sessionDeleteFx,
