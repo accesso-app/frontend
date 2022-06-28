@@ -1,4 +1,4 @@
-import { attach, createEvent, createStore, guard, sample } from 'effector';
+import { attach, createEvent, createStore, sample } from 'effector';
 import { not } from 'patronum';
 
 import { historyPush } from 'features/navigation';
@@ -17,6 +17,8 @@ export const $showError = createStore<boolean>(false);
 
 const sessionDeleteFx = attach({ effect: api.sessionDelete });
 const pageReady = checkAuthenticated({ when: pageStarted });
+
+$showError.reset(pageReady);
 
 sample({
   clock: $session,
@@ -38,9 +40,9 @@ sample({
 });
 
 sample({
-  clock: api.sessionDelete.done,
+  clock: sessionDeleteFx.done,
   fn: (_) => '/login',
   target: historyPush,
 });
 
-$showError.reset(pageReady).on(sessionDeleteFx.fail, (_) => true);
+$showError.on(sessionDeleteFx.fail, () => true);
