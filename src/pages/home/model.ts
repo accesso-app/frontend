@@ -1,4 +1,5 @@
 import { attach, createEvent, createStore, guard, sample } from 'effector';
+import { not } from 'patronum';
 
 import { historyPush } from 'features/navigation';
 import { $session, checkAuthenticated } from 'features/session';
@@ -18,32 +19,28 @@ const sessionDeleteFx = attach({ effect: api.sessionDelete });
 const pageReady = checkAuthenticated({ when: pageStarted });
 
 sample({
-  source: $session,
-  target: $fullName,
+  clock: $session,
   fn: (session) => `${session?.firstName} ${session?.lastName}`,
+  target: $fullName,
 });
 
 sample({
-  source: $session,
+  clock: $session,
+  fn: (session) => session?.email ?? '',
   target: $email,
-  fn: (session) => session?.email || '',
 });
 
 sample({
-  source: guard({
-    source: logout,
-    filter: sessionDeleteFx.pending.map((is) => !is),
-  }),
+  clock: logout,
+  filter: not(sessionDeleteFx.pending),
+  fn: () => ({ body: { deleteAllSessions: true } }),
   target: sessionDeleteFx,
-  fn: (_) => ({ body: { deleteAllSessions: true } }),
 });
 
 sample({
-  source: api.sessionDelete.done,
-  target: historyPush,
+  clock: api.sessionDelete.done,
   fn: (_) => '/login',
+  target: historyPush,
 });
 
 $showError.reset(pageReady).on(sessionDeleteFx.fail, (_) => true);
-
-checkAuthenticated({ when: pageStarted });
