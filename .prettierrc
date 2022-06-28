@@ -6,6 +6,17 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "useTabs": false,
-  "importOrder": ["^pages/", "^features/", "^entities/", "^shared/", "^[./]"],
-  "importOrderSeparation": true
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^pages/",
+    "^widgets",
+    "^features/",
+    "^entities/",
+    "^shared/",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true
 }
