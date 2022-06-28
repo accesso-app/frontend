@@ -5,7 +5,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button } from 'woly';
 
+import { AccessoCard } from 'shared/design';
 import { createStart, withStart } from 'shared/lib/page-routing';
+import { CenterCardTemplate } from 'shared/ui';
 
 export interface ProfileCardProps {
   fullName: string;
@@ -23,13 +25,12 @@ export const HomePage = withStart(pageStarted, () => {
   const fullName = useStore($fullName);
   const email = useStore($email);
   return (
-    <PageContainer>
-      <ProfileGroup>
+    <CenterCardTemplate>
+      <AccessoCard heading="My account">
         <Failure />
-        <ProfileTitle>Profile</ProfileTitle>
         <ProfileCard fullName={fullName} email={email} />
-      </ProfileGroup>
-    </PageContainer>
+      </AccessoCard>
+    </CenterCardTemplate>
   );
 });
 

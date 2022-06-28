@@ -6,7 +6,7 @@ import React, { ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as design from 'shared/design';
-import { FailureText } from 'shared/design';
+import { DefaultFooter, FailureText } from 'shared/design';
 import { path } from 'shared/paths';
 import { CenterCardTemplate } from 'shared/ui';
 
@@ -47,7 +47,7 @@ const $errorText = $error.map((failure) => {
 export const LoginPage = () => {
   return (
     <CenterCardTemplate>
-      <design.AccessoCard heading="Sign in to Accesso account">
+      <design.AccessoCard heading="Sign in to Accesso account" footer={<DefaultFooter />}>
         <Form>
           <design.Field label="Email">
             <Email placeholder="name@domain.com" autoComplete="email" />

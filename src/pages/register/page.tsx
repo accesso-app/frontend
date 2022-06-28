@@ -8,6 +8,7 @@ import {
   AccessoCard,
   Button,
   ButtonPrimary,
+  DefaultFooter,
   FailureText,
   Field,
   Heading3,
@@ -34,7 +35,7 @@ const ourChatLink = 'https://t.me/joinchat/WLsDNClpU3phOWIy';
 
 const Registration = () => {
   return (
-    <AccessoCard heading="Register closed at the moment">
+    <AccessoCard heading="Register closed at the moment" footer={<DefaultFooter />}>
       <Heading3>
         You can obtain an invitation by{' '}
         <a
@@ -72,7 +73,7 @@ const EnterCode = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col justify-between box-content h-full">
-      <AccessoCard heading="Use your invite code">
+      <AccessoCard heading="Use your invite code" footer={<DefaultFooter />}>
         <Field label="Enter invite code provided by our team">
           <InviteCode placeholder="just-four-words-code" />
         </Field>

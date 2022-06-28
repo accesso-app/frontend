@@ -8,6 +8,7 @@ import {
   AccessoCard,
   Button,
   ButtonPrimary,
+  DefaultFooter,
   FailureText,
   Field,
   Heading3,
@@ -58,7 +59,7 @@ export const WelcomeMessage = () => {
   const displayName = useStore($displayName);
 
   return (
-    <AccessoCard heading="Welcome to Accesso!">
+    <AccessoCard heading="Welcome to Accesso!" footer={<DefaultFooter />}>
       <div className="flex flex-col space-y-8 items-start">
         <Heading3>
           {displayName}, now you can access all our projects.
@@ -82,7 +83,7 @@ export const AccountCreation = () => {
 
   return (
     <form className="flex flex-col justify-between box-content h-full" onSubmit={handleSubmit}>
-      <AccessoCard heading="Continue registration">
+      <AccessoCard heading="Continue registration" footer={<DefaultFooter />}>
         <Heading3>
           You've been invited to join our projects!
           <br />
