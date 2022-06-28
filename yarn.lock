@@ -2290,10 +2290,10 @@
   dependencies:
     chalk "^4.0.0"
 
-"@effector/reflect@^7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@effector/reflect/-/reflect-7.0.1.tgz#0bc04672ca1581f6e2dc9df2a6effd8e89435a4a"
-  integrity sha512-tBxtNJnkuArwjaT8HML8ldIumt2NzhO/sR+vPo/jJ6NhEj2wnTfa9xL0qgrIlO5hNxFvmd2d6zqCp4XBT3K+fQ==
+"@effector/reflect@^7.1.1":
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/@effector/reflect/-/reflect-7.1.1.tgz#0808776a7e7e4918817fafe1bd582ed57ed1300a"
+  integrity sha512-GSorX7Vk62whu/4ypUT7ELQsT6MCHZm4uTDLiRUgzWFvKRdCAVWEVhYrId8+vdp8qlKN6hIVoYmSgxG0tz5Y9A==
 
 "@emmetio/extract-abbreviation@0.1.6":
   version "0.1.6"
@@ -5941,10 +5941,10 @@ effector-react@^22.0.6:
   resolved "https://registry.yarnpkg.com/effector-react/-/effector-react-22.0.6.tgz#e6651febfc124a8adf550deb950fbd03dfb9ec4e"
   integrity sha512-uzVjrh5S94eMeihu8N8eQvLFnZA56VT00etMVovnSyZxujo0f8gtZZebIYOKyYFkGcYUyfiOHRRzBhYpIfAIhg==
 
-effector@^22.2.0:
-  version "22.2.0"
-  resolved "https://registry.yarnpkg.com/effector/-/effector-22.2.0.tgz#61667313cbe4fddeb9983582c3b59e1aae3603ec"
-  integrity sha512-N0dDgEO3/b9InYkPsoSM5YSJgVwJ1bQ/DWHU7C6sm9+L1CrT6gat0pLvey/ljFPNdNKL0S6MW5DEmDUvzJe1Ng==
+effector@^22.3.0:
+  version "22.3.0"
+  resolved "https://registry.yarnpkg.com/effector/-/effector-22.3.0.tgz#c743dd7d934ec3f9a2efac76a563cd0281bc4201"
+  integrity sha512-Nh7IXn8U4emq8YtAZf2+y2Rs6n4W/gjPaNZpZLFOXOIAsRZSNBFjtK1vHTWNKxxmNFZOaZN6XUXdT8FDs0mAdQ==
 
 electron-to-chromium@^1.3.564, electron-to-chromium@^1.3.896:
   version "1.4.5"
