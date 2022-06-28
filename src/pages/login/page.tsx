@@ -12,7 +12,7 @@ import { CenterCardTemplate } from 'shared/ui';
 
 import { Failure } from './types';
 
-//#region Public API
+//#region Ports
 
 // Model
 export const formSubmitted = createEvent<React.FormEvent<HTMLFormElement>>();
